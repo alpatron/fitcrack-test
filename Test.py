@@ -1,6 +1,6 @@
 import unittest
 from selenium import webdriver
-from PageObjects import LoginPage, JobCreationPage
+from page_object.LoginPage import LoginPage
 
 PREFIX = 'http://192.168.56.2:81'
 
