@@ -11,6 +11,7 @@ if TYPE_CHECKING:
 from page_object.PageObject import PageObject
 from page_object.InputSettings import InputSettings
 from page_object.AttackSettings import AttackSettings
+from page_object.JobDetailPage import JobDetailPage
 
 class JobCreationPage(PageObject):
     def ensure_loaded(self):
@@ -35,7 +36,9 @@ class JobCreationPage(PageObject):
         return self.driver.find_element(By.ID,'job-step-4')
     @property
     def __create_button(self) -> WebElement:
-        return self.driver.find_element(By.XPATH,'//button[text()="Create"]')
+        return self.driver.find_element(
+            locate_with(By.TAG_NAME,'button').near({By.XPATH:'//span[text()[contains(.,"Create")]]'})   # type: ignore
+        )
     
     def setJobName(self,name:str) -> None:
         self.__name_field.clear()
@@ -44,8 +47,9 @@ class JobCreationPage(PageObject):
     def getJobName(self) -> str:
         return self.__name_field.get_attribute('value')
 
-    def createJob(self) -> None:
+    def createJob(self) -> JobDetailPage:
         self.__create_button.click()
+        return JobDetailPage(self.driver)
 
     def openInputSettings(self) -> InputSettings:
         self.__input_settings_button.click()

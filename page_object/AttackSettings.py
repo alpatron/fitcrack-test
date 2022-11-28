@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver import ActionChains
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement
@@ -15,6 +17,10 @@ from page_object.PrinceAttackSettings import PrinceAttackSettings
 from page_object.PCFGAttackSettings import PCFGAttackSettings
 
 class AttackSettings(PageObject):
+    def ensure_loaded(self):
+        WebDriverWait(self.driver,30).until(lambda _: self.dictionary_mode_button.is_displayed)
+        ActionChains(self.driver).pause(2).perform() #Wait for 2 seconds to make sure vuejs animation is over
+
     @property
     def dictionary_mode_button(self) -> WebElement:
         return self.driver.find_element(By.ID,'attack-mode-dictionary')

@@ -40,3 +40,11 @@ class DictionaryAttackSettings(PageObject):
     
     def getAvailableDictionaries(self) -> List[DictionarySelection]:
         return [DictionarySelection(self.driver,tableRow) for tableRow in self.__dictionary_selection_table.find_elements(By.CSS_SELECTOR,'tbody tr')]
+
+    def selectDictionaries(self,wanted_dicts:List[str]) -> None:
+        available_dicts = self.getAvailableDictionaries()
+        found_wanted_dicts = list(filter(lambda x: x.name in wanted_dicts,available_dicts))
+        if len(found_wanted_dicts) != len(wanted_dicts): #TODO: Possibly there could be also duplicate names; do we want to check for those?
+            raise Exception('Some requested dictionaries do not exist.\n')
+        for dictionary in found_wanted_dicts:
+            dictionary.selected = True

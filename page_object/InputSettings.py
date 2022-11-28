@@ -3,6 +3,7 @@ from __future__ import annotations
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import JavascriptException, NoSuchElementException
+from selenium.webdriver import ActionChains
 from selenium.webdriver.support.relative_locator import locate_with
 from typing import TYPE_CHECKING, List
 if TYPE_CHECKING:
@@ -39,7 +40,8 @@ class InputSettings(PageObject):
         self.__hash_type_selection_input.click()
         self.__hash_type_selection_input.clear()
         self.__hash_type_selection_input.send_keys(hashtype)
-        WebDriverWait(self.driver,30,ignored_exceptions={JavascriptException, NoSuchElementException}).until(lambda _: self.__hash_type_selection_list)
+        WebDriverWait(self.driver,30,ignored_exceptions={JavascriptException, NoSuchElementException}).until(lambda _: self.__hash_type_selection_list.is_displayed)
+        ActionChains(self.driver).pause(2).perform() # Wait for 2 seconds to make sure vuejs animation is over
         self.__hash_type_selection_list.find_element(By.CSS_SELECTOR,'div:nth-child(1)').click()
 
     def getSelectedHashType(self) -> str:
