@@ -23,7 +23,7 @@ PREFIX = 'http://192.168.56.2:81'
     )
     ]
     )
-def test_dictionary(selenium:WebDriver,hashtype:str,hashes:Set[tuple[str,str]],dictionaries:List[str]):
+def test_dictionary(selenium:WebDriver,hashtype:str,hashes:List[tuple[str,str]],dictionaries:List[str]):
     loginPage = LoginPage(selenium,no_ensure_loaded=True)
     loginPage.navigate(PREFIX)
     loginPage.ensure_loaded()
@@ -49,7 +49,7 @@ def test_dictionary(selenium:WebDriver,hashtype:str,hashes:Set[tuple[str,str]],d
 
     jobDetailPage.start_job()
 
-    WebDriverWait(selenium,600).until(lambda _: jobDetailPage.get_job_state() == 'Finished')
+    WebDriverWait(selenium,3600).until(lambda _: jobDetailPage.get_job_state() == 'Finished')
 
     workedOnHashes = jobDetailPage.getHashes()
 
