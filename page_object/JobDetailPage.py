@@ -36,8 +36,8 @@ class JobDetailPage(PageObject):
     def getHashes(self) -> List[tuple[str,str]]:
         return [
             (
-                tableRow.find_element(By.CSS_SELECTOR,'td:nth-child(1) span').text,
-                tableRow.find_element(By.CSS_SELECTOR,'td:nth-child(2) span').text
+                tableRow.find_element(By.CSS_SELECTOR,'td:nth-child(1)').text,
+                tableRow.find_element(By.CSS_SELECTOR,'td:nth-child(2)').text
             ) for tableRow in self.__hash_table.find_elements(By.CSS_SELECTOR,'tbody tr')
         ]
     
