@@ -4,6 +4,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.relative_locator import locate_with
+from selenium.common.exceptions import TimeoutException
+
 from typing import TYPE_CHECKING, List
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement
@@ -24,7 +26,7 @@ class DictionaryAttackSettings(PageObject):
         try:
             WebDriverWait(self.driver,30).until(lambda _: len(self.getAvailableDictionaries()) != 0)
             ActionChains(self.driver).pause(5).perform()
-        except TimeoutError:
+        except TimeoutException:
             pass
 
     
