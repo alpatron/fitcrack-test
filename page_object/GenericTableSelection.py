@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver import ActionChains
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
     from selenium.webdriver.remote.webelement import WebElement
 
 from page_object.PageObject import PageObject
+from page_object.helper import obstructedClickWorkaround
 
 class GenericTableSelection(PageObject):
     '''
@@ -45,8 +45,5 @@ class GenericTableSelection(PageObject):
     def selected(self,newState:bool) -> None:
         if newState == self.selected:
             return
-        #We use the low-level API instead of regular element.click() because the way the app is coded
-        #a ripple effect "obstructs" the checkbox, causing regular element.click() to fail saying the element's non-interactable.
-        _ = self.__selection_checkbox.screenshot_as_base64 #Workaround because the current version of Selenium has broken scroll support.
-        ActionChains(self.driver).click(self.__selection_checkbox).perform() 
+        obstructedClickWorkaround(self.driver,self.__selection_checkbox)
    
