@@ -4,6 +4,7 @@ import pytest
 from selenium.webdriver.support.wait import WebDriverWait
 from page_object.LoginPage import LoginPage
 from typing import TYPE_CHECKING, List
+from selenium.webdriver import ActionChains
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
 
@@ -39,6 +40,7 @@ def test_dictionary(selenium:WebDriver,hashtype:str,hashes:List[tuple[str,str]],
 
     attackSettings = jobCreationPage.openAttackSettings()
     dictionarySettings = attackSettings.chooseDictionaryMode()
+
 
     dictionarySettings.selectDictionaries(dictionaries)
     

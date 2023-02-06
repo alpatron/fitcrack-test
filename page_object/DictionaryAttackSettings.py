@@ -11,6 +11,7 @@ if TYPE_CHECKING:
 from page_object.PageObject import PageObject
 from page_object.DictionarySelection import DictionarySelection
 from page_object.RulefileSelection import RulefileSelection
+from page_object.table_manipulation import buildTableSelectionObjectsFromTable, activateElementsFromTableByListLookup
 
 class DictionaryAttackSettings(PageObject):
     def ensure_loaded(self):
@@ -40,23 +41,13 @@ class DictionaryAttackSettings(PageObject):
         )
     
     def getAvailableDictionaries(self) -> List[DictionarySelection]:
-        return [DictionarySelection(self.driver,tableRow) for tableRow in self.__dictionary_selection_table.find_elements(By.CSS_SELECTOR,'tbody tr')]
+        return buildTableSelectionObjectsFromTable(self.driver,self.__dictionary_selection_table,DictionarySelection)
 
     def getAvailableRulefiles(self) -> List[RulefileSelection]:
-        return [RulefileSelection(self.driver,tableRow) for tableRow in self.__rule_file_selection_table.find_elements(By.CSS_SELECTOR,'tbody tr')]
+        return buildTableSelectionObjectsFromTable(self.driver,self.__rule_file_selection_table,RulefileSelection)
 
     def selectDictionaries(self,wanted_dicts:List[str]) -> None:
-        available_dicts = self.getAvailableDictionaries()
-        found_wanted_dicts = list(filter(lambda x: x.name in wanted_dicts,available_dicts))
-        if len(found_wanted_dicts) != len(wanted_dicts): #TODO: Possibly there could be also duplicate names; do we want to check for those?
-            raise Exception('Some requested dictionaries do not exist in the table.\n')
-        for dictionary in found_wanted_dicts:
-            dictionary.selected = True
+        activateElementsFromTableByListLookup(self.getAvailableDictionaries(),lambda x: x.name,wanted_dicts)
 
     def selectRulefiles(self,wanted_rulefiles:List[str]) -> None:
-        available_rulefiles = self.getAvailableRulefiles()
-        found_wanted_rulefiles = list(filter(lambda x: x.name in wanted_rulefiles,available_rulefiles))
-        if len(found_wanted_rulefiles) != len(wanted_rulefiles): #TODO: Possibly there could be also duplicate names; do we want to check for those?
-            raise Exception('Some requested rulefiles do not exist in the table.\n')
-        for rulefile in found_wanted_rulefiles:
-            rulefile.selected = True
+        activateElementsFromTableByListLookup(self.getAvailableRulefiles(),lambda x:x.name,wanted_rulefiles)
