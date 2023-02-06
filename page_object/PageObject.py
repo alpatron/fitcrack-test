@@ -12,3 +12,11 @@ class PageObject:
 
     def ensure_loaded(self):
         pass
+    
+    def _click_away(self):
+        '''
+        Sometimes when testing, one needs to "click away" from, say, an input field to return to a neutral application state.
+        For example, when typing into an input field, a pop-up may appear (for example when using the mask editor).
+        You can use this method to implement a click away behaviour for your page object.
+        '''
+        raise NotImplementedError
