@@ -58,7 +58,7 @@ def test_hybrid(selenium:WebDriver,hashtype:str,hashes:List[tuple[str,str]],mode
 
     hybridSettings.selectDictionaries(dictionaries)
     hybridSettings.setManglingRule(rule)
-    hybridSettings.setMask(rule)
+    hybridSettings.setMask(mask)
 
     jobDetailPage = jobCreationPage.createJob()
 
