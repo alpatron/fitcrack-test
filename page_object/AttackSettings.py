@@ -9,8 +9,7 @@ if TYPE_CHECKING:
 
 from page_object.PageObject import PageObject
 from page_object.DictionaryAttackSettings import DictionaryAttackSettings
-from page_object.HybridMaskAndWordlistAttackSettings import HybridMaskAndWordlistAttackSettings
-from page_object.HybridWordlistAndMaskAttackSettings import HybridWordlistAndMaskAttackSettings
+from page_object.HybridAttackSettings import HybridAttackSettings
 from page_object.BruteforceAttackSettings import BruteforceAttackSettings
 from page_object.CombinationAttackSettings import CombinationAttackSettings
 from page_object.PrinceAttackSettings import PrinceAttackSettings
@@ -55,13 +54,13 @@ class AttackSettings(PageObject):
         self.bruteforce_mode_button.click()
         return BruteforceAttackSettings(self.driver)
 
-    def chooseHybridWordlistAndMaskMode(self) -> HybridWordlistAndMaskAttackSettings:
+    def chooseHybridWordlistAndMaskMode(self) -> HybridAttackSettings:
         self.hybrid_wordlist_and_mask_mode_button.click()
-        return HybridWordlistAndMaskAttackSettings(self.driver)
+        return HybridAttackSettings(self.driver)
 
-    def chooseHybridMaskAndWordlistMode(self) -> HybridMaskAndWordlistAttackSettings:
+    def chooseHybridMaskAndWordlistMode(self) -> HybridAttackSettings:
         self.hybrid_mask_and_wordlist_mode_button.click()
-        return HybridMaskAndWordlistAttackSettings(self.driver)
+        return HybridAttackSettings(self.driver)
 
     def choosePrinceMode(self) -> PrinceAttackSettings:
         self.prince_mode_button.click()
