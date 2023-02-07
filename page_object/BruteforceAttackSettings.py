@@ -5,7 +5,9 @@ import itertools
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.relative_locator import locate_with
-from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver import ActionChains
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 from typing import TYPE_CHECKING, List
 if TYPE_CHECKING:
@@ -23,6 +25,16 @@ class MarkovMode(Enum):
     MARKOV_3D = 'markov-3d'
 
 class BruteforceAttackSettings(PageObject):
+    def ensure_loaded(self):
+        try:
+            WebDriverWait(self.driver,30).until(lambda _: len(self.getAvailableCharsets()) != 0 and len(self.getAvailableMarkovFiles()) != 0)
+            ActionChains(self.driver).pause(5).perform()
+        except TimeoutException:
+            pass
+    
+    def _click_away(self) -> None:
+        self.driver.find_element(By.XPATH,'//span[text()[contains(.,"Select charsets (max. 4)")]]').click()
+
     def __get_mask_input_field(self,index:int) -> WebElement:
         return self.driver.find_element(By.ID,f'mask-{index}-mask-input')
 
@@ -68,10 +80,6 @@ class BruteforceAttackSettings(PageObject):
         return self.driver.find_element(
             locate_with(By.TAG_NAME,'input').to_left_of({By.XPATH:'//label[text()="3D Markov"]'})  # type: ignore
         )
-
-    
-    def _click_away(self):
-        self.driver.find_element(By.XPATH,'//span[text()[contains(.,"Select charsets (max. 4)")]]').click()
 
     def getAvailableCharsets(self) -> List[CharsetSelection]:
         return buildTableSelectionObjectsFromTable(self.driver,self.__charset_selection_table,CharsetSelection)
