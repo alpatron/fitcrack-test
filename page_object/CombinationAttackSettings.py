@@ -23,7 +23,7 @@ class CombinationAttackSettings(PageObject):
         that vuejs actually properly displays the elements.
         '''
         try:
-            WebDriverWait(self.driver,30).until(lambda _: len(self.getAvailableLeftDictionaries()) != 0 and (self.getAvailableRightDictionaries()) != 0)
+            WebDriverWait(self.driver,30).until(lambda _: len(self.getAvailableLeftDictionaries()) != 0 and len(self.getAvailableRightDictionaries()) != 0)
             ActionChains(self.driver).pause(5).perform()
         except TimeoutException:
             pass
