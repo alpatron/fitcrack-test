@@ -33,6 +33,11 @@ class GenericTableSelection(PageObject):
 
     @property
     def selected(self) -> bool:
+        '''Whether a row in a table is selected; i.e. whether its corresponding checkbox is checked.
+        
+        Do note that that this method does not use the `getCheckboxState` function from the `helper` file.
+        This is because table rows in Webadmin use a different kind of checkbox than the regular ones,
+        so a different kind of selection check needs to be used.'''
         checkboxClasses = self.__selection_checkbox.get_attribute('class')
         if 'mdi-checkbox-blank-outline' in checkboxClasses and not 'mdi-checkbox-marked' in checkboxClasses:
             return False

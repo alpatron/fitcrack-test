@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from selenium.webdriver import ActionChains
+from selenium.webdriver.common.keys import Keys
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
@@ -23,6 +24,20 @@ def obstructedClickWorkaround(driver:WebDriver, element:WebElement):
 
     _ = element.screenshot_as_base64 #Workaround because the current version of Selenium has broken scroll support in the Actions API in Firefox; the screenshot_as_base64 call forces a scroll using some old and reliable way.
     ActionChains(driver).click(element).perform() 
+
+def getCheckboxState(element:WebElement) -> bool:
+    '''
+    Checkboxes in Webadmin do not have a simple "checked" property that can be used to garner the checkbox's state that when queried gives a simple bool.
+    This function returns a bool giving the state of a Webadmin checkbox and raises an exception if the state cannot be determined.
+    You need to supply the relevant <input> element of the checkbox you want to get its state of.
+    '''
+    match element.get_attribute('aria-checked'):
+        case 'true':
+            return True
+        case 'false':
+            return False
+        case _:
+            raise Exception('The selection state of a checkbox could not be determined. This may indicate a broken page object.')
 
 
 def clearWorkaround(element:WebElement) -> None:
