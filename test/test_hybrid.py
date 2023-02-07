@@ -26,7 +26,7 @@ class HybridMode(Enum):
         ('3650c195b6eb82db3818ec19c7c055b6f91b9675',''),
         ('341b5129bf9b6abcbd96ecaf158506090f9d77b5','')
         ],
-        'dict-first',
+        'mask-first',
         ['honeynet.txt'],
         'c $-',
         '?l?l?l'
