@@ -9,6 +9,7 @@ from selenium.common.exceptions import TimeoutException
 from page_object.PageObject import PageObject
 from page_object.DictionarySelection import DictionarySelection
 from page_object.table_manipulation import activateElementsFromTableByListLookup, buildTableSelectionObjectsFromTable
+from page_object.helper import clearWorkaround
 
 from typing import TYPE_CHECKING, List
 if TYPE_CHECKING:
@@ -46,9 +47,9 @@ class HybridAttackSettings(PageObject):
         activateElementsFromTableByListLookup(self.getAvailableDictionaries(),lambda x: x.name,wanted_dicts)
 
     def setManglingRule(self,mangling_rule:str) -> None:
-        self.__mangling_rule_input.clear()
+        clearWorkaround(self.__mangling_rule_input)
         self.__mangling_rule_input.send_keys(mangling_rule)
 
     def setMask(self,mask:str) -> None:
-        self.__mask_input.clear()
+        clearWorkaround(self.__mask_input)
         self.__mask_input.send_keys(mask)

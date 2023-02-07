@@ -11,6 +11,7 @@ if TYPE_CHECKING:
 from page_object.PageObject import PageObject
 from page_object.Dashboard import Dashboard
 from page_object.Sidebar import SideBar
+from page_object.helper import clearWorkaround
 
 class LoginPage(PageObject):
     URL_PATH = '/login'
@@ -38,9 +39,9 @@ class LoginPage(PageObject):
         self.driver.get(prefix+self.URL_PATH)
 
     def login(self,username:str,password:str) -> tuple[SideBar,Dashboard]:
-        self.username_field.clear()
-        self.username_field.send_keys(username)
-        self.password_field.clear()
-        self.password_field.send_keys(password)
+        clearWorkaround(self.username_field)    #The order of clearing and typing is important here.
+        clearWorkaround(self.password_field)    #The clear workaround does not (and cannot easily) perform an unfocusing operation at the end of the clearing action.
+        self.username_field.send_keys(username) #This means that after clearing a field, the label inside the input disappears... wait... this whole isn't robust and this is just
+        self.password_field.send_keys(password) #the symptom, not the cause. What is needed is more robust locators here in general. *sigh* This is a todo.
         self.submit_button.click()
         return SideBar(self.driver), Dashboard(self.driver)

@@ -13,6 +13,7 @@ if TYPE_CHECKING:
 from page_object.PageObject import PageObject
 from page_object.DictionarySelection import DictionarySelection
 from page_object.table_manipulation import buildTableSelectionObjectsFromTable, activateElementsFromTableByListLookup
+from page_object.helper import clearWorkaround
 
 class CombinationAttackSettings(PageObject):
     def ensure_loaded(self):
@@ -65,11 +66,11 @@ class CombinationAttackSettings(PageObject):
         activateElementsFromTableByListLookup(self.getAvailableRightDictionaries(),lambda x: x.name,wanted_dicts)
 
     def setLeftManglingRule(self,mangling_rule:str) -> None:
-        self.__left_rule_input.clear()
+        clearWorkaround(self.__left_rule_input)
         self.__left_rule_input.send_keys(mangling_rule)
 
     def setRightManglingRule(self,mangling_rule:str) -> None:
-        self.__right_rule_input.clear()
+        clearWorkaround(self.__right_rule_input)
         self.__right_rule_input.send_keys(mangling_rule)
 
 

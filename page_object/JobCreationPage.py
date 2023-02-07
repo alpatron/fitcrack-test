@@ -12,6 +12,7 @@ from page_object.PageObject import PageObject
 from page_object.InputSettings import InputSettings
 from page_object.AttackSettings import AttackSettings
 from page_object.JobDetailPage import JobDetailPage
+from page_object.helper import clearWorkaround
 
 class JobCreationPage(PageObject):
     def ensure_loaded(self):
@@ -41,7 +42,7 @@ class JobCreationPage(PageObject):
         )
     
     def setJobName(self,name:str) -> None:
-        self.__name_field.clear()
+        clearWorkaround(self.__name_field)
         self.__name_field.send_keys(name)
 
     def getJobName(self) -> str:

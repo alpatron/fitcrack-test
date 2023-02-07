@@ -10,6 +10,7 @@ if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement
 
 from page_object.PageObject import PageObject
+from page_object.helper import clearWorkaround
 
 class InputSettings(PageObject):
     @property
@@ -41,7 +42,7 @@ class InputSettings(PageObject):
 
     def selectHashTypeExactly(self,hashtype:str) -> None: #Todo:this ain't really exact, but whateever; will be fixed later
         self.__hash_type_selection_input.click()
-        self.__hash_type_selection_input.clear()
+        clearWorkaround(self.__hash_type_selection_input)
         self.__hash_type_selection_input.send_keys(hashtype)
         WebDriverWait(self.driver,30,ignored_exceptions={JavascriptException, NoSuchElementException}).until(lambda _: self.__hash_type_selection_list.is_displayed)
         ActionChains(self.driver).pause(2).perform() # Wait for 2 seconds to make sure vuejs animation is over
@@ -53,5 +54,5 @@ class InputSettings(PageObject):
 
     def inputHashesManually(self,hashes:List[str]):
         self.__manual_entry_button.click()
-        self.__hash_input_field.clear()
+        clearWorkaround(self.__hash_input_field)
         self.__hash_input_field.send_keys('\n'.join(hashes))

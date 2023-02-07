@@ -17,7 +17,7 @@ from page_object.PageObject import PageObject
 from page_object.CharsetSelection import CharsetSelection
 from page_object.MarkovFileSelection import MarkovFileSelection
 from page_object.table_manipulation import buildTableSelectionObjectsFromTable, activateElementsFromTableByListLookup
-from page_object.helper import obstructedClickWorkaround
+from page_object.helper import obstructedClickWorkaround, clearWorkaround
 
 class MarkovMode(Enum):
     MARKOV_DISABLED = 'markov-disabled'
@@ -118,11 +118,11 @@ class BruteforceAttackSettings(PageObject):
                 obstructedClickWorkaround(self.driver,self.__3D_markov_radio_button)
 
     def setMarkovThresholdValue(self,threshold:int) -> None:
-        self.__markov_threshold_input.clear()
+        clearWorkaround(self.__markov_threshold_input)
         self.__markov_threshold_input.send_keys(str(threshold))
 
     def setMaskValue(self,mask_value:str,index:int) -> None:
-        self.__get_mask_input_field(index).clear()
+        clearWorkaround(self.__get_mask_input_field(index))
         self.__get_mask_input_field(index).send_keys(mask_value)
 
     def addMask(self) -> None:
