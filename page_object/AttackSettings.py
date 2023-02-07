@@ -32,16 +32,16 @@ class AttackSettings(PageObject):
         return self.driver.find_element(By.ID,'attack-mode-maskattack')
     @property
     def hybrid_wordlist_and_mask_mode_button(self) -> WebElement:
-        return self.driver.find_element(By.ID,'attack-mode-hybridwordlistmask')
+        return self.driver.find_element(By.ID,'attack-mode-hybridWordlistMask')
     @property
     def hybrid_mask_and_wordlist_mode_button(self) -> WebElement:
-        return self.driver.find_element(By.ID,'attack-mode-hybridmaskwordlist')
+        return self.driver.find_element(By.ID,'attack-mode-hybridMaskWordlist')
     @property
     def prince_mode_button(self) -> WebElement:
-        return self.driver.find_element(By.ID,'attack-mode-princeattack')
+        return self.driver.find_element(By.ID,'attack-mode-princeAttack')
     @property
     def pcfg_mode_button(self) -> WebElement:
-        return self.driver.find_element(By.ID,'attack-mode-princeattack')
+        return self.driver.find_element(By.ID,'attack-mode-pcfgAttack')
 
     def chooseDictionaryMode(self) -> DictionaryAttackSettings:
         self.dictionary_mode_button.click()
