@@ -42,7 +42,7 @@ def getCheckboxState(element:WebElement) -> bool:
 
 def clearWorkaround(element:WebElement) -> None:
     '''For some reason, the default `element.clear()` in Selenium does not work with inputs in Webadmin.
-    This is a workaround function that works by sending CTRL+A followed ba BACKSPACE, thus hopefully selecting everything and then deleting it.
+    This is a workaround function that works by sending CTRL+A followed by BACKSPACE, thus hopefully selecting everything and then deleting it.
     
     Do note that this thus does perform some of the checks and specialised behaviour of the regular clear method.
     So do check that you must use this workaround; if you do not, use the regular clear method.'''
