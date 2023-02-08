@@ -13,7 +13,7 @@ from page_object.PageObject import PageObject
 class JobDetailPage(PageObject):
 
     def ensure_loaded(self):
-        WebDriverWait(self.driver,30).until(lambda d: d.find_element(By.CLASS_NAME,'job-info'))
+        WebDriverWait(self.driver,30).until(lambda _: self.get_job_state() != '')
 
     @property
     def __start_button(self) -> WebElement:
