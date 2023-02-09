@@ -1,16 +1,22 @@
+"""Page object representing a row in a charset-selection table.
+Exports single class--the aforementioned page object.
+"""
+
 from __future__ import annotations
+from typing import TYPE_CHECKING
 
 from selenium.webdriver.common.by import By
-from typing import TYPE_CHECKING
+
+from page_object.generic_table_selection import GenericTableSelection
+
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement
 
-from page_object.GenericTableSelection import GenericTableSelection
 
 class CharsetSelection(GenericTableSelection):
-    '''
-    This class represents a row from the charset-selection table on the brute-force attack settings on the Add Job page.
-    '''
+    """This class represents a row from the charset-selection table on the brute-force
+    attack settings on the Add Job page.
+    """
     @property
     def __name_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR,'td:nth-child(2) a')
@@ -22,9 +28,11 @@ class CharsetSelection(GenericTableSelection):
     #TODO: Dunno if I want to use properties for this nonsense.
     @property
     def name(self) -> str:
+        """The file name of the charset."""
         return self.__name_field.text
 
     @property
     def keyspace(self) -> str:
+        """The keyspace size of the charset."""
         return self.__keyspace_field.text
    

@@ -1,14 +1,20 @@
+"""Page object representing the dashboard of Webadmin.
+Exports single class--the aforementioned page object.
+"""
+
 from __future__ import annotations
+from typing import TYPE_CHECKING
 
 from selenium.webdriver.common.by import By
 
-from typing import TYPE_CHECKING
+from page_object.page_object import PageObject
+
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement
 
-from page_object.PageObject import PageObject
 
 class Dashboard(PageObject):
+    """Represents the dashboard that is shown upon log in to Webadmin."""
     @property
-    def welcome_text(self) -> WebElement:
+    def __welcome_text(self) -> WebElement:
         return self.driver.find_element(By.TAG_NAME,'h1')
