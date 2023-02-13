@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 from selenium.webdriver.support.wait import WebDriverWait
-from page_object.LoginPage import LoginPage
+from page_object.login_page import LoginPage
 from typing import TYPE_CHECKING, List
 from selenium.webdriver import ActionChains
 if TYPE_CHECKING:
@@ -33,22 +33,22 @@ def test_combination(selenium:WebDriver,hashtype:str,hashes:List[tuple[str,str]]
 
     sidebar, dashboard = loginPage.login('fitcrack','FITCRACK')
     
-    jobCreationPage = sidebar.goto_create_job()
-    jobCreationPage.setJobName('A fun job for the whole family!')
+    jobCreationPage = sidebar.goto_add_job()
+    jobCreationPage.set_job_name('A fun job for the whole family!')
     
-    inputSettings = jobCreationPage.openInputSettings()
-    inputSettings.selectHashTypeExactly(hashtype)
-    inputSettings.inputHashesManually([x[0] for x in hashes])
+    inputSettings = jobCreationPage.open_input_settings()
+    inputSettings.select_hash_type_exactly(hashtype)
+    inputSettings.input_hashes_manually([x[0] for x in hashes])
 
-    attackSettings = jobCreationPage.openAttackSettings()
-    combinationSettings = attackSettings.chooseCombinationMode()
+    attackSettings = jobCreationPage.open_attack_settings()
+    combinationSettings = attackSettings.choose_combination_mode()
 
-    combinationSettings.selectLeftDictionaries(left_dictionaries)
-    combinationSettings.selectRightDictionaries(right_dictionaries)
-    combinationSettings.setLeftManglingRule(left_rule)
-    combinationSettings.setRightManglingRule(right_rule)
+    combinationSettings.select_left_dictionaries(left_dictionaries)
+    combinationSettings.select_right_dictionaries(right_dictionaries)
+    combinationSettings.set_left_mangling_rule(left_rule)
+    combinationSettings.set_right_mangling_rule(right_rule)
 
-    jobDetailPage = jobCreationPage.createJob()
+    jobDetailPage = jobCreationPage.create_job()
 
     assert jobDetailPage.get_job_state() == 'Ready'
 
@@ -56,6 +56,6 @@ def test_combination(selenium:WebDriver,hashtype:str,hashes:List[tuple[str,str]]
 
     WebDriverWait(selenium,3600).until(lambda _: jobDetailPage.get_job_state() == 'Finished')
 
-    workedOnHashes = jobDetailPage.getHashes()
+    workedOnHashes = jobDetailPage.get_hashes()
 
     assert set(workedOnHashes) == set(hashes)

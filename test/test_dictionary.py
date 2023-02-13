@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 from selenium.webdriver.support.wait import WebDriverWait
-from page_object.LoginPage import LoginPage
+from page_object.login_page import LoginPage
 from typing import TYPE_CHECKING, List
 from selenium.webdriver import ActionChains
 if TYPE_CHECKING:
@@ -31,21 +31,21 @@ def test_dictionary(selenium:WebDriver,hashtype:str,hashes:List[tuple[str,str]],
 
     sidebar, dashboard = loginPage.login('fitcrack','FITCRACK')
     
-    jobCreationPage = sidebar.goto_create_job()
-    jobCreationPage.setJobName('A fun job for the whole family!')
+    jobCreationPage = sidebar.goto_add_job()
+    jobCreationPage.set_job_name('A fun job for the whole family!')
     
-    inputSettings = jobCreationPage.openInputSettings()
-    inputSettings.selectHashTypeExactly(hashtype)
-    inputSettings.inputHashesManually([x[0] for x in hashes])
+    inputSettings = jobCreationPage.open_input_settings()
+    inputSettings.select_hash_type_exactly(hashtype)
+    inputSettings.input_hashes_manually([x[0] for x in hashes])
 
-    attackSettings = jobCreationPage.openAttackSettings()
-    dictionarySettings = attackSettings.chooseDictionaryMode()
+    attackSettings = jobCreationPage.open_attack_settings()
+    dictionarySettings = attackSettings.choose_dictionary_mode()
 
 
-    dictionarySettings.selectDictionaries(dictionaries)
+    dictionarySettings.select_dictionaries(dictionaries)
     
 
-    jobDetailPage = jobCreationPage.createJob()
+    jobDetailPage = jobCreationPage.create_job()
 
     assert jobDetailPage.get_job_state() == 'Ready'
 
@@ -53,6 +53,6 @@ def test_dictionary(selenium:WebDriver,hashtype:str,hashes:List[tuple[str,str]],
 
     WebDriverWait(selenium,3600).until(lambda _: jobDetailPage.get_job_state() == 'Finished')
 
-    workedOnHashes = jobDetailPage.getHashes()
+    workedOnHashes = jobDetailPage.get_hashes()
 
     assert set(workedOnHashes) == set(hashes)
