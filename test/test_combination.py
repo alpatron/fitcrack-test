@@ -1,32 +1,28 @@
 from __future__ import annotations
+from typing import TYPE_CHECKING, List, NamedTuple
 
 import pytest
 from selenium.webdriver.support.wait import WebDriverWait
+
 from page_object.login_page import LoginPage
-from typing import TYPE_CHECKING, List
-from selenium.webdriver import ActionChains
+
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
 
 PREFIX = 'http://192.168.56.2:81'
 
+class CombinationTestInput(NamedTuple):
+    hashtype:str
+    hashes:List[tuple[str,str]]
+    left_dictionaries:List[str]
+    right_dictionaries:List[str]
+    left_rule:str
+    right_rule:str
 
-@pytest.mark.parametrize("hashtype,hashes,left_dictionaries,right_dictionaries,left_rule,right_rule", [
-    ('sha1', [
-        ('75da3d6038c28b57c8b3b34ae2f8121357bae1b9',''),
-        ('6514189a7cbd9c61518d560d67690e08984e26da',''),
-        ('b4130e4e4a9cb4a7ccf58273af14b362aac9563b','Matrix-SECRET!!!'),
-        ('b471d2050dff0fd4d6baf271b8fa72b4755d846d',''),
-        ('fe1a55bca20469e048c09aa6bd4b69fe4b1c3804','')
-        ],
-        ['english.txt'],
-        ['darkweb2017-top1000.txt'],
-        'c $-',
-        'u $! $! $!'
-    )
-    ]
-    )
-def test_combination(selenium:WebDriver,hashtype:str,hashes:List[tuple[str,str]],left_dictionaries:List[str],right_dictionaries:List[str],left_rule:str,right_rule:str):
+from data_test_combination import testdata
+
+@pytest.mark.parametrize("testdata", testdata)
+def test_combination(selenium:WebDriver,testdata:CombinationTestInput):
     loginPage = LoginPage(selenium,no_ensure_loaded=True)
     loginPage.navigate(PREFIX)
     loginPage.ensure_loaded()
@@ -37,16 +33,16 @@ def test_combination(selenium:WebDriver,hashtype:str,hashes:List[tuple[str,str]]
     jobCreationPage.set_job_name('A fun job for the whole family!')
     
     inputSettings = jobCreationPage.open_input_settings()
-    inputSettings.select_hash_type_exactly(hashtype)
-    inputSettings.input_hashes_manually([x[0] for x in hashes])
+    inputSettings.select_hash_type_exactly(testdata.hashtype)
+    inputSettings.input_hashes_manually([x[0] for x in testdata.hashes])
 
     attackSettings = jobCreationPage.open_attack_settings()
     combinationSettings = attackSettings.choose_combination_mode()
 
-    combinationSettings.select_left_dictionaries(left_dictionaries)
-    combinationSettings.select_right_dictionaries(right_dictionaries)
-    combinationSettings.set_left_mangling_rule(left_rule)
-    combinationSettings.set_right_mangling_rule(right_rule)
+    combinationSettings.select_left_dictionaries(testdata.left_dictionaries)
+    combinationSettings.select_right_dictionaries(testdata.right_dictionaries)
+    combinationSettings.set_left_mangling_rule(testdata.left_rule)
+    combinationSettings.set_right_mangling_rule(testdata.right_rule)
 
     jobDetailPage = jobCreationPage.create_job()
 
@@ -58,4 +54,4 @@ def test_combination(selenium:WebDriver,hashtype:str,hashes:List[tuple[str,str]]
 
     workedOnHashes = jobDetailPage.get_hashes()
 
-    assert set(workedOnHashes) == set(hashes)
+    assert set(workedOnHashes) == set(testdata.hashes)
