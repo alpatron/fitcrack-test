@@ -1,8 +1,5 @@
 .vscode
+env
 __pycache__
 geckodriver.log
-Include
-Lib
-Scripts
-pyvenv.cfg
 .pytest_cache
