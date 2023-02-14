@@ -8,8 +8,6 @@ from typing import TYPE_CHECKING, List, Optional, NamedTuple
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
 
-PREFIX = 'http://192.168.56.2:81'
-
 class BruteForceTestInput(NamedTuple):
     hashtype:str
     hashes:List[tuple[str,str]]
@@ -22,11 +20,11 @@ class BruteForceTestInput(NamedTuple):
 from data_test_bruteforce import testdata
 
 @pytest.mark.parametrize("testdata",testdata)
-def test_bruteforce(selenium:WebDriver,testdata:BruteForceTestInput):
+def test_bruteforce(selenium:WebDriver,base_url:str,testdata:BruteForceTestInput):
     markov_mode = MarkovMode(testdata.markov_mode_raw)
     
     loginPage = LoginPage(selenium,no_ensure_loaded=True)
-    loginPage.navigate(PREFIX)
+    loginPage.navigate(base_url)
     loginPage.ensure_loaded()
 
     sidebar, dashboard = loginPage.login('fitcrack','FITCRACK')

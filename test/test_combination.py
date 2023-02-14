@@ -9,7 +9,6 @@ from page_object.login_page import LoginPage
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
 
-PREFIX = 'http://192.168.56.2:81'
 
 class CombinationTestInput(NamedTuple):
     hashtype:str
@@ -22,9 +21,9 @@ class CombinationTestInput(NamedTuple):
 from data_test_combination import testdata
 
 @pytest.mark.parametrize("testdata", testdata)
-def test_combination(selenium:WebDriver,testdata:CombinationTestInput):
+def test_combination(selenium:WebDriver,base_url:str,testdata:CombinationTestInput):
     loginPage = LoginPage(selenium,no_ensure_loaded=True)
-    loginPage.navigate(PREFIX)
+    loginPage.navigate(base_url)
     loginPage.ensure_loaded()
 
     sidebar, dashboard = loginPage.login('fitcrack','FITCRACK')

@@ -19,18 +19,18 @@ class HybridTestInput(NamedTuple):
 
 from test_combination import testdata
 
-PREFIX = 'http://192.168.56.2:81'
 
 class HybridMode(Enum):
     MASK_FIRST = 'mask-first'
     DICT_FIRST = 'dict-first'
 
+
 @pytest.mark.parametrize("testdata", testdata)
-def test_hybrid(selenium:WebDriver,testdata:HybridTestInput):
+def test_hybrid(selenium:WebDriver,base_url:str,testdata:HybridTestInput):
     mode = HybridMode(testdata.mode_raw)
     
     loginPage = LoginPage(selenium,no_ensure_loaded=True)
-    loginPage.navigate(PREFIX)
+    loginPage.navigate(base_url)
     loginPage.ensure_loaded()
 
     sidebar, dashboard = loginPage.login('fitcrack','FITCRACK')

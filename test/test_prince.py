@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING, List, Optional, NamedTuple
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
 
-PREFIX = 'http://192.168.56.2:81'
 
 class PRINCETestInput(NamedTuple):
     hashtype:str
@@ -28,9 +27,9 @@ class PRINCETestInput(NamedTuple):
 from data_test_prince import testdata
 
 @pytest.mark.parametrize('testdata', testdata)
-def test_prince(selenium:WebDriver,testdata:PRINCETestInput):
+def test_prince(selenium:WebDriver,base_url:str,testdata:PRINCETestInput):
     loginPage = LoginPage(selenium,no_ensure_loaded=True)
-    loginPage.navigate(PREFIX)
+    loginPage.navigate(base_url)
     loginPage.ensure_loaded()
 
     sidebar, dashboard = loginPage.login('fitcrack','FITCRACK')

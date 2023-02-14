@@ -8,9 +8,6 @@ if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
 
 
-
-PREFIX = 'http://192.168.56.2:81'
-
 class PCFGTestInput(NamedTuple):
     hashtype:str
     hashes:List[tuple[str,str]]
@@ -21,9 +18,9 @@ class PCFGTestInput(NamedTuple):
 from data_test_pcfg import testdata
 
 @pytest.mark.parametrize('testdata', testdata)
-def test_pcfg(selenium:WebDriver,testdata:PCFGTestInput):
+def test_pcfg(selenium:WebDriver,base_url:str,testdata:PCFGTestInput):
     loginPage = LoginPage(selenium,no_ensure_loaded=True)
-    loginPage.navigate(PREFIX)
+    loginPage.navigate(base_url)
     loginPage.ensure_loaded()
 
     sidebar, dashboard = loginPage.login('fitcrack','FITCRACK')
