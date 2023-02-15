@@ -6,7 +6,7 @@ from page_object.login_page import LoginPage
 from typing import TYPE_CHECKING, List, Optional, NamedTuple
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
-    from .conftest import Credentials
+    from page_object.add_job_page import AddJobPage
 
 
 class PCFGTestInput(NamedTuple):
@@ -19,21 +19,12 @@ class PCFGTestInput(NamedTuple):
 from data_test_pcfg import testdata
 
 @pytest.mark.parametrize('testdata', testdata)
-def test_pcfg(selenium:WebDriver,base_url:str,credentials:Credentials,testdata:PCFGTestInput):
-    loginPage = LoginPage(selenium,no_ensure_loaded=True)
-    loginPage.navigate(base_url)
-    loginPage.ensure_loaded()
-
-    sidebar, dashboard = loginPage.login(*credentials)
-    
-    jobCreationPage = sidebar.goto_add_job()
-    jobCreationPage.set_job_name('A fun job for the whole family!')
-    
-    inputSettings = jobCreationPage.open_input_settings()
+def test_pcfg(selenium:WebDriver,add_job_page:AddJobPage,testdata:PCFGTestInput):
+    inputSettings = add_job_page.open_input_settings()
     inputSettings.select_hash_type_exactly(testdata.hashtype)
     inputSettings.input_hashes_manually([x[0] for x in testdata.hashes])
 
-    attackSettings = jobCreationPage.open_attack_settings()
+    attackSettings = add_job_page.open_attack_settings()
     pcfg_settings = attackSettings.choose_pcfg_mode()
 
     pcfg_settings.select_pcfg_grammar(testdata.grammar)
@@ -41,7 +32,7 @@ def test_pcfg(selenium:WebDriver,base_url:str,credentials:Credentials,testdata:P
     if testdata.keyspace_limit is not None:
         pcfg_settings.set_keyspace_limit(testdata.keyspace_limit)
 
-    jobDetailPage = jobCreationPage.create_job()
+    jobDetailPage = add_job_page.create_job()
 
     assert jobDetailPage.get_job_state() == 'Ready'
 

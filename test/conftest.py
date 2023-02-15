@@ -79,8 +79,61 @@ def pytest_report_header(config:_pytest.config.Config, startdir):
     ]
 
 
+@pytest.fixture(scope='session',autouse=True)
+def require_base_url(base_url):
+    if not base_url:
+        raise pytest.UsageError(
+            'base_url is not set; use `pytest --base-url https://example.com` '
+            'or set base_url in pytest.ini'
+            )
+
 @pytest.fixture(scope='session')
 def credentials(pytestconfig:_pytest.config.Config) -> Credentials:
     """Fixture that returns the configured login credentials. Login credentials should be valid."""
     return pytestconfig.getoption('credentials') #type: ignore
 
+
+@pytest.fixture
+def login_page(selenium:WebDriver,base_url:str):
+    """Fixture that navigates to login page and returns a LoginPage object."""
+    login_page = LoginPage(selenium,no_ensure_loaded=True)
+    login_page.navigate(base_url)
+    login_page.ensure_loaded()
+    return login_page
+
+
+@pytest.fixture
+def _start_logged_in(login_page:LoginPage,credentials:Credentials) -> Tuple[SideBar,Dashboard]:
+    """You probably want to use the side_bar and dashboard fixtures instead.
+    
+    Fixture that logs into Fitcrack with the provided default credentials supplied to the test
+    session, and returns two values, the SideBar object and the Dashboard object.
+    """
+    return login_page.login(*credentials)
+
+
+@pytest.fixture
+def side_bar(_start_logged_in:Tuple[SideBar,Dashboard]) -> SideBar:
+    """Fixture that logs into Fitcrack and returns a Sidebar object."""
+    return _start_logged_in[0]
+
+
+@pytest.fixture
+def dashboard(_start_logged_in:Tuple[SideBar,Dashboard]) -> Dashboard:
+    """Fixture that logs into Fitcrack and returns the initial Dashboard object created by the
+    initial log in. Beware the object is not useable if you use also use fixtures that navigate
+    away from the dashboard.
+    """
+    return _start_logged_in[1]
+
+
+@pytest.fixture
+def add_job_page(side_bar:SideBar,request:_pytest.fixtures.FixtureRequest):
+    """Fixture that returns an AddJobPage object.
+    This fixture also sets the job name to a string containing information about the current test,
+    so that if your test creates a job, it can be later identified which test created it.
+    TODO: Add a way to supress the timestamping.
+    """
+    add_job_page = side_bar.goto_add_job()
+    add_job_page.set_job_name(f'Job created by an automatic Fitcrack test -- {request.node.name} -- {datetime.utcnow().isoformat()}')
+    return add_job_page
