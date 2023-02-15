@@ -22,7 +22,7 @@ class BruteForceTestInput(NamedTuple):
 from data_test_bruteforce import testdata
 
 @pytest.mark.parametrize("testdata",testdata)
-def test_bruteforce(selenium:WebDriver,base_url:str,credentials:Credentials,credentials:Credentials,testdata:BruteForceTestInput):
+def test_bruteforce(selenium:WebDriver,base_url:str,credentials:Credentials,testdata:BruteForceTestInput):
     markov_mode = MarkovMode(testdata.markov_mode_raw)
     
     loginPage = LoginPage(selenium,no_ensure_loaded=True)
