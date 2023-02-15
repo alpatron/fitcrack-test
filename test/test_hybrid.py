@@ -8,6 +8,7 @@ from page_object.login_page import LoginPage
 from typing import TYPE_CHECKING, List, NamedTuple
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
+    from .conftest import Credentials
 
 class HybridTestInput(NamedTuple):
     hashtype:str
@@ -26,14 +27,14 @@ class HybridMode(Enum):
 
 
 @pytest.mark.parametrize("testdata", testdata)
-def test_hybrid(selenium:WebDriver,base_url:str,testdata:HybridTestInput):
+def test_hybrid(selenium:WebDriver,base_url:str,credentials:Credentials,testdata:HybridTestInput):
     mode = HybridMode(testdata.mode_raw)
     
     loginPage = LoginPage(selenium,no_ensure_loaded=True)
     loginPage.navigate(base_url)
     loginPage.ensure_loaded()
 
-    sidebar, dashboard = loginPage.login('fitcrack','FITCRACK')
+    sidebar, dashboard = loginPage.login(*credentials)
     
     jobCreationPage = sidebar.goto_add_job()
     jobCreationPage.set_job_name('A fun job for the whole family!')

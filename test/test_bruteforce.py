@@ -7,6 +7,8 @@ from page_object.brute_force_settings import MarkovMode
 from typing import TYPE_CHECKING, List, Optional, NamedTuple
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
+    from .conftest import Credentials
+    from conftest import Credentials
 
 class BruteForceTestInput(NamedTuple):
     hashtype:str
@@ -20,14 +22,14 @@ class BruteForceTestInput(NamedTuple):
 from data_test_bruteforce import testdata
 
 @pytest.mark.parametrize("testdata",testdata)
-def test_bruteforce(selenium:WebDriver,base_url:str,testdata:BruteForceTestInput):
+def test_bruteforce(selenium:WebDriver,base_url:str,credentials:Credentials,credentials:Credentials,testdata:BruteForceTestInput):
     markov_mode = MarkovMode(testdata.markov_mode_raw)
     
     loginPage = LoginPage(selenium,no_ensure_loaded=True)
     loginPage.navigate(base_url)
     loginPage.ensure_loaded()
 
-    sidebar, dashboard = loginPage.login('fitcrack','FITCRACK')
+    sidebar, dashboard = loginPage.login(*credentials)
     
     jobCreationPage = sidebar.goto_add_job()
     jobCreationPage.set_job_name('A fun job for the whole family!')

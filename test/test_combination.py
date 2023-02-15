@@ -8,6 +8,7 @@ from page_object.login_page import LoginPage
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
+    from .conftest import Credentials
 
 
 class CombinationTestInput(NamedTuple):
@@ -21,12 +22,12 @@ class CombinationTestInput(NamedTuple):
 from data_test_combination import testdata
 
 @pytest.mark.parametrize("testdata", testdata)
-def test_combination(selenium:WebDriver,base_url:str,testdata:CombinationTestInput):
+def test_combination(selenium:WebDriver,base_url:str,credentials:Credentials,testdata:CombinationTestInput):
     loginPage = LoginPage(selenium,no_ensure_loaded=True)
     loginPage.navigate(base_url)
     loginPage.ensure_loaded()
 
-    sidebar, dashboard = loginPage.login('fitcrack','FITCRACK')
+    sidebar, dashboard = loginPage.login(*credentials)
     
     jobCreationPage = sidebar.goto_add_job()
     jobCreationPage.set_job_name('A fun job for the whole family!')

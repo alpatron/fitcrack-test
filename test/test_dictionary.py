@@ -6,6 +6,7 @@ from page_object.login_page import LoginPage
 from typing import TYPE_CHECKING, List, NamedTuple
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
+    from .conftest import Credentials
 
 
 
@@ -18,12 +19,12 @@ class DictionaryTestInput(NamedTuple):
 from data_test_dictionary import testdata
 
 @pytest.mark.parametrize("testdata", testdata)
-def test_dictionary(selenium:WebDriver,base_url:str,testdata:DictionaryTestInput):
+def test_dictionary(selenium:WebDriver,base_url:str,credentials:Credentials,testdata:DictionaryTestInput):
     loginPage = LoginPage(selenium,no_ensure_loaded=True)
     loginPage.navigate(base_url)
     loginPage.ensure_loaded()
 
-    sidebar, dashboard = loginPage.login('fitcrack','FITCRACK')
+    sidebar, dashboard = loginPage.login(*credentials)
     
     jobCreationPage = sidebar.goto_add_job()
     jobCreationPage.set_job_name('A fun job for the whole family!')
