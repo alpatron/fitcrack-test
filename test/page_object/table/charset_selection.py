@@ -1,4 +1,4 @@
-"""Page object representing a row in a rule-file-selection table.
+"""Page object representing a row in a charset-selection table.
 Exports single class--the aforementioned page object.
 """
 
@@ -7,30 +7,32 @@ from typing import TYPE_CHECKING
 
 from selenium.webdriver.common.by import By
 
-from page_object.generic_table_selection import GenericTableSelection
+from page_object.table.generic_table_selection import GenericTableSelection
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement
 
 
-class RuleFileSelection(GenericTableSelection):
-    """This class represents a row from the rulefile-selection tables on the Add Job page."""
-
+class CharsetSelection(GenericTableSelection):
+    """This class represents a row from the charset-selection table on the brute-force
+    attack settings on the Add Job page.
+    """
     @property
     def __name_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR,'td:nth-child(2) a')
 
     @property
-    def __rule_count_field(self) -> WebElement:
+    def __keyspace_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR,'td:nth-child(3)')
 
     #TODO: Dunno if I want to use properties for this nonsense.
     @property
     def name(self) -> str:
-        """The file name of the rule file."""
+        """The file name of the charset."""
         return self.__name_field.text
 
     @property
-    def rule_count(self) -> str:
-        """The number of rules contained in the rule file."""
-        return self.__rule_count_field.text
+    def keyspace(self) -> str:
+        """The keyspace size of the charset."""
+        return self.__keyspace_field.text
+   

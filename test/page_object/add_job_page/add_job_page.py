@@ -9,11 +9,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.relative_locator import locate_with
 
-from page_object.page_object import PageObject
-from page_object.input_settings import InputSettings
-from page_object.attack_settings import AttackSettings
+from page_object.common.page_object import PageObject
+from page_object.add_job_page.input_settings import InputSettings
+from page_object.add_job_page.attack_settings import AttackSettings
 from page_object.job_detail_page import JobDetailPage
-from page_object.helper import clear_workaround
+from page_object.common.helper import clear_workaround
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement

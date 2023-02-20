@@ -12,12 +12,12 @@ from typing import TYPE_CHECKING, Callable, List, TypeVar, Type
 
 from selenium.webdriver.common.by import By
 
-from page_object.exception import InvalidStateError
+from page_object.common.exception import InvalidStateError
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
     from selenium.webdriver.remote.webelement import WebElement
-    from page_object.generic_table_selection import GenericTableSelection
+    from page_object.table.generic_table_selection import GenericTableSelection
     X = TypeVar('X')
     T_GenericTableSelection = TypeVar('T_GenericTableSelection',bound=GenericTableSelection)
 

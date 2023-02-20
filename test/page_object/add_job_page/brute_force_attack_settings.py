@@ -16,12 +16,12 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver import ActionChains
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
-from page_object.page_object import PageObject
-from page_object.charset_selection import CharsetSelection
-from page_object.markov_file_selection import MarkovFileSelection
-from page_object.table_manipulation import build_table_selection_objects_from_table, activate_elements_from_table_by_list_lookup
-from page_object.helper import obstructed_click_workaround, clear_workaround
-from page_object.exception import InvalidStateError
+from page_object.common.page_object import PageObject
+from page_object.table.charset_selection import CharsetSelection
+from page_object.table.markov_file_selection import MarkovFileSelection
+from page_object.table.table_manipulation import build_table_selection_objects_from_table, activate_elements_from_table_by_list_lookup
+from page_object.common.helper import obstructed_click_workaround, clear_workaround
+from page_object.common.exception import InvalidStateError
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement

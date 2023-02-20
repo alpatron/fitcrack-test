@@ -10,13 +10,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver import ActionChains
 
-from page_object.page_object import PageObject
-from page_object.dictionary_attack_settings import DictionaryAttackSettings
-from page_object.hybrid_attack_settings import HybridAttackSettings
-from page_object.brute_force_settings import BruteForceAttackSettings
-from page_object.combination_attack_settings import CombinationAttackSettings
-from page_object.prince_attack_settings import PRINCEAttackSettings
-from page_object.pcfg_attack_settings import PCFGAttackSettings
+from page_object.common.page_object import PageObject
+from page_object.add_job_page.dictionary_attack_settings import DictionaryAttackSettings
+from page_object.add_job_page.hybrid_attack_settings import HybridAttackSettings
+from page_object.add_job_page.brute_force_attack_settings import BruteForceAttackSettings
+from page_object.add_job_page.combination_attack_settings import CombinationAttackSettings
+from page_object.add_job_page.prince_attack_settings import PRINCEAttackSettings
+from page_object.add_job_page.pcfg_attack_settings import PCFGAttackSettings
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement

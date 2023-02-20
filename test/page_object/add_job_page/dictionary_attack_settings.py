@@ -11,10 +11,10 @@ from selenium.webdriver import ActionChains
 from selenium.webdriver.support.relative_locator import locate_with
 from selenium.common.exceptions import TimeoutException
 
-from page_object.page_object import PageObject
-from page_object.dictionary_selection import DictionarySelection
-from page_object.rule_file_selection import RuleFileSelection
-from page_object.table_manipulation import build_table_selection_objects_from_table, activate_elements_from_table_by_list_lookup
+from page_object.common.page_object import PageObject
+from page_object.table.dictionary_selection import DictionarySelection
+from page_object.table.rule_file_selection import RuleFileSelection
+from page_object.table.table_manipulation import build_table_selection_objects_from_table, activate_elements_from_table_by_list_lookup
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement

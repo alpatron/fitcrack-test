@@ -3,11 +3,11 @@ from __future__ import annotations
 import pytest
 from selenium.webdriver.support.wait import WebDriverWait
 from page_object.login_page import LoginPage
-from page_object.brute_force_settings import MarkovMode
+from page_object.add_job_page.brute_force_attack_settings import MarkovMode
 from typing import TYPE_CHECKING, List, Optional, NamedTuple
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
-    from page_object.add_job_page import AddJobPage
+    from page_object.add_job_page.add_job_page import AddJobPage
 
 
 class BruteForceTestInput(NamedTuple):

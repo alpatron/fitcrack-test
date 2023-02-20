@@ -8,7 +8,7 @@ from page_object.login_page import LoginPage
 from typing import TYPE_CHECKING, List, Optional, NamedTuple
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
-    from page_object.add_job_page import AddJobPage
+    from page_object.add_job_page.add_job_page import AddJobPage
 
 
 class PRINCETestInput(NamedTuple):

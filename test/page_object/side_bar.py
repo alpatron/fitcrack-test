@@ -6,8 +6,8 @@ from typing import TYPE_CHECKING
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
-from page_object.page_object import PageObject
-from page_object.add_job_page import AddJobPage
+from page_object.common.page_object import PageObject
+from page_object.add_job_page.add_job_page import AddJobPage
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement

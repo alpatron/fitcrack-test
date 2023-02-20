@@ -10,8 +10,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.relative_locator import locate_with
 
-from page_object.page_object import PageObject
-from page_object.helper import clear_workaround
+from page_object.common.page_object import PageObject
+from page_object.common.helper import clear_workaround
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement

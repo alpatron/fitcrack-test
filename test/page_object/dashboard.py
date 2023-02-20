@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 
 from selenium.webdriver.common.by import By
 
-from page_object.page_object import PageObject
+from page_object.common.page_object import PageObject
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement

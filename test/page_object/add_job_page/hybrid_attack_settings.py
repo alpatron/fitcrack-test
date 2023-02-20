@@ -12,10 +12,10 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver import ActionChains
 from selenium.common.exceptions import TimeoutException
 
-from page_object.page_object import PageObject
-from page_object.dictionary_selection import DictionarySelection
-from page_object.table_manipulation import activate_elements_from_table_by_list_lookup, build_table_selection_objects_from_table
-from page_object.helper import clear_workaround
+from page_object.common.page_object import PageObject
+from page_object.table.dictionary_selection import DictionarySelection
+from page_object.table.table_manipulation import activate_elements_from_table_by_list_lookup, build_table_selection_objects_from_table
+from page_object.common.helper import clear_workaround
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement

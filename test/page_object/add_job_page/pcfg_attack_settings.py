@@ -11,11 +11,11 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver import ActionChains
 
-from page_object.page_object import PageObject
-from page_object.rule_file_selection import RuleFileSelection
-from page_object.pcfg_grammar_selection import PCFGGrammarSelection
-from page_object.table_manipulation import build_table_selection_objects_from_table, activate_elements_from_table_by_list_lookup
-from page_object.helper import clear_workaround
+from page_object.common.page_object import PageObject
+from page_object.table.rule_file_selection import RuleFileSelection
+from page_object.table.pcfg_grammar_selection import PCFGGrammarSelection
+from page_object.table.table_manipulation import build_table_selection_objects_from_table, activate_elements_from_table_by_list_lookup
+from page_object.common.helper import clear_workaround
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement

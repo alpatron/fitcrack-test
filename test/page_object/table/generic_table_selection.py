@@ -5,9 +5,9 @@ from typing import TYPE_CHECKING
 
 from selenium.webdriver.common.by import By
 
-from page_object.page_object import PageObject
-from page_object.helper import obstructed_click_workaround
-from page_object.exception import InvalidStateError
+from page_object.common.page_object import PageObject
+from page_object.common.helper import obstructed_click_workaround
+from page_object.common.exception import InvalidStateError
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
