@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.common.exceptions import JavascriptException, NoSuchElementException
 from selenium.webdriver.support.relative_locator import locate_with
 
 from page_object.page_object import PageObject
@@ -26,7 +25,7 @@ class LoginPage(PageObject):
 
     def ensure_loaded(self):
         """Waits until the username field appears."""
-        WebDriverWait(self.driver,30,ignored_exceptions={JavascriptException, NoSuchElementException}).until(lambda _:self.__username_field)
+        WebDriverWait(self.driver,30).until(lambda _:self.__username_field)
 
     @property
     def __username_field(self) -> WebElement:
