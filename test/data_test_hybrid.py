@@ -1,5 +1,5 @@
 """Test data for test_hybrid.py"""
-from test_hybrid import HybridTestInput
+from test_hybrid import HybridTestInput, HybridMode
 
 
 testdata = [
@@ -12,7 +12,7 @@ testdata = [
             ('3650c195b6eb82db3818ec19c7c055b6f91b9675', 'bart123'),
             ('341b5129bf9b6abcbd96ecaf158506090f9d77b5', 'bart825')
         ],
-        mode_raw='wordlist-first',
+        mode=HybridMode.DICT_FIRST,
         dictionaries=['honeynet.txt'],
         rule='',
         mask='?d?d?d'
@@ -26,7 +26,7 @@ testdata = [
             ('3650c195b6eb82db3818ec19c7c055b6f91b9675', ''),
             ('341b5129bf9b6abcbd96ecaf158506090f9d77b5', 'bart825')
         ],
-        mode_raw='mask-first',
+        mode=HybridMode.MASK_FIRST,
         dictionaries=['honeynet.txt'],
         rule='',
         mask='?l?l?l'
@@ -40,7 +40,7 @@ testdata = [
             ('3650c195b6eb82db3818ec19c7c055b6f91b9675', ''),
             ('341b5129bf9b6abcbd96ecaf158506090f9d77b5', '')
         ],
-        mode_raw='mask-first',
+        mode=HybridMode.MASK_FIRST,
         dictionaries=['honeynet.txt'],
         rule='c $-',
         mask='?l?l?l'

@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 class HybridTestInput(NamedTuple):
     hashtype:str
     hashes:List[tuple[str,str]]
-    mode_raw:str
+    mode:HybridMode
     dictionaries:List[str]
     rule:str
     mask:str
@@ -27,15 +27,13 @@ class HybridMode(Enum):
 
 
 @pytest.mark.parametrize("testdata", testdata)
-def test_hybrid(selenium:WebDriver,add_job_page:AddJobPage,testdata:HybridTestInput):
-    mode = HybridMode(testdata.mode_raw)
-    
+def test_hybrid(selenium:WebDriver,add_job_page:AddJobPage,testdata:HybridTestInput):    
     inputSettings = add_job_page.open_input_settings()
     inputSettings.select_hash_type_exactly(testdata.hashtype)
     inputSettings.input_hashes_manually([x[0] for x in testdata.hashes])
 
     attackSettings = add_job_page.open_attack_settings()
-    match mode:
+    match testdata.mode:
         case HybridMode.DICT_FIRST:
             hybridSettings = attackSettings.choose_hybrid_wordlist_and_maks_mode()
         case HybridMode.MASK_FIRST:

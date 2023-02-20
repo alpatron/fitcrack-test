@@ -1,5 +1,6 @@
 """Test data for test_bruteforce.py"""
 from test_bruteforce import BruteForceTestInput
+from page_object.add_job_page.brute_force_attack_settings import MarkovMode
 
 testdata = [
     BruteForceTestInput(
@@ -14,7 +15,7 @@ testdata = [
         masks=['?u?u?u?u?u?u'],
         custom_charsets=[],
         markov_file=None,
-        markov_mode_raw='markov-disabled',
+        markov_mode=MarkovMode.MARKOV_DISABLED,
         markov_threshold=None
     ),
     BruteForceTestInput(
@@ -29,7 +30,7 @@ testdata = [
         masks=['?u?u?u?u?u?u'],
         custom_charsets=[],
         markov_file='hashcat.hcstat2',
-        markov_mode_raw='markov-2d',
+        markov_mode=MarkovMode.MARKOV_2D,
         markov_threshold=None
     ),
     BruteForceTestInput(
@@ -44,7 +45,7 @@ testdata = [
         masks=['?u?u?u?u?u?u'],
         custom_charsets=[],
         markov_file='hashcat.hcstat2',
-        markov_mode_raw='markov-2d',
+        markov_mode=MarkovMode.MARKOV_2D,
         markov_threshold=7
     ),
     BruteForceTestInput(
@@ -59,7 +60,7 @@ testdata = [
         masks=['?u?u?u?u?u?u'],
         custom_charsets=[],
         markov_file='adobe100.hcstat2',
-        markov_mode_raw='markov-2d',
+        markov_mode=MarkovMode.MARKOV_2D,
         markov_threshold=7
     ),
     BruteForceTestInput(
@@ -74,7 +75,7 @@ testdata = [
         masks=['?u?u?u?u?u?u'],
         custom_charsets=[],
         markov_file='hashcat.hcstat2',
-        markov_mode_raw='markov-3d',
+        markov_mode=MarkovMode.MARKOV_3D,
         markov_threshold=None
     ),
     BruteForceTestInput(
@@ -89,7 +90,7 @@ testdata = [
         masks=['?u?u?u?u?u?u'],
         custom_charsets=[],
         markov_file='hashcat.hcstat2',
-        markov_mode_raw='markov-3d',
+        markov_mode=MarkovMode.MARKOV_3D,
         markov_threshold=7
     ),
     BruteForceTestInput(
@@ -104,7 +105,7 @@ testdata = [
         masks=['?u?u?u?u?u?u'],
         custom_charsets=[],
         markov_file='adobe100.hcstat2',
-        markov_mode_raw='markov-3d',
+        markov_mode=MarkovMode.MARKOV_3D,
         markov_threshold=7
     ),
     BruteForceTestInput(
@@ -115,7 +116,7 @@ testdata = [
         masks=['?u?u?u?u?u?u'],
         custom_charsets=['cz_ISO-8859-2.hcchr'],
         markov_file=None,
-        markov_mode_raw='markov-disabled',
+        markov_mode=MarkovMode.MARKOV_DISABLED,
         markov_threshold=None
     ),
 ]

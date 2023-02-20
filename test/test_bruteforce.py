@@ -3,11 +3,11 @@ from __future__ import annotations
 import pytest
 from selenium.webdriver.support.wait import WebDriverWait
 from page_object.login_page import LoginPage
-from page_object.add_job_page.brute_force_attack_settings import MarkovMode
 from typing import TYPE_CHECKING, List, Optional, NamedTuple
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
     from page_object.add_job_page.add_job_page import AddJobPage
+    from page_object.add_job_page.brute_force_attack_settings import MarkovMode
 
 
 class BruteForceTestInput(NamedTuple):
@@ -16,15 +16,13 @@ class BruteForceTestInput(NamedTuple):
     masks:List[str]
     custom_charsets:List[str]
     markov_file:Optional[str]
-    markov_mode_raw:str
+    markov_mode:MarkovMode
     markov_threshold:Optional[int]
 
 from data_test_bruteforce import testdata
 
 @pytest.mark.parametrize("testdata",testdata)
 def test_bruteforce(selenium:WebDriver,add_job_page:AddJobPage,testdata:BruteForceTestInput):
-    markov_mode = MarkovMode(testdata.markov_mode_raw)
-    
     inputSettings = add_job_page.open_input_settings()
     inputSettings.select_hash_type_exactly(testdata.hashtype)
     inputSettings.input_hashes_manually([x[0] for x in testdata.hashes])
@@ -36,7 +34,7 @@ def test_bruteforce(selenium:WebDriver,add_job_page:AddJobPage,testdata:BruteFor
     bruteforceSettings.select_charsets(testdata.custom_charsets)
     if testdata.markov_file is not None:
         bruteforceSettings.select_markov_file(testdata.markov_file)
-    bruteforceSettings.select_markov_mode(markov_mode)
+    bruteforceSettings.select_markov_mode(testdata.markov_mode)
     if testdata.markov_threshold is not None:
         bruteforceSettings.set_markov_threshold_value(testdata.markov_threshold)
 
