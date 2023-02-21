@@ -53,7 +53,7 @@ class HybridAttackSettings(PageObject):
     @property
     def __mask_input(self) -> WebElement:
         return self.driver.find_element(
-            locate_with(By.TAG_NAME,'input').near({By.XPATH:'//label[text()="Enter mask"]'})  # type: ignore
+            locate_with(By.TAG_NAME,'input').below({By.XPATH:'//span[text()[contains(.,"Type mask")]]'})  # type: ignore
         )
 
     def get_available_dictionaries(self) -> List[DictionarySelection]:
