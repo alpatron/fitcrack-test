@@ -4,7 +4,7 @@ For detailed information about conftest.py files, see
 https://docs.pytest.org/en/6.2.x/fixture.html#conftest-py-sharing-fixtures-across-multiple-files
 """
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass, KW_ONLY
 from typing import TYPE_CHECKING, List
 from datetime import datetime
 
@@ -28,6 +28,7 @@ class GenericE2ECrackingTestInput:
     """
     hash_type:str
     hashes:List[tuple[str,str]]
+    _: KW_ONLY
     wait_time:float = 3600
 
 
