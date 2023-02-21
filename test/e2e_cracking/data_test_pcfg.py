@@ -1,10 +1,11 @@
 """Test data for test_pcfg.py"""
-from test_pcfg import PCFGTestInput
+from __future__ import annotations
+from .test_pcfg import PCFGTestInput
 
 
 testdata = [
     PCFGTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('5254792d5579984f98c41d1858e1722b2dbcc6b3', 'eminem'),
             ('cfbdc287325676c27264f4208a9cddbbf99f8603', ''),
@@ -13,11 +14,11 @@ testdata = [
             ('51abb9636078defbf888d8457a7c76f85c8f114c', '')
         ],
         grammar='facebook-pastebay',
-        rulefiles=[],
+        rule_files=[],
         keyspace_limit=None
     ),
     PCFGTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('5254792d5579984f98c41d1858e1722b2dbcc6b3', ''),
             ('cfbdc287325676c27264f4208a9cddbbf99f8603', ''),
@@ -26,11 +27,11 @@ testdata = [
             ('51abb9636078defbf888d8457a7c76f85c8f114c', '')
         ],
         grammar='twitter-banned',
-        rulefiles=[],
+        rule_files=[],
         keyspace_limit=None
     ),
     PCFGTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('5254792d5579984f98c41d1858e1722b2dbcc6b3', ''),
             ('cfbdc287325676c27264f4208a9cddbbf99f8603', ''),
@@ -39,11 +40,11 @@ testdata = [
             ('51abb9636078defbf888d8457a7c76f85c8f114c', '')
         ],
         grammar='john',
-        rulefiles=[],
+        rule_files=[],
         keyspace_limit=None
     ),
     PCFGTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('5254792d5579984f98c41d1858e1722b2dbcc6b3', 'eminem'),
             ('cfbdc287325676c27264f4208a9cddbbf99f8603', ''),
@@ -52,11 +53,11 @@ testdata = [
             ('51abb9636078defbf888d8457a7c76f85c8f114c', '')
         ],
         grammar='facebook-pastebay',
-        rulefiles=['best64.rule'],
+        rule_files=['best64.rule'],
         keyspace_limit=None
     ),
     PCFGTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('5254792d5579984f98c41d1858e1722b2dbcc6b3', ''),
             ('cfbdc287325676c27264f4208a9cddbbf99f8603', ''),
@@ -65,11 +66,11 @@ testdata = [
             ('51abb9636078defbf888d8457a7c76f85c8f114c', '')
         ],
         grammar='twitter-banned',
-        rulefiles=['leetspeak.rule'],
+        rule_files=['leetspeak.rule'],
         keyspace_limit=None
     ),
     PCFGTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('5254792d5579984f98c41d1858e1722b2dbcc6b3', ''),
             ('cfbdc287325676c27264f4208a9cddbbf99f8603', ''),
@@ -78,7 +79,7 @@ testdata = [
             ('51abb9636078defbf888d8457a7c76f85c8f114c', '')
         ],
         grammar='john',
-        rulefiles=['toggles1.rule'],
+        rule_files=['toggles1.rule'],
         keyspace_limit=None
     ),
 ]

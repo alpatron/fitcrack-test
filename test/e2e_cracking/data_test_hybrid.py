@@ -1,10 +1,11 @@
 """Test data for test_hybrid.py"""
-from test_hybrid import HybridTestInput, HybridMode
+from __future__ import annotations
+from .test_hybrid import HybridTestInput, HybridMode
 
 
 testdata = [
     HybridTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('06a3f6380a7f9a76462e2edbdaefe718eb9ea033', 'jurgen420'),
             ('0085411372df2865c07d45c20345caedbfdae958', ''),
@@ -18,7 +19,7 @@ testdata = [
         mask='?d?d?d'
     ),
     HybridTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('06a3f6380a7f9a76462e2edbdaefe718eb9ea033', ''),
             ('0085411372df2865c07d45c20345caedbfdae958', ''),
@@ -32,7 +33,7 @@ testdata = [
         mask='?l?l?l'
     ),
     HybridTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('06a3f6380a7f9a76462e2edbdaefe718eb9ea033', ''),
             ('0085411372df2865c07d45c20345caedbfdae958', ''),

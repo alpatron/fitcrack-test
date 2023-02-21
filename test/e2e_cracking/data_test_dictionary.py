@@ -1,10 +1,11 @@
 """Test data for test_dictionary.py"""
-from test_dictionary import DictionaryTestInput
+from __future__ import annotations
+from .test_dictionary import DictionaryTestInput
 
 
 testdata = [
     DictionaryTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('c0b51c46e4dcde6189e48ec9695fe55efc0ea703', 'strawberry'),
             ('c0baf4391defd68bf678f0a5ca2b69f828177ddf', ''),
@@ -16,7 +17,7 @@ testdata = [
         rule_files=[]
     ),
     DictionaryTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('c0b51c46e4dcde6189e48ec9695fe55efc0ea703', 'strawberry'),
             ('c0baf4391defd68bf678f0a5ca2b69f828177ddf', 'str@wberry'),
@@ -28,7 +29,7 @@ testdata = [
         rule_files=['leetspeak.rule']
     ),
     DictionaryTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('c0b51c46e4dcde6189e48ec9695fe55efc0ea703', 'strawberry'),
             ('c0baf4391defd68bf678f0a5ca2b69f828177ddf', ''),
@@ -40,7 +41,7 @@ testdata = [
         rule_files=['toggles1.rule']
     ),
     DictionaryTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('c0b51c46e4dcde6189e48ec9695fe55efc0ea703', 'strawberry'),
             ('c0baf4391defd68bf678f0a5ca2b69f828177ddf', ''),
@@ -52,7 +53,7 @@ testdata = [
         rule_files=[]
     ),
     DictionaryTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('c0b51c46e4dcde6189e48ec9695fe55efc0ea703', 'strawberry'),
             ('c0baf4391defd68bf678f0a5ca2b69f828177ddf', 'str@wberry'),
@@ -64,7 +65,7 @@ testdata = [
         rule_files=['leetspeak.rule']
     ),
     DictionaryTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('c0b51c46e4dcde6189e48ec9695fe55efc0ea703', 'strawberry'),
             ('c0baf4391defd68bf678f0a5ca2b69f828177ddf', ''),

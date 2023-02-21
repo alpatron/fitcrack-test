@@ -1,10 +1,11 @@
 """Test data for test_bruteforce.py"""
-from test_bruteforce import BruteForceTestInput
+from __future__ import annotations
+from .test_bruteforce import BruteForceTestInput
 from page_object.add_job_page.brute_force_attack_settings import MarkovMode
 
 testdata = [
     BruteForceTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('9282dbcb46212929fcc2bdfcc4836ea694465dc7', 'ZDARXX'),
             ('26b0da18d000abc9f5804395cb5bcfe22f253151', 'AAABBB'),
@@ -19,7 +20,7 @@ testdata = [
         markov_threshold=None
     ),
     BruteForceTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('9282dbcb46212929fcc2bdfcc4836ea694465dc7', 'ZDARXX'),
             ('26b0da18d000abc9f5804395cb5bcfe22f253151', 'AAABBB'),
@@ -34,7 +35,7 @@ testdata = [
         markov_threshold=None
     ),
     BruteForceTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('9282dbcb46212929fcc2bdfcc4836ea694465dc7', ''),
             ('26b0da18d000abc9f5804395cb5bcfe22f253151', ''),
@@ -49,7 +50,7 @@ testdata = [
         markov_threshold=7
     ),
     BruteForceTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('9282dbcb46212929fcc2bdfcc4836ea694465dc7', ''),
             ('26b0da18d000abc9f5804395cb5bcfe22f253151', 'AAABBB'),
@@ -64,7 +65,7 @@ testdata = [
         markov_threshold=7
     ),
     BruteForceTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('9282dbcb46212929fcc2bdfcc4836ea694465dc7', 'ZDARXX'),
             ('26b0da18d000abc9f5804395cb5bcfe22f253151', 'AAABBB'),
@@ -79,7 +80,7 @@ testdata = [
         markov_threshold=None
     ),
     BruteForceTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('9282dbcb46212929fcc2bdfcc4836ea694465dc7', ''),
             ('26b0da18d000abc9f5804395cb5bcfe22f253151', ''),
@@ -94,7 +95,7 @@ testdata = [
         markov_threshold=7
     ),
     BruteForceTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('9282dbcb46212929fcc2bdfcc4836ea694465dc7', ''),
             ('26b0da18d000abc9f5804395cb5bcfe22f253151', 'AAABBB'),
@@ -109,7 +110,7 @@ testdata = [
         markov_threshold=7
     ),
     BruteForceTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('b26940e5e462f4d4767933d02e870b00b884d0c5', 'HEX<bbc8cdcf>'),
         ],

@@ -1,24 +1,15 @@
 from __future__ import annotations
-
 from enum import Enum
+from typing import TYPE_CHECKING, List
+from dataclasses import dataclass
 
 import pytest
-from selenium.webdriver.support.wait import WebDriverWait
-from page_object.login_page import LoginPage
-from typing import TYPE_CHECKING, List, NamedTuple
+
+from .conftest import GenericE2ECrackingTestInput
+
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
     from page_object.add_job_page.add_job_page import AddJobPage
-
-class HybridTestInput(NamedTuple):
-    hashtype:str
-    hashes:List[tuple[str,str]]
-    mode:HybridMode
-    dictionaries:List[str]
-    rule:str
-    mask:str
-
-from test_combination import testdata
 
 
 class HybridMode(Enum):
@@ -26,31 +17,25 @@ class HybridMode(Enum):
     DICT_FIRST = 'dict-first'
 
 
-@pytest.mark.parametrize("testdata", testdata)
-def test_hybrid(selenium:WebDriver,add_job_page:AddJobPage,testdata:HybridTestInput):    
-    inputSettings = add_job_page.open_input_settings()
-    inputSettings.select_hash_type_exactly(testdata.hashtype)
-    inputSettings.input_hashes_manually([x[0] for x in testdata.hashes])
+@dataclass
+class HybridTestInput(GenericE2ECrackingTestInput):
+    hashes:List[tuple[str,str]]
+    mode:HybridMode
+    dictionaries:List[str]
+    rule:str
+    mask:str
 
-    attackSettings = add_job_page.open_attack_settings()
+from .data_test_hybrid import testdata
+
+@pytest.mark.parametrize("testdata", testdata)
+def test_hybrid(e2e_cracking_test,selenium:WebDriver,add_job_page:AddJobPage,testdata:HybridTestInput):    
+    attack_settings = add_job_page.open_attack_settings()
     match testdata.mode:
         case HybridMode.DICT_FIRST:
-            hybridSettings = attackSettings.choose_hybrid_wordlist_and_maks_mode()
+            hybrid_settings = attack_settings.choose_hybrid_wordlist_and_maks_mode()
         case HybridMode.MASK_FIRST:
-            hybridSettings = attackSettings.choose_hybrid_mask_and_wordlist_mode()
+            hybrid_settings = attack_settings.choose_hybrid_mask_and_wordlist_mode()
 
-    hybridSettings.select_dictionaries(testdata.dictionaries)
-    hybridSettings.set_mangling_rule(testdata.rule)
-    hybridSettings.set_mask(testdata.mask)
-
-    jobDetailPage = add_job_page.create_job()
-
-    assert jobDetailPage.get_job_state() == 'Ready'
-
-    jobDetailPage.start_job()
-
-    WebDriverWait(selenium,3600).until(lambda _: jobDetailPage.get_job_state() == 'Finished')
-
-    workedOnHashes = jobDetailPage.get_hashes()
-
-    assert set(workedOnHashes) == set(testdata.hashes)
+    hybrid_settings.select_dictionaries(testdata.dictionaries)
+    hybrid_settings.set_mangling_rule(testdata.rule)
+    hybrid_settings.set_mask(testdata.mask)

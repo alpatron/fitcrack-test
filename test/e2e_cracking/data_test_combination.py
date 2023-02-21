@@ -1,10 +1,11 @@
 """Test data for test_combination.py"""
-from test_combination import CombinationTestInput
+from __future__ import annotations
+from .test_combination import CombinationTestInput
 
 
 testdata = [
     CombinationTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('75da3d6038c28b57c8b3b34ae2f8121357bae1b9', 'footballwhatever'),
             ('6514189a7cbd9c61518d560d67690e08984e26da', ''),
@@ -18,7 +19,7 @@ testdata = [
         right_rule=''
     ),
     CombinationTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('75da3d6038c28b57c8b3b34ae2f8121357bae1b9', ''),
             ('6514189a7cbd9c61518d560d67690e08984e26da', 'football-whatever'),
@@ -32,7 +33,7 @@ testdata = [
         right_rule=''
     ),
     CombinationTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('75da3d6038c28b57c8b3b34ae2f8121357bae1b9', ''),
             ('6514189a7cbd9c61518d560d67690e08984e26da', ''),
@@ -46,7 +47,7 @@ testdata = [
         right_rule='$!'
     ),
     CombinationTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('75da3d6038c28b57c8b3b34ae2f8121357bae1b9', ''),
             ('6514189a7cbd9c61518d560d67690e08984e26da', ''),
@@ -60,7 +61,7 @@ testdata = [
         right_rule='u $! $! $!'
     ),
     CombinationTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('75da3d6038c28b57c8b3b34ae2f8121357bae1b9', 'footballwhatever'),
             ('6514189a7cbd9c61518d560d67690e08984e26da', ''),
@@ -74,7 +75,7 @@ testdata = [
         right_rule=''
     ),
     CombinationTestInput(
-        hashtype='sha1',
+        hash_type='sha1',
         hashes=[
             ('75da3d6038c28b57c8b3b34ae2f8121357bae1b9', ''),
             ('6514189a7cbd9c61518d560d67690e08984e26da', ''),

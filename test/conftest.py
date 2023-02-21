@@ -6,8 +6,6 @@ https://docs.pytest.org/en/6.2.x/fixture.html#conftest-py-sharing-fixtures-acros
 https://docs.pytest.org/en/6.2.x/writing_plugins.html#conftest-py-plugins
 """
 from __future__ import annotations
-
-from datetime import datetime
 from typing import NamedTuple, Tuple, TYPE_CHECKING
 
 import pytest
@@ -128,12 +126,7 @@ def dashboard(_start_logged_in:Tuple[SideBar,Dashboard]) -> Dashboard:
 
 
 @pytest.fixture
-def add_job_page(side_bar:SideBar,request:_pytest.fixtures.FixtureRequest):
-    """Fixture that returns an AddJobPage object.
-    This fixture also sets the job name to a string containing information about the current test,
-    so that if your test creates a job, it can be later identified which test created it.
-    TODO: Add a way to supress the timestamping.
-    """
+def add_job_page(side_bar:SideBar) -> AddJobPage:
+    """Fixture that returns an AddJobPage object."""
     add_job_page = side_bar.goto_add_job()
-    add_job_page.set_job_name(f'Job created by an automatic Fitcrack test -- {request.node.name} -- {datetime.utcnow().isoformat()}')
     return add_job_page
