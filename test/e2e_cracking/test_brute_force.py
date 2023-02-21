@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from page_object.add_job_page.brute_force_attack_settings import MarkovMode
 
 
-@dataclass
+@dataclass(frozen=True)
 class BruteForceTestInput(GenericE2ECrackingTestInput):
     masks:List[str]
     custom_charsets:List[str]

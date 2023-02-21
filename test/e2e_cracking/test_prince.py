@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from page_object.add_job_page.add_job_page import AddJobPage
 
 
-@dataclass
+@dataclass(frozen=True)
 class PRINCETestInput(GenericE2ECrackingTestInput):
     dictionaries:List[str]
     rule_files:List[str]

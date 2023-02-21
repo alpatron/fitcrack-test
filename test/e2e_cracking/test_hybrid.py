@@ -17,7 +17,7 @@ class HybridMode(Enum):
     DICT_FIRST = 'dict-first'
 
 
-@dataclass
+@dataclass(frozen=True)
 class HybridTestInput(GenericE2ECrackingTestInput):
     hashes:List[tuple[str,str]]
     mode:HybridMode

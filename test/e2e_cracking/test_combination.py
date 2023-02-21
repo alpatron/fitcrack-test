@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from page_object.add_job_page.add_job_page import AddJobPage
 
 
-@dataclass
+@dataclass(frozen=True)
 class CombinationTestInput(GenericE2ECrackingTestInput):
     left_dictionaries:List[str]
     right_dictionaries:List[str]

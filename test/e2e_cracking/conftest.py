@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     
 
 
-@dataclass
+@dataclass(frozen=True)
 class GenericE2ECrackingTestInput:
     """A generic dataclass to be inherited from for the use in end-to-end cracking tests.
     Contains hash type and a list of hashes and their expected cracked output since
