@@ -20,6 +20,7 @@ if TYPE_CHECKING:
 
     from page_object.dashboard import Dashboard
     from page_object.side_bar import SideBar
+    from page_object.add_job_page.add_job_page import AddJobPage
 
 
 class Credentials(NamedTuple):
@@ -78,12 +79,17 @@ def pytest_report_header(config:_pytest.config.Config, startdir):
 
 
 @pytest.fixture(scope='session',autouse=True)
-def require_base_url(base_url):
+def require_base_url(base_url) -> None:
+    """Fixture that fixes a problem in pytest-selenium.
+    Forces the display of an error message if base_url is not set.
+    pytest-selenium would normally cause a cryptic error to occur.
+    """
     if not base_url:
         raise pytest.UsageError(
             'base_url is not set; use `pytest --base-url https://example.com` '
             'or set base_url in pytest.ini'
             )
+
 
 @pytest.fixture(scope='session')
 def credentials(pytestconfig:_pytest.config.Config) -> Credentials:
@@ -92,7 +98,7 @@ def credentials(pytestconfig:_pytest.config.Config) -> Credentials:
 
 
 @pytest.fixture
-def login_page(selenium:WebDriver,base_url:str):
+def login_page(selenium:WebDriver,base_url:str) -> LoginPage:
     """Fixture that navigates to login page and returns a LoginPage object."""
     login_page = LoginPage(selenium,no_ensure_loaded=True)
     login_page.navigate(base_url)

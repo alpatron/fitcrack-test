@@ -1,6 +1,6 @@
-"""Test data for test_bruteforce.py"""
+"""Test data for test_brute_force.py"""
 from __future__ import annotations
-from .test_bruteforce import BruteForceTestInput
+from .test_brute_force import BruteForceTestInput
 from page_object.add_job_page.brute_force_attack_settings import MarkovMode
 
 testdata = [

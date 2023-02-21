@@ -23,9 +23,9 @@ class BruteForceTestInput(GenericE2ECrackingTestInput):
 from .data_test_bruteforce import testdata
 
 @pytest.mark.parametrize("testdata",testdata)
-def test_bruteforce(e2e_cracking_test,selenium:WebDriver,add_job_page:AddJobPage,testdata:BruteForceTestInput):
+def test_brute_force(e2e_cracking_test,selenium:WebDriver,add_job_page:AddJobPage,testdata:BruteForceTestInput):
     attack_settings = add_job_page.open_attack_settings()
-    brute_force_settings = attack_settings.choose_bruteforce_mode()
+    brute_force_settings = attack_settings.choose_brute_force_mode()
 
     brute_force_settings.set_masks_from_list(testdata.masks)
     brute_force_settings.select_charsets(testdata.custom_charsets)

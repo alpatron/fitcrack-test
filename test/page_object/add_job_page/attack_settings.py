@@ -66,7 +66,7 @@ class AttackSettings(PageObject):
         self.__combination_mode_button.click()
         return CombinationAttackSettings(self.driver)
 
-    def choose_bruteforce_mode(self) -> BruteForceAttackSettings:
+    def choose_brute_force_mode(self) -> BruteForceAttackSettings:
         """Selects the brute-force attack mode and returns the page object representing the
         brute-force-attack settings panel. The AttackSettings object remains useable.
         """
