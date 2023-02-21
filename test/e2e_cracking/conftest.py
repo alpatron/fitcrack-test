@@ -5,7 +5,7 @@ https://docs.pytest.org/en/6.2.x/fixture.html#conftest-py-sharing-fixtures-acros
 """
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, List, Optional
 from datetime import datetime
 
 import pytest
@@ -23,9 +23,12 @@ class GenericE2ECrackingTestInput:
     """A generic dataclass to be inherited from for the use in end-to-end cracking tests.
     Contains hash type and a list of hashes and their expected cracked output since
     all end-to-end cracking tests input hashes at the start and check results at the end.
+    And contains the maximum time the test should wait for the cracking result after starting
+    the job (in seconds); the default wait time is one hour.
     """
     hash_type:str
     hashes:List[tuple[str,str]]
+    wait_time:float = 3600
 
 
 @pytest.fixture
@@ -54,6 +57,6 @@ def e2e_cracking_test(selenium:WebDriver,add_job_page:AddJobPage,testdata:Generi
     job_detail_page = add_job_page.create_job()
     assert job_detail_page.get_job_state() == 'Ready'
     job_detail_page.start_job()
-    WebDriverWait(selenium,3600).until(lambda _: job_detail_page.get_job_state() == 'Finished')
+    WebDriverWait(selenium,testdata.wait_time).until(lambda _: job_detail_page.get_job_state() == 'Finished')
     worked_on_hashes = job_detail_page.get_hashes()
     assert set(worked_on_hashes) == set(testdata.hashes)
