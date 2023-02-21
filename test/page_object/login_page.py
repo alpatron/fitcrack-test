@@ -30,15 +30,11 @@ class LoginPage(PageObject):
 
     @property
     def __username_field(self) -> WebElement:
-        return self.driver.find_element(
-            locate_with(By.TAG_NAME,'input').near({By.XPATH:'//label[text()="Username"]'})  # type: ignore
-        )
+        return self.driver.find_element(By.CSS_SELECTOR,'input[type="text"]')
 
     @property
     def __password_field(self) -> WebElement:
-        return self.driver.find_element(
-            locate_with(By.TAG_NAME,'input').near({By.XPATH:'//label[text()="Password"]'})  # type: ignore
-        )
+        return self.driver.find_element(By.CSS_SELECTOR,'input[type="password"]')
 
     @property
     def __submit_button(self) -> WebElement:
@@ -55,9 +51,10 @@ class LoginPage(PageObject):
         Returns a SideBar object and a Dashboard object.
         The current LoginPage object ceases to be useable.
         """
-        clear_workaround(self.__username_field)    #The order of clearing and typing is important here.
-        clear_workaround(self.__password_field)    #The clear workaround does not (and cannot easily) perform an unfocusing operation at the end of the clearing action.
-        self.__username_field.send_keys(username)  #This means that after clearing a field, the label inside the input disappears... wait... this whole isn't robust and this is just
-        self.__password_field.send_keys(password)  #the symptom, not the cause. What is needed is more robust locators here in general. *sigh* This is a todo.
+        clear_workaround(self.__username_field)
+        self.__username_field.send_keys(username)
+        clear_workaround(self.__password_field)
+        self.__password_field.send_keys(password)
+        
         self.__submit_button.click()
         return SideBar(self.driver), Dashboard(self.driver)
