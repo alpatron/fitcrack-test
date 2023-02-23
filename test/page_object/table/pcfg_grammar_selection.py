@@ -7,13 +7,13 @@ from typing import TYPE_CHECKING
 
 from selenium.webdriver.common.by import By
 
-from page_object.table.generic_table_selection import GenericTableSelection
+from page_object.table.generic_enableable_table_row import GenericEnableableTableRow
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement
 
 
-class PCFGGrammarSelection(GenericTableSelection):
+class PCFGGrammarSelection(GenericEnableableTableRow):
     """This class represents a row from the PCFG-selection table from the PCFG
     attack settings on the Add Job page."""
     @property

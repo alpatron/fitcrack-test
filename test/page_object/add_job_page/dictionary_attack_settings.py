@@ -14,7 +14,7 @@ from selenium.common.exceptions import TimeoutException
 from page_object.common.page_object import PageObject
 from page_object.table.dictionary_selection import DictionarySelection
 from page_object.table.rule_file_selection import RuleFileSelection
-from page_object.table.table_manipulation import build_table_selection_objects_from_table, activate_elements_from_table_by_list_lookup
+from page_object.table.table_manipulation import build_table_row_objects_from_table, activate_elements_from_table_by_list_lookup
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement
@@ -52,13 +52,13 @@ class DictionaryAttackSettings(PageObject):
         """Returns a list of DictionarySelection objects representing the dictionaries
         that can be selected for the dictionary attack.
         """
-        return build_table_selection_objects_from_table(self.driver,self.__dictionary_selection_table,DictionarySelection)
+        return build_table_row_objects_from_table(self.driver,self.__dictionary_selection_table,DictionarySelection)
 
     def get_available_rule_files(self) -> List[RuleFileSelection]:
         """Returns a list of RuleFileSelection objects representing the rule files
         that can be selected for the dictionary attack.
         """
-        return build_table_selection_objects_from_table(self.driver,self.__rule_file_selection_table,RuleFileSelection)
+        return build_table_row_objects_from_table(self.driver,self.__rule_file_selection_table,RuleFileSelection)
 
     def select_dictionaries(self,wanted_dicts:List[str]) -> None:
         """Given a list of dictionary names (as they appear in the name column),

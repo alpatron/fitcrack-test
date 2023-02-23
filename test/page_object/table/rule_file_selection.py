@@ -7,13 +7,13 @@ from typing import TYPE_CHECKING
 
 from selenium.webdriver.common.by import By
 
-from page_object.table.generic_table_selection import GenericTableSelection
+from page_object.table.generic_enableable_table_row import GenericEnableableTableRow
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement
 
 
-class RuleFileSelection(GenericTableSelection):
+class RuleFileSelection(GenericEnableableTableRow):
     """This class represents a row from the rulefile-selection tables on the Add Job page."""
 
     @property

@@ -1,10 +1,12 @@
 """Module containing the base page-object class."""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypeVar
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
+    from selenium.webdriver.remote.webelement import WebElement
+    T_PageComponentObject = TypeVar('T_PageComponentObject',bound=PageComponentObject)
 
 class PageObject:
     """This is the base class of all page objects.
@@ -44,3 +46,23 @@ class PageObject:
         implement a click-away behaviour for use with your page objects.
         """
         raise NotImplementedError
+
+
+class PageComponentObject(PageObject):
+    """Specialised page-object class for page-component objects.
+    These objects also hold an `_element` property containing a WebElement of the component
+    that is being modelled alongside the `_driver` property of the standard PageObject class.
+    
+    This is useful when there are many similar components on a page an we want to
+    locate sub-elements within them.
+    
+    For example, there are many table rows in a table, we can have a PageComponentObject
+    for every row, setting the _element property to the <tr> element. We can then have
+    locators for each column in the form of
+    `self._element.find_element(By.CSS_SELECTOR,'td:nth-child(1)')`
+    for the first column (first <td>) element. This allows us to not use clunky
+    global locators that search through the entire document's DOM tree.
+    """
+    def __init__(self,driver:WebDriver,element:WebElement):
+        super().__init__(driver)
+        self._element = element

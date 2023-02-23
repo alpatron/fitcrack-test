@@ -19,7 +19,7 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from page_object.common.page_object import PageObject
 from page_object.table.charset_selection import CharsetSelection
 from page_object.table.markov_file_selection import MarkovFileSelection
-from page_object.table.table_manipulation import build_table_selection_objects_from_table, activate_elements_from_table_by_list_lookup
+from page_object.table.table_manipulation import build_table_row_objects_from_table, activate_elements_from_table_by_list_lookup
 from page_object.common.helper import obstructed_click_workaround, clear_workaround
 from page_object.common.exception import InvalidStateError
 
@@ -105,13 +105,13 @@ class BruteForceAttackSettings(PageObject):
         """Returns a list of CharserSelection page objects representing the custom charsets
         that can be choosen.
         """
-        return build_table_selection_objects_from_table(self.driver,self.__charset_selection_table,CharsetSelection)
+        return build_table_row_objects_from_table(self.driver,self.__charset_selection_table,CharsetSelection)
 
     def get_available_markov_files(self) -> List[MarkovFileSelection]:
         """Returns a list of MarkovFileSelection page objects representing the markov-statistics
         files that can be used for Markov ordering.
         """
-        return build_table_selection_objects_from_table(self.driver,self.__markov_selection_table,MarkovFileSelection)
+        return build_table_row_objects_from_table(self.driver,self.__markov_selection_table,MarkovFileSelection)
 
     def select_charsets(self,wanted_charsets:List[str]) -> None:
         """Given a list of charset names (as they appear in the name column), selects the charsets

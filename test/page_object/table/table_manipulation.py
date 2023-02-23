@@ -17,15 +17,15 @@ from page_object.common.exception import InvalidStateError
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
     from selenium.webdriver.remote.webelement import WebElement
-    from page_object.table.generic_table_selection import GenericTableSelection
+    from page_object.table.generic_enableable_table_row import GenericEnableableTableRow
+    from page_object.common.page_object import T_PageComponentObject
     X = TypeVar('X')
-    T_GenericTableSelection = TypeVar('T_GenericTableSelection',bound=GenericTableSelection)
+    T_GenericTableSelection = TypeVar('T_GenericTableSelection',bound=GenericEnableableTableRow)
 
 
-def build_table_selection_objects_from_table(driver:WebDriver, table:WebElement,constructor:Type[T_GenericTableSelection]) -> List[T_GenericTableSelection]:
-    """Given a table in Webadmin whose rows can be modelled by GenericTableSelection
-    (or subclass thereof) objects, and the specific class that is to be used for modelling the
-    rows of that table, returns a list of page objects representing these rows.
+def build_table_row_objects_from_table(driver:WebDriver, table:WebElement,constructor:Type[T_PageComponentObject]) -> List[T_PageComponentObject]:
+    """Given a table in Webadmin, constructs PageComponentObject for each row (each <tr> element)
+    using the supplied constructor and returns a list of these objects.
 
     Essentially, if I have a table in WebAdmin, like the table of dictionaries in dictionary-attack
     settings, whose rows are represented by the DictionarySelection class, this function can parse
@@ -57,6 +57,6 @@ def activate_elements_from_table_by_list_lookup(table_rows:List[T_GenericTableSe
     """
     found_wanted_rows = list(filter(lambda x: lookup_value_getter(x) in lookup_values, table_rows))
     if len(found_wanted_rows) != len(lookup_values): #TODO: Possibly there could be also duplicate names; do we want to check for those?
-        raise InvalidStateError('Some requested dictionaries do not exist in the table.\n')
+        raise InvalidStateError('Some requested rows do not exist in the table.\n')
     for row in found_wanted_rows:
-        row.selected = True
+        row.enabled = True

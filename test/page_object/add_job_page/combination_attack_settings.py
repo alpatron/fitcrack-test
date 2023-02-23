@@ -13,7 +13,7 @@ from selenium.common.exceptions import TimeoutException
 
 from page_object.common.page_object import PageObject
 from page_object.table.dictionary_selection import DictionarySelection
-from page_object.table.table_manipulation import build_table_selection_objects_from_table, activate_elements_from_table_by_list_lookup
+from page_object.table.table_manipulation import build_table_row_objects_from_table, activate_elements_from_table_by_list_lookup
 from page_object.common.helper import clear_workaround
 
 if TYPE_CHECKING:
@@ -64,13 +64,13 @@ class CombinationAttackSettings(PageObject):
         """Returns a list of DictionarySelection objects representing the dictionaries
         on the left side of the combination attack.
         """
-        return build_table_selection_objects_from_table(self.driver,self.__left_dictionary_selection_table,DictionarySelection)
+        return build_table_row_objects_from_table(self.driver,self.__left_dictionary_selection_table,DictionarySelection)
 
     def get_available_right_dictionaries(self) -> List[DictionarySelection]:
         """Returns a list of DictionarySelection objects representing the dictionaries
         on the right side of the combination attack.
         """
-        return build_table_selection_objects_from_table(self.driver,self.__right_dictionary_selection_table,DictionarySelection)
+        return build_table_row_objects_from_table(self.driver,self.__right_dictionary_selection_table,DictionarySelection)
 
     def select_left_dictionaries(self,wanted_dicts:List[str]) -> None:
         """Given a list of dictionary names (as they appear in the name column),
