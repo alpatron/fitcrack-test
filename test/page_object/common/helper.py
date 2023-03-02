@@ -16,6 +16,7 @@ from typing import TYPE_CHECKING
 
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
+import requests
 
 from page_object.common.exception import InvalidStateError
 
@@ -76,3 +77,14 @@ def clear_workaround(element:WebElement) -> None:
     #Selenium should offer a convenience method for chording, but the Python version does
     #not provide this. So we need to do this like so.
     element.send_keys(Keys.BACKSPACE)
+
+
+def download_file_webadmin(driver:WebDriver, link:str) -> bytes:
+    """Downloads a file given a link to it. Handles Webadmin authentication.
+    Returns a `bytes` object of the file.
+    
+    Selenium does not support file downloads, so we need to do downloads ourselves.
+    """
+    jwt = driver.execute_script('return localStorage.getItem("jwt");')
+    response = requests.get(link,headers={'jwt': jwt})
+    return response.content
