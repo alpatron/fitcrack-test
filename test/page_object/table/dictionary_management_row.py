@@ -25,5 +25,3 @@ class DictionaryManagementRow(GenericLibraryTableRow):
     @property
     def time(self) -> str:
         return self.__time_field.text
-
-   

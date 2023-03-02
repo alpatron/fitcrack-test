@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, List, Union, overload
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -15,6 +15,7 @@ from page_object.table.table_manipulation import build_table_row_objects_from_ta
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement
+    from pathlib import Path
 
 
 class DictionaryManagement(PageObject):
@@ -70,7 +71,19 @@ class DictionaryManagement(PageObject):
 
         return build_table_row_objects_from_table(self.driver,self.__dictionary_table,DictionaryManagementRow)
 
-    def upload_dictionary(self,filename:str,sort_on_upload=False,hex_dictionary=False) -> None:
+    def dictionary_with_name_exists(self,name:str):
+        for dictionary in self.get_available_dictionaries():
+            if dictionary.name == name:
+                return True
+        return False
+
+    def get_dictionary_with_name(self,name:str) -> DictionaryManagementRow:
+        for dictionary in self.get_available_dictionaries():
+            if dictionary.name == name:
+                return dictionary
+        raise InvalidStateError(f'Dictionary with name {name} could not be found.')
+
+    def upload_dictionary(self,filename:Union[str,Path],sort_on_upload=False,hex_dictionary=False) -> None:
         if sort_on_upload != get_checkbox_state(self.__sort_on_upload_checkbox):
             self.__sort_on_upload_checkbox.click()
         if hex_dictionary != get_checkbox_state(self.__hex_dictionary_checkbox):
@@ -78,7 +91,7 @@ class DictionaryManagement(PageObject):
         self.__upload_new_button.click()
         WebDriverWait(self.driver,15).until(lambda _: self.__new_dictionary_file_input.is_displayed)
         #self.__new_dictionary_file_input.clear()
-        self.__new_dictionary_file_input.send_keys(filename)
+        self.__new_dictionary_file_input.send_keys(str(filename))
         self.__new_dictionary_upload_button.click()
         element = self.__new_dictionary_file_input
         WebDriverWait(self.driver,15).until(invisibility_of_element(element))
