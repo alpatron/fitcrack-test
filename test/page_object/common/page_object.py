@@ -3,10 +3,14 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, TypeVar
 
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support.expected_conditions import invisibility_of_element, visibility_of
+from selenium.webdriver.common.by import By
+
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
     from selenium.webdriver.remote.webelement import WebElement
-    T_PageComponentObject = TypeVar('T_PageComponentObject',bound=PageComponentObject)
+    T_PageComponentObject = TypeVar('T_PageComponentObject',bound=PageComponentObject) #type: ignore
 
 class PageObject:
     """This is the base class of all page objects.
@@ -46,6 +50,17 @@ class PageObject:
         implement a click-away behaviour for use with your page objects.
         """
         raise NotImplementedError
+    
+    @property
+    def _snackbar_notification_text(self) -> WebElement:
+        return self.driver.find_element(By.CSS_SELECTOR,'.errorSnackbar .v-alert__content')
+    
+    def _wait_until_snackbar_notification_disappears(self) -> None:
+        WebDriverWait(self.driver,10).until(invisibility_of_element(self._snackbar_notification_text))
+
+    def get_snackbar_notification_text(self) -> str:
+        WebDriverWait(self.driver,10).until(visibility_of(self._snackbar_notification_text))
+        return self._snackbar_notification_text.text
 
 
 class PageComponentObject(PageObject):

@@ -12,7 +12,7 @@ this should be used instead
 """
 
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union, overload
 
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
@@ -78,13 +78,20 @@ def clear_workaround(element:WebElement) -> None:
     #not provide this. So we need to do this like so.
     element.send_keys(Keys.BACKSPACE)
 
-
-def download_file_webadmin(driver:WebDriver, link:str) -> bytes:
+@overload
+def download_file_webadmin(driver:WebDriver, link:str, as_binary:bool=False) -> str: ...
+@overload
+def download_file_webadmin(driver:WebDriver, link:str, as_binary:bool=True) -> bytes: ...
+def download_file_webadmin(driver:WebDriver, link:str, as_binary:bool=False) -> Union[bytes,str]:
     """Downloads a file given a link to it. Handles Webadmin authentication.
-    Returns a `bytes` object of the file.
+    Returns a `str` object of the file by default.
+    Set parameter `as_binary=True` to get a `bytes` object.
     
     Selenium does not support file downloads, so we need to do downloads ourselves.
     """
     jwt = driver.execute_script('return localStorage.getItem("jwt");')
-    response = requests.get(link,headers={'jwt': jwt})
-    return response.content
+    response = requests.get(link,headers={'Authorization': f'Bearer {jwt}'})
+    if as_binary:
+        return response.content
+    else:
+        return response.text

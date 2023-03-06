@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING, List, Union, overload
+from typing import TYPE_CHECKING, List, Union
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -8,7 +8,7 @@ from selenium.common.exceptions import NoSuchElementException, StaleElementRefer
 from selenium.webdriver.support.expected_conditions import invisibility_of_element
 
 from page_object.common.page_object import PageObject
-from page_object.common.helper import get_checkbox_state
+from page_object.common.helper import get_checkbox_state, obstructed_click_workaround
 from page_object.common.exception import InvalidStateError
 from page_object.table.dictionary_management_row import DictionaryManagementRow
 from page_object.table.table_manipulation import build_table_row_objects_from_table
@@ -58,12 +58,29 @@ class DictionaryManagement(PageObject):
             locate_with(By.TAG_NAME,'button').below(self.__new_dictionary_file_input) # type: ignore
         )
     
+    @property
+    def __items_per_page_dropdown_button(self) -> WebElement:
+        return self.driver.find_element(By.CLASS_NAME,'v-select__slot')
+    
+    @property
+    def __items_per_page_dropdown_list(self) -> WebElement:
+        return self.driver.find_element(
+            locate_with(By.CLASS_NAME,'v-list').near(self.__items_per_page_dropdown_button) #type: ignore
+        )
+
+    @property
+    def __items_per_page_dropdown_biggest_size_button(self) -> WebElement:
+        return self.__items_per_page_dropdown_list.find_element(By.CSS_SELECTOR,'div:nth-child(3)')
+
     def get_available_dictionaries(self) -> List[DictionaryManagementRow]:
+        self.__items_per_page_dropdown_button.click()
+        self.__items_per_page_dropdown_biggest_size_button.click()
+
         td_elements_in_table = self.__dictionary_table.find_elements(By.TAG_NAME,'td')
         if len(td_elements_in_table) == 1:
-            if td_elements_in_table[0].text == 'No data available':
-                return []
             try:
+                if td_elements_in_table[0].text == 'No data available':
+                    return []
                 if td_elements_in_table[0].text == 'Loading items...':
                     raise InvalidStateError('Dictionaries have not loaded yet.')
             except StaleElementReferenceException:
@@ -85,9 +102,9 @@ class DictionaryManagement(PageObject):
 
     def upload_dictionary(self,filename:Union[str,Path],sort_on_upload=False,hex_dictionary=False) -> None:
         if sort_on_upload != get_checkbox_state(self.__sort_on_upload_checkbox):
-            self.__sort_on_upload_checkbox.click()
+            obstructed_click_workaround(self.driver,self.__sort_on_upload_checkbox)
         if hex_dictionary != get_checkbox_state(self.__hex_dictionary_checkbox):
-            self.__sort_on_upload_checkbox.click()
+            obstructed_click_workaround(self.driver,self.__sort_on_upload_checkbox)
         self.__upload_new_button.click()
         WebDriverWait(self.driver,15).until(lambda _: self.__new_dictionary_file_input.is_displayed)
         #self.__new_dictionary_file_input.clear()
@@ -95,4 +112,5 @@ class DictionaryManagement(PageObject):
         self.__new_dictionary_upload_button.click()
         element = self.__new_dictionary_file_input
         WebDriverWait(self.driver,15).until(invisibility_of_element(element))
+        self._wait_until_snackbar_notification_disappears()
     
