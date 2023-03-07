@@ -14,7 +14,7 @@ from selenium.webdriver import ActionChains
 from page_object.common.page_object import PageObject
 from page_object.table.rule_file_selection import RuleFileSelection
 from page_object.table.pcfg_grammar_selection import PCFGGrammarSelection
-from page_object.table.table_manipulation import build_table_row_objects_from_table, activate_elements_from_table_by_list_lookup
+from page_object.table.table_manipulation import build_table_row_objects_from_table, activate_elements_from_table_by_list_lookup, show_as_many_rows_per_table_page_as_possible
 from page_object.common.helper import clear_workaround
 
 if TYPE_CHECKING:
@@ -56,6 +56,8 @@ class PCFGAttackSettings(PageObject):
         """Returns a list of PCFGGrammarSelection objects representing the grammar files
         that can be selected for the PCFG attack.
         """
+        self._click_away()
+        show_as_many_rows_per_table_page_as_possible(self.driver,self.__pcfg_grammar_selection_table)
         return build_table_row_objects_from_table(self.driver,self.__pcfg_grammar_selection_table,PCFGGrammarSelection)
 
     def select_pcfg_grammar(self,grammar:str) -> None:
@@ -68,6 +70,8 @@ class PCFGAttackSettings(PageObject):
         """Returns a list of RuleFileSelection objects representing the rule files
         that can be selected for the PCFG attack.
         """
+        self._click_away()
+        show_as_many_rows_per_table_page_as_possible(self.driver,self.__rulefile_selection_table)
         return build_table_row_objects_from_table(self.driver,self.__rulefile_selection_table,RuleFileSelection)
 
     def select_rule_files(self,rulefiles:List[str]) -> None:

@@ -14,7 +14,7 @@ from selenium.webdriver import ActionChains
 from page_object.common.page_object import PageObject
 from page_object.table.dictionary_selection import DictionarySelection
 from page_object.table.rule_file_selection import RuleFileSelection
-from page_object.table.table_manipulation import build_table_row_objects_from_table, activate_elements_from_table_by_list_lookup
+from page_object.table.table_manipulation import build_table_row_objects_from_table, activate_elements_from_table_by_list_lookup, show_as_many_rows_per_table_page_as_possible
 from page_object.common.helper import obstructed_click_workaround, get_checkbox_state, clear_workaround
 
 if TYPE_CHECKING:
@@ -98,6 +98,8 @@ class PRINCEAttackSettings(PageObject):
         """Returns a list of DictionarySelection objects representing the dictionary files
         that can be selected for the PRINCE attack.
         """
+        self._click_away()
+        show_as_many_rows_per_table_page_as_possible(self.driver,self.__dictionary_selection_table)
         return build_table_row_objects_from_table(self.driver,self.__dictionary_selection_table,DictionarySelection)
 
     def select_dictionaries(self,wanted_dicts:List[str]) -> None:
@@ -111,6 +113,8 @@ class PRINCEAttackSettings(PageObject):
         """Returns a list of RuleFileSelection objects representing the rule files
         that can be selected for the dictionary attack.
         """
+        self._click_away()
+        show_as_many_rows_per_table_page_as_possible(self.driver,self.__dictionary_selection_table)
         return build_table_row_objects_from_table(self.driver,self.__rule_file_selection_table,RuleFileSelection)
 
     def select_rule_files(self,wanted_rulefiles:List[str]) -> None:

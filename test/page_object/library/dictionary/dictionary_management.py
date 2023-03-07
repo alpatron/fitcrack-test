@@ -4,14 +4,14 @@ from typing import TYPE_CHECKING, List, Union
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.relative_locator import locate_with
-from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
+from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException, ElementClickInterceptedException
 from selenium.webdriver.support.expected_conditions import invisibility_of_element
 
 from page_object.common.page_object import PageObject
 from page_object.common.helper import get_checkbox_state, obstructed_click_workaround
 from page_object.common.exception import InvalidStateError
 from page_object.table.dictionary_management_row import DictionaryManagementRow
-from page_object.table.table_manipulation import build_table_row_objects_from_table
+from page_object.table.table_manipulation import build_table_row_objects_from_table, show_as_many_rows_per_table_page_as_possible
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement
@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 
 class DictionaryManagement(PageObject):
     def ensure_loaded(self):
-        WebDriverWait(self.driver,30,ignored_exceptions={InvalidStateError,NoSuchElementException}).until(lambda _: len(self.get_available_dictionaries()) != 0)
+        WebDriverWait(self.driver,30,ignored_exceptions={InvalidStateError,NoSuchElementException,ElementClickInterceptedException}).until(lambda _: len(self.get_available_dictionaries()) != 0)
 
     @property
     def __dictionary_table(self) -> WebElement:
@@ -58,23 +58,9 @@ class DictionaryManagement(PageObject):
             locate_with(By.TAG_NAME,'button').below(self.__new_dictionary_file_input) # type: ignore
         )
     
-    @property
-    def __items_per_page_dropdown_button(self) -> WebElement:
-        return self.driver.find_element(By.CLASS_NAME,'v-select__slot')
-    
-    @property
-    def __items_per_page_dropdown_list(self) -> WebElement:
-        return self.driver.find_element(
-            locate_with(By.CLASS_NAME,'v-list').near(self.__items_per_page_dropdown_button) #type: ignore
-        )
-
-    @property
-    def __items_per_page_dropdown_biggest_size_button(self) -> WebElement:
-        return self.__items_per_page_dropdown_list.find_element(By.CSS_SELECTOR,'div:nth-child(3)')
-
     def get_available_dictionaries(self) -> List[DictionaryManagementRow]:
-        self.__items_per_page_dropdown_button.click()
-        self.__items_per_page_dropdown_biggest_size_button.click()
+        self._click_away()
+        show_as_many_rows_per_table_page_as_possible(self.driver,self.__dictionary_table)
 
         td_elements_in_table = self.__dictionary_table.find_elements(By.TAG_NAME,'td')
         if len(td_elements_in_table) == 1:
@@ -93,7 +79,6 @@ class DictionaryManagement(PageObject):
             if dictionary.name == name:
                 return True
         return False
-
     def get_dictionary_with_name(self,name:str) -> DictionaryManagementRow:
         for dictionary in self.get_available_dictionaries():
             if dictionary.name == name:
@@ -111,6 +96,7 @@ class DictionaryManagement(PageObject):
         self.__new_dictionary_file_input.send_keys(str(filename))
         self.__new_dictionary_upload_button.click()
         element = self.__new_dictionary_file_input
+        self.get_snackbar_notification(raise_exception_on_error=True)
         WebDriverWait(self.driver,15).until(invisibility_of_element(element))
         self._wait_until_snackbar_notification_disappears()
     

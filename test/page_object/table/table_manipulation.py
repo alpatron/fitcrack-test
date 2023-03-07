@@ -11,6 +11,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Callable, List, TypeVar, Type
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.relative_locator import locate_with
 
 from page_object.common.exception import InvalidStateError
 
@@ -60,3 +61,17 @@ def activate_elements_from_table_by_list_lookup(table_rows:List[T_GenericTableSe
         raise InvalidStateError('Some requested rows do not exist in the table.\n')
     for row in found_wanted_rows:
         row.enabled = True
+
+
+def show_as_many_rows_per_table_page_as_possible(driver:WebDriver,table:WebElement) -> None:
+    rows_per_page_dropdown_button = driver.find_element(
+        locate_with(By.CLASS_NAME,'v-select__slot').below(table) #type: ignore
+    )
+    
+    rows_per_page_dropdown_button.click()
+
+    rows_per_page_dropdown_largest_choice = driver.find_element(
+        locate_with(By.CSS_SELECTOR,'.v-list>div:last-child').near(rows_per_page_dropdown_button) #type: ignore
+    )
+
+    rows_per_page_dropdown_largest_choice.click()

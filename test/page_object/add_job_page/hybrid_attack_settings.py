@@ -14,7 +14,7 @@ from selenium.common.exceptions import TimeoutException
 
 from page_object.common.page_object import PageObject
 from page_object.table.dictionary_selection import DictionarySelection
-from page_object.table.table_manipulation import activate_elements_from_table_by_list_lookup, build_table_row_objects_from_table
+from page_object.table.table_manipulation import activate_elements_from_table_by_list_lookup, build_table_row_objects_from_table, show_as_many_rows_per_table_page_as_possible
 from page_object.common.helper import clear_workaround
 
 if TYPE_CHECKING:
@@ -60,6 +60,8 @@ class HybridAttackSettings(PageObject):
         """Returns a list of DictionarySelection objects representing the dictionaries
         that can be selected for the hybrid attack.
         """
+        self._click_away()
+        show_as_many_rows_per_table_page_as_possible(self.driver,self.__dictionary_selection_table)
         return build_table_row_objects_from_table(self.driver,self.__dictionary_selection_table,DictionarySelection)
 
     def select_dictionaries(self,wanted_dicts:List[str]) -> None:

@@ -19,13 +19,13 @@ class TestProperUpload:
     
     @pytest.fixture(autouse=True)
     def prepare_test_file(self):
-            self.TEST_FILE_NAME = self.RAW_TEST_FILE_NAME.with_stem(f'{self.RAW_TEST_FILE_NAME.stem}-{datetime.utcnow().strftime("%Y%m%d%H%M%S")}')
-            self.TEST_FILE_PATH = self.RAW_TEST_FILE_PATH.with_name(self.TEST_FILE_NAME.name)
-            shutil.copyfile(self.RAW_TEST_FILE_PATH,self.TEST_FILE_PATH)
-            with open(self.TEST_FILE_PATH,'r') as file:
-                self.TEST_FILE_CONTENT = file.read()
-            yield
-            self.TEST_FILE_PATH.unlink()
+        self.TEST_FILE_NAME = self.RAW_TEST_FILE_NAME.with_stem(f'{self.RAW_TEST_FILE_NAME.stem}-{datetime.utcnow().strftime("%Y%m%d%H%M%S")}')
+        self.TEST_FILE_PATH = self.RAW_TEST_FILE_PATH.with_name(self.TEST_FILE_NAME.name)
+        shutil.copyfile(self.RAW_TEST_FILE_PATH,self.TEST_FILE_PATH)
+        with open(self.TEST_FILE_PATH,'r') as file:
+            self.TEST_FILE_CONTENT = file.read()
+        yield
+        self.TEST_FILE_PATH.unlink()
 
     @pytest.fixture(autouse=True)
     def dictionary_management(self, prepare_test_file, side_bar:SideBar) -> DictionaryManagement:

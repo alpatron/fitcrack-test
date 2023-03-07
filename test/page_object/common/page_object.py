@@ -7,6 +7,9 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.expected_conditions import invisibility_of_element, visibility_of
 from selenium.webdriver.common.by import By
 
+from page_object.common.webadmin_snackbar_notifcation import WebadminSnackbarNotification, WebadminSnackbarNotificationType
+from page_object.common.exception import InvalidStateError, WebadminError
+
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
     from selenium.webdriver.remote.webelement import WebElement
@@ -47,9 +50,12 @@ class PageObject:
         """Sometimes when testing, one needs to "click away" from, say, an input field to return
         to a neutral application state. For example, when typing into an input field, a pop-up
         may appear (for example when using the mask editor). You can use this method to
-        implement a click-away behaviour for use with your page objects.
+        implement a click away in such cases.
+
+        This method should work in almost all cases. One exception is the login page, where
+        the element this method relies on does not exist.
         """
-        raise NotImplementedError
+        self.driver.find_element(By.CSS_SELECTOR,'header .v-toolbar__title').click()
     
     @property
     def _snackbar_notification_text(self) -> WebElement:
@@ -58,9 +64,23 @@ class PageObject:
     def _wait_until_snackbar_notification_disappears(self) -> None:
         WebDriverWait(self.driver,10).until(invisibility_of_element(self._snackbar_notification_text))
 
-    def get_snackbar_notification_text(self) -> str:
+    def get_snackbar_notification(self,raise_exception_on_error:bool=False) -> WebadminSnackbarNotification:
         WebDriverWait(self.driver,10).until(visibility_of(self._snackbar_notification_text))
-        return self._snackbar_notification_text.text
+        helper_element = self.driver.find_element(By.CSS_SELECTOR, '.errorSnackbar .v-alert')
+        element_classes = helper_element.get_attribute('class')
+        error = 'error' in element_classes
+        success = 'success' in element_classes
+        match (success, error):
+            case (True, False):
+                snackbar_notification_type = WebadminSnackbarNotificationType.SUCCESS
+            case (False, True):
+                snackbar_notification_type = WebadminSnackbarNotificationType.ERROR
+            case _:
+                raise InvalidStateError('Could not determine the type of snackbar notification.')
+        notification_text = self._snackbar_notification_text.text
+        if raise_exception_on_error and snackbar_notification_type == WebadminSnackbarNotificationType.ERROR:
+            raise WebadminError(notification_text)
+        return WebadminSnackbarNotification(snackbar_notification_type,notification_text)
 
 
 class PageComponentObject(PageObject):
