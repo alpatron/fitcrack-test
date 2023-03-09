@@ -9,10 +9,10 @@ import pytest
 
 if TYPE_CHECKING:
     from page_object.side_bar import SideBar
-    from page_object.library.dictionary.dictionary_management import DictionaryManagement
+    from page_object.library.dictionary import DictionaryManagement
 
 
-class TestSortedUpload:
+class TestDictionarySortedUpload:
     
     RAW_TEST_FILE_UNSORTED_NAME = Path('fc_auto_test_dictionary_unsorted.txt')
     RAW_TEST_FILE_UNSORTED_PATH = Path('./test/e2e_library/').joinpath(RAW_TEST_FILE_UNSORTED_NAME).absolute()

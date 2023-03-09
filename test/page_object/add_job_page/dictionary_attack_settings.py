@@ -70,6 +70,12 @@ class DictionaryAttackSettings(PageObject):
         show_as_many_rows_per_table_page_as_possible(self.driver,self.__rule_file_selection_table)
         return build_table_row_objects_from_table(self.driver,self.__rule_file_selection_table,RuleFileSelection)
 
+    def rule_file_with_name_exists(self,name:str) -> bool:
+        for rule_file in self.get_available_rule_files():
+            if rule_file.name == name:
+                return True
+        return False
+
     def select_dictionaries(self,wanted_dicts:List[str]) -> None:
         """Given a list of dictionary names (as they appear in the name column),
         selects the dictionaries with those names to be used in the dictionary attack.

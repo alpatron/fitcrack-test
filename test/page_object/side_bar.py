@@ -8,7 +8,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from page_object.common.page_object import PageObject
 from page_object.add_job_page.add_job_page import AddJobPage
-from page_object.library.dictionary.dictionary_management import DictionaryManagement
+from page_object.library.dictionary import DictionaryManagement
+from page_object.library.rules import RuleFileManagement
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement
@@ -40,6 +41,10 @@ class SideBar(PageObject):
     def __dictionary_library_button(self) -> WebElement:
         return self.driver.find_element(By.CSS_SELECTOR,'a[href="/dictionaries"]')
 
+    @property
+    def __rule_file_library_button(self) -> WebElement:
+        return self.driver.find_element(By.CSS_SELECTOR,'a[href="/rules"]')
+
     def goto_add_job(self) -> AddJobPage:
         """Opens the page Add Job page and returns an AddJobPage object.
         Previously generated objects by the `goto_XYZ` methods cease to be useable.
@@ -49,7 +54,21 @@ class SideBar(PageObject):
         return AddJobPage(self.driver)
     
     def goto_dictionary_library(self) -> DictionaryManagement:
+        """Opens the Dictionary page in the Library tab
+        and returns a DictionaryManagement object.
+        Previously generated objects by the `goto_XYZ` methods cease to be useable.
+        """
         self.__library_button.click()
         self.__dictionary_library_button.click()
         return DictionaryManagement(self.driver)
+    
+    def goto_rule_file_library(self) -> RuleFileManagement:
+        """Opens the Rules page in the Library tab
+        and returns a RuleFileManagement object.
+        Previously generated objects by the `goto_XYZ` methods cease to be useable.
+        """
+        self.__library_button.click()
+        self.__rule_file_library_button.click()
+        return RuleFileManagement(self.driver)
+    
 

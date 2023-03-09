@@ -11,7 +11,7 @@ from page_object.common.exception import WebadminError
 if TYPE_CHECKING:
     from page_object.side_bar import SideBar
 
-class TestMalformedUploads:
+class TestDictionaryMalformedUploads:
 
     RAW_TEST_FILE_NAME = Path('fc_auto_test_dictionary_bad_extension.badext')
     RAW_TEST_FILE_PATH = Path('./test/e2e_library/').joinpath(RAW_TEST_FILE_NAME).absolute()
