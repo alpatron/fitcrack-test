@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 class TestDictionaryMalformedUploads:
 
     RAW_TEST_FILE_NAME = Path('fc_auto_test_dictionary_bad_extension.badext')
-    RAW_TEST_FILE_PATH = Path('./test/e2e_library/').joinpath(RAW_TEST_FILE_NAME).absolute()
+    RAW_TEST_FILE_PATH = Path('./test/e2e_library/dictionary/').joinpath(RAW_TEST_FILE_NAME).absolute()
 
     @pytest.fixture()
     def prepare_test_file(self):
