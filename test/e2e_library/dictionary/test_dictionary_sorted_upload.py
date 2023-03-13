@@ -15,9 +15,9 @@ if TYPE_CHECKING:
 class TestDictionarySortedUpload:
     
     RAW_TEST_FILE_UNSORTED_NAME = Path('fc_auto_test_dictionary_unsorted.txt')
-    RAW_TEST_FILE_UNSORTED_PATH = Path('./test/e2e_library/').joinpath(RAW_TEST_FILE_UNSORTED_NAME).absolute()
+    RAW_TEST_FILE_UNSORTED_PATH = Path('./test/e2e_library/dictionary/').joinpath(RAW_TEST_FILE_UNSORTED_NAME).absolute()
     
-    TEST_FILE_SORTED_PATH = Path('./test/e2e_library/fc_auto_test_dictionary_sorted.txt')
+    TEST_FILE_SORTED_PATH = Path('./test/e2e_library/dictionary/fc_auto_test_dictionary_sorted.txt')
 
     @pytest.fixture(autouse=True)
     def prepare_test_file(self):
