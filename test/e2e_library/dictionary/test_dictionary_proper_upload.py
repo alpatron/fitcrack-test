@@ -1,57 +1,45 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 from pathlib import Path
-from datetime import datetime
-import shutil
 
 import pytest
-
 
 if TYPE_CHECKING:
     from page_object.side_bar import SideBar
     from page_object.library.dictionary import DictionaryManagement
 
 
-class TestDictionaryProperUpload:
-    
-    RAW_TEST_FILE_NAME = Path('fc_auto_test_dictionary_correct.txt')
-    RAW_TEST_FILE_PATH = Path('./test/e2e_library/dictionary/').joinpath(RAW_TEST_FILE_NAME).absolute()
-    
-    @pytest.fixture(autouse=True)
-    def prepare_test_file(self):
-        self.TEST_FILE_NAME = self.RAW_TEST_FILE_NAME.with_stem(f'{self.RAW_TEST_FILE_NAME.stem}-{datetime.utcnow().strftime("%Y%m%d%H%M%S")}')
-        self.TEST_FILE_PATH = self.RAW_TEST_FILE_PATH.with_name(self.TEST_FILE_NAME.name)
-        shutil.copyfile(self.RAW_TEST_FILE_PATH,self.TEST_FILE_PATH)
-        with open(self.TEST_FILE_PATH,'r') as file:
-            self.TEST_FILE_CONTENT = file.read()
-        yield
-        self.TEST_FILE_PATH.unlink()
+TEST_FILES = [
+    Path('./test/e2e_library/dictionary/fc_auto_test_dictionary_correct.txt')
+]
 
+@pytest.mark.parametrize('test_file_path',TEST_FILES, indirect=True)
+class TestDictionaryProperUpload:
     @pytest.fixture(autouse=True)
-    def dictionary_management(self, prepare_test_file, side_bar:SideBar) -> DictionaryManagement:
+    def dictionary_management_after_upload(self, test_file_path:Path,side_bar:SideBar) -> DictionaryManagement:
         dictionary_management = side_bar.goto_dictionary_library()
-        dictionary_management.upload_dictionary(self.TEST_FILE_PATH)
+        dictionary_management.upload_dictionary(test_file_path)
         return dictionary_management
     
     def test_upload_did_not_fail(self):
         assert True
 
-    def test_dict_appears_in_list(self,dictionary_management:DictionaryManagement):
-        assert dictionary_management.dictionary_with_name_exists(self.TEST_FILE_NAME.name)
+    def test_dict_appears_in_list(self,test_file_path:Path,dictionary_management_after_upload:DictionaryManagement):
+        assert dictionary_management_after_upload.dictionary_with_name_exists(test_file_path.name)
     
-    def test_download_gives_same_file(self,dictionary_management:DictionaryManagement):
-        uploaded_dictionary = dictionary_management.get_dictionary_with_name(self.TEST_FILE_NAME.name)
-        downloaded_file = uploaded_dictionary.download(as_binary=True)
+    def test_download_gives_same_file(self,test_file_path:Path,test_file_text_content:str,dictionary_management_after_upload:DictionaryManagement):
+        uploaded_dictionary = dictionary_management_after_upload.get_dictionary_with_name(test_file_path.name)
+        downloaded_file = uploaded_dictionary.download()
 
-        assert self.TEST_FILE_CONTENT == downloaded_file
+        assert test_file_text_content == downloaded_file
     
-    def test_dictionary_apppears_in_attack_settings(self,side_bar:SideBar):
+    def test_dictionary_appears_in_attack_settings(self,test_file_path:Path,side_bar:SideBar):
         add_job_page = side_bar.goto_add_job()
         attack_settings = add_job_page.open_attack_settings()
         dictionary_attack_settings = attack_settings.choose_dictionary_mode()
-        assert dictionary_attack_settings.dictionary_with_name_exists(self.TEST_FILE_NAME.name)
+        assert dictionary_attack_settings.dictionary_with_name_exists(test_file_path.name)
 
-    def test_delete(self,dictionary_management:DictionaryManagement):
-        uploaded_dictionary = dictionary_management.get_dictionary_with_name(self.TEST_FILE_NAME.name)
+    def test_delete(self,test_file_path:Path,dictionary_management_after_upload:DictionaryManagement):
+        uploaded_dictionary = dictionary_management_after_upload.get_dictionary_with_name(test_file_path.name)
         uploaded_dictionary.delete()
-        assert not dictionary_management.dictionary_with_name_exists(self.TEST_FILE_NAME.name)
+        assert not dictionary_management_after_upload.dictionary_with_name_exists(test_file_path.name)

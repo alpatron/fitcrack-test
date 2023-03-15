@@ -7,12 +7,16 @@ https://docs.pytest.org/en/6.2.x/writing_plugins.html#conftest-py-plugins
 """
 from __future__ import annotations
 from typing import NamedTuple, Tuple, TYPE_CHECKING
+from datetime import datetime
+import shutil
 
 import pytest
 
 from page_object.login_page import LoginPage
 
 if TYPE_CHECKING:
+    from pathlib import Path
+    
     import _pytest.config.argparsing
     import _pytest.config
     import _pytest.fixtures
@@ -136,3 +140,27 @@ def add_job_page(side_bar:SideBar) -> AddJobPage:
     """Fixture that returns an AddJobPage object."""
     add_job_page = side_bar.goto_add_job()
     return add_job_page
+
+
+@pytest.fixture
+def test_file_path(request:_pytest.fixtures.FixtureRequest):
+    """Fixture for working with test files in tests.
+    This fixture MUST be used with indirect parametrisation.
+    The parameter given MUST be of `pathlib.Path` type (or equivalent).
+    This fixture yields a `Path` object ready to be used with Selenium for uploading files
+    through `<input>` elements.
+    The yielded `Path` object is an absolute path to a temporary COPY (!) of the given path.
+    The yielded `Path` object has a timestamp appended to the the filename.
+
+    This is useful for testing Webadmin because sometimes filenames cannot be reused;
+    appending the timestamp ensures that the filenames are unique for each test.
+    """
+    test_file_path:Path = request.param.with_stem(f'{request.param.stem}-{datetime.utcnow():%Y%m%d%H%M%S}') # type: ignore
+    shutil.copyfile(request.param,test_file_path) # type: ignore 
+    yield test_file_path.absolute()
+    test_file_path.unlink()
+
+@pytest.fixture
+def test_file_text_content(test_file_path):
+    with open(test_file_path,'r') as file:
+        return file.read()
