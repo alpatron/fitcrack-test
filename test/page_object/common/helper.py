@@ -85,6 +85,9 @@ def download_file_webadmin(driver:WebDriver, link:str, as_binary:bool=True) -> b
 def download_file_webadmin(driver:WebDriver, link:str, as_binary:bool=False) -> Union[bytes,str]:
     """Downloads a file given a link to it. Handles Webadmin authentication.
     Returns a `str` object of the file by default.
+    The string decoding is left to the `requests` library.
+    Line endings are then (after the string decoding) normalised to `\n`.
+
     Set parameter `as_binary=True` to get a `bytes` object.
     
     Selenium does not support file downloads, so we need to do downloads ourselves.
@@ -94,4 +97,4 @@ def download_file_webadmin(driver:WebDriver, link:str, as_binary:bool=False) -> 
     if as_binary:
         return response.content
     else:
-        return response.text
+        return response.text.replace('\r\n', '\n').replace('\r', '\n')
