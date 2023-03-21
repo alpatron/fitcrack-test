@@ -8,7 +8,7 @@ from selenium.common.exceptions import NoSuchElementException, StaleElementRefer
 from selenium.webdriver.support.expected_conditions import invisibility_of_element
 
 from page_object.common.page_object import PageObject
-from page_object.common.helper import get_checkbox_state, obstructed_click_workaround
+from page_object.common.helper import get_checkbox_state, obstructed_click_workaround, click_away
 from page_object.common.exception import InvalidStateError
 from page_object.table.dictionary_management_row import DictionaryManagementRow
 from page_object.table.table_manipulation import build_table_row_objects_from_table, show_as_many_rows_per_table_page_as_possible
@@ -59,7 +59,7 @@ class DictionaryManagement(PageObject):
         )
     
     def get_available_dictionaries(self) -> List[DictionaryManagementRow]:
-        self._click_away()
+        click_away(self.driver)
         show_as_many_rows_per_table_page_as_possible(self.driver,self.__dictionary_table)
 
         td_elements_in_table = self.__dictionary_table.find_elements(By.TAG_NAME,'td')

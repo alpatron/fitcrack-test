@@ -46,17 +46,6 @@ class PageObject:
         and it should raise an exception if the UI isn't ready within a time limit.
         """
 
-    def _click_away(self) -> None:
-        """Sometimes when testing, one needs to "click away" from, say, an input field to return
-        to a neutral application state. For example, when typing into an input field, a pop-up
-        may appear (for example when using the mask editor). You can use this method to
-        implement a click away in such cases.
-
-        This method should work in almost all cases. One exception is the login page, where
-        the element this method relies on does not exist.
-        """
-        self.driver.find_element(By.CSS_SELECTOR,'header .v-toolbar__title').click()
-    
     @property
     def _snackbar_notification_text(self) -> WebElement:
         return self.driver.find_element(By.CSS_SELECTOR,'.errorSnackbar .v-alert__content')

@@ -7,6 +7,7 @@ from selenium.webdriver.support.relative_locator import locate_with
 from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException, ElementClickInterceptedException
 
 from page_object.common.page_object import PageObject
+from page_object.common.helper import click_away
 from page_object.common.exception import InvalidStateError
 from page_object.table.rule_file_management_row import RuleFileManagementRow
 from page_object.table.table_manipulation import build_table_row_objects_from_table, show_as_many_rows_per_table_page_as_possible
@@ -39,7 +40,7 @@ class RuleFileManagement(PageObject):
         return self.__upload_form.find_element(By.TAG_NAME,'input')
     
     def get_available_rule_files(self) -> List[RuleFileManagementRow]:
-        self._click_away()
+        click_away(self.driver)
         show_as_many_rows_per_table_page_as_possible(self.driver,self.__rule_file_table)
 
         td_elements_in_table = self.__rule_file_table.find_elements(By.TAG_NAME,'td')

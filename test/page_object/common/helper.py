@@ -16,6 +16,7 @@ from typing import TYPE_CHECKING, Union, overload
 
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 import requests
 
 from page_object.common.exception import InvalidStateError
@@ -24,6 +25,17 @@ if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
     from selenium.webdriver.remote.webelement import WebElement
 
+def click_away(driver:WebDriver) -> None:
+    """Sometimes when testing, one needs to "click away" from, say, an input field to return
+    to a neutral application state. For example, when typing into an input field, a pop-up
+    may appear (for example when using the mask editor). You can use this method to
+    implement a click away in such cases.
+
+    This method should work in almost all cases. One exception is the login page, where
+    the element this method relies on does not exist. But there is no need to use that function
+    there.
+    """
+    driver.find_element(By.CSS_SELECTOR,'header .v-toolbar__title').click()
 
 def obstructed_click_workaround(driver:WebDriver, element:WebElement):
     """Sometimes in Fitcrack Webadmin, some elements cannot be clicked using the default

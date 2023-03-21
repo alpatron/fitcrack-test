@@ -12,7 +12,7 @@ from selenium.webdriver import ActionChains
 from selenium.webdriver.support.relative_locator import locate_with
 
 from page_object.common.page_object import PageObject
-from page_object.common.helper import clear_workaround
+from page_object.common.helper import clear_workaround, click_away
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement
@@ -59,7 +59,7 @@ class InputSettings(PageObject):
         WebDriverWait(self.driver,30,ignored_exceptions={JavascriptException, NoSuchElementException}).until(lambda _: self.__hash_type_selection_list.is_displayed)
         ActionChains(self.driver).pause(2).perform() # Wait for 2 seconds to make sure vuejs animation is over
         self.__hash_type_selection_list.find_element(By.CSS_SELECTOR,'div:nth-child(1)').click()
-        self._click_away()
+        click_away(self.driver)
 
     def get_selected_hash_type(self) -> str:
         """Return the hash type that has been selected, as shown in the hash-type selector."""

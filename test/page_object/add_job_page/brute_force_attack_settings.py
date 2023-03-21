@@ -20,7 +20,7 @@ from page_object.common.page_object import PageObject
 from page_object.table.charset_selection import CharsetSelection
 from page_object.table.markov_file_selection import MarkovFileSelection
 from page_object.table.table_manipulation import build_table_row_objects_from_table, activate_elements_from_table_by_list_lookup, show_as_many_rows_per_table_page_as_possible
-from page_object.common.helper import obstructed_click_workaround, clear_workaround
+from page_object.common.helper import obstructed_click_workaround, clear_workaround, click_away
 from page_object.common.exception import InvalidStateError
 
 if TYPE_CHECKING:
@@ -102,7 +102,7 @@ class BruteForceAttackSettings(PageObject):
         """Returns a list of CharserSelection page objects representing the custom charsets
         that can be chosen.
         """
-        self._click_away()
+        click_away(self.driver)
         show_as_many_rows_per_table_page_as_possible(self.driver,self.__charset_selection_table)
         return build_table_row_objects_from_table(self.driver,self.__charset_selection_table,CharsetSelection)
 
@@ -110,7 +110,7 @@ class BruteForceAttackSettings(PageObject):
         """Returns a list of MarkovFileSelection page objects representing the markov-statistics
         files that can be used for Markov ordering.
         """
-        self._click_away()
+        click_away(self.driver)
         show_as_many_rows_per_table_page_as_possible(self.driver,self.__markov_selection_table)
         return build_table_row_objects_from_table(self.driver,self.__markov_selection_table,MarkovFileSelection)
 
@@ -223,4 +223,4 @@ class BruteForceAttackSettings(PageObject):
             if i > 0:
                 self.add_mask_input()
             self.set_mask_value(mask,i)
-            self._click_away()
+            click_away(self.driver)
