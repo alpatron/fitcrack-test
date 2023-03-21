@@ -52,9 +52,6 @@ class BruteForceAttackSettings(PageObject):
         except TimeoutException:
             pass
 
-    def _click_away(self) -> None:
-        self.driver.find_element(By.XPATH,'//span[text()[contains(.,"Select charsets (max. 4)")]]').click()
-
     def __get_mask_input_field(self,index:int) -> WebElement:
         return self.driver.find_element(By.ID,f'mask-{index}-mask-input')
 
