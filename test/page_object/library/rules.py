@@ -67,7 +67,7 @@ class RuleFileManagement(PageObject):
                 return rule_file
         raise InvalidStateError(f'Rule file with name {name} could not be found.')
 
-    def upload_rule_file(self,filename:Union[str,Path],sort_on_upload=False,hex_dictionary=False) -> None:
+    def upload_rule_file(self,filename:Union[str,Path]) -> None:
         self.__file_input.send_keys(str(filename))
         self.__upload_button.click()
         self.get_snackbar_notification(raise_exception_on_error=True)
