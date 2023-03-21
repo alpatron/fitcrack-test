@@ -12,7 +12,10 @@ from typing import TYPE_CHECKING, Callable, List, TypeVar, Type
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.relative_locator import locate_with
+from selenium.webdriver import ActionChains
+from selenium.common.exceptions import StaleElementReferenceException
 
+from page_object.common.helper import click_away
 from page_object.common.exception import InvalidStateError
 
 if TYPE_CHECKING:
@@ -34,6 +37,9 @@ def build_table_row_objects_from_table(driver:WebDriver, table:WebElement,constr
 
     The usage example for that is:
     `build_table_selection_objects_from_table(driver,table_element,DictionarySelection)`.
+
+    You might also want to take a look at `load_table_elements`, which provides
+    additional robustness checks.
     """
     return [constructor(driver,tableRow) for tableRow in table.find_elements(By.CSS_SELECTOR,'tbody tr')]
 
@@ -46,7 +52,7 @@ def activate_elements_from_table_by_list_lookup(table_rows:List[T_GenericTableSe
     Only rows that produce a values using the getter that is contained in
     `lookup_values` are activated.
 
-    Sounds complicated because this isa generic function, but isn't really. Here's an example:
+    Sounds complicated because this is a generic function, but isn't really. Here's an example:
 
     I have the a dictionary table and I want the rows with the dictionaries named "foo" and "bar".
     The objects that represent the rows are in a list called `row_objects`.
@@ -75,3 +81,43 @@ def show_as_many_rows_per_table_page_as_possible(driver:WebDriver,table:WebEleme
     )
 
     rows_per_page_dropdown_largest_choice.click()
+
+
+def load_table_elements(driver:WebDriver,table:WebElement,constructor:Type[T_PageComponentObject]) -> List[T_PageComponentObject]:
+    """Works like `build_table_row_objects_from_table`, but provides more checks:
+    
+    Ensures that the table shows as many rows as possible by using the "rows per page" selection.
+    This means the table could show all elements (e.g. the dictionary table in the Add Job page),
+    or it could mean the table could show a big but limited number
+    (e.g. the dictionary table in the Library->Dictionary page can show at most 50 rows).
+    For testing, this should not be an issue since no test expects such a large number of rows
+    to be present, and implementing support for interacting with pagination would add needless
+    complexity.
+
+    Correctly handles the case that no rows are present and returns an empty list then.
+
+    Raises an InvalidStateError if the table is in the middle of the initial load.
+
+    Retries up to ten times to load the table elements (if a row is loaded in or removed as the
+    function is running, WebDriver emits a StaleElementException as the
+    previously existing <tr> elements cease to exist). If it fails even after ten tries,
+    raises an InvalidStateError.
+    """
+    click_away(driver) #Any previous call to show_as_many_rows_per_table_page_as_possible may have left an open selection box; we need to close it.
+    show_as_many_rows_per_table_page_as_possible(driver,table)
+    for _ in range(10):
+        try:
+            td_elements_in_table = table.find_elements(By.TAG_NAME,'td')
+            if len(td_elements_in_table) == 1:
+                if td_elements_in_table[0].text == 'No data available':
+                    return []
+                if td_elements_in_table[0].text == 'Loading items...':
+                    raise InvalidStateError('Table elements have not loaded yet.')
+            return build_table_row_objects_from_table(driver,table,constructor)
+        except StaleElementReferenceException:
+            ActionChains(driver).pause(2).perform()
+    raise InvalidStateError(
+        'Failed to load table elements. '
+        'Retried ten times but keep getting StaleElementReferenceExceptions. '
+        'Page objects or Webadmin may be broken.'
+    )
