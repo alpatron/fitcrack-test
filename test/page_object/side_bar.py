@@ -10,6 +10,7 @@ from page_object.common.page_object import PageObject
 from page_object.add_job_page.add_job_page import AddJobPage
 from page_object.library.dictionary import DictionaryManagement
 from page_object.library.rules import RuleFileManagement
+from page_object.library.charset import CharsetManagement
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement
@@ -45,6 +46,10 @@ class SideBar(PageObject):
     def __rule_file_library_button(self) -> WebElement:
         return self.driver.find_element(By.CSS_SELECTOR,'a[href="/rules"]')
 
+    @property
+    def __charset_library_button(self) -> WebElement:
+        return self.driver.find_element(By.CSS_SELECTOR,'a[href="/charsets"]')
+
     def goto_add_job(self) -> AddJobPage:
         """Opens the page Add Job page and returns an AddJobPage object.
         Previously generated objects by the `goto_XYZ` methods cease to be useable.
@@ -70,5 +75,10 @@ class SideBar(PageObject):
         self.__library_button.click()
         self.__rule_file_library_button.click()
         return RuleFileManagement(self.driver)
+
+    def goto_charset_library(self) -> CharsetManagement:
+        self.__library_button.click()
+        self.__charset_library_button.click()
+        return CharsetManagement(self.driver)
     
 

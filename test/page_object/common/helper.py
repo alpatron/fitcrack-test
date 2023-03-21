@@ -12,7 +12,7 @@ this should be used instead
 """
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Union, overload
+from typing import TYPE_CHECKING, Union, overload, Callable, TypeVar, List
 
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
@@ -24,6 +24,7 @@ from page_object.common.exception import InvalidStateError
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
     from selenium.webdriver.remote.webelement import WebElement
+    X = TypeVar('X')
 
 def click_away(driver:WebDriver) -> None:
     """Sometimes when testing, one needs to "click away" from, say, an input field to return
@@ -110,3 +111,7 @@ def download_file_webadmin(driver:WebDriver, link:str, as_binary:bool=False) -> 
         return response.content
     else:
         return response.text.replace('\r\n', '\n').replace('\r', '\n')
+
+
+def predicate_in_list(predicate:Callable[[X],bool],list:List[X]) -> bool:
+    return next((x for x in list if predicate(x)), None) is not None
