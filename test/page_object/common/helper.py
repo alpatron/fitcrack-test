@@ -24,6 +24,7 @@ from page_object.common.exception import InvalidStateError
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
     from selenium.webdriver.remote.webelement import WebElement
+    from selenium.webdriver.support.relative_locator import RelativeBy
     X = TypeVar('X')
 
 def click_away(driver:WebDriver) -> None:
@@ -113,5 +114,16 @@ def download_file_webadmin(driver:WebDriver, link:str, as_binary:bool=False) -> 
         return response.text.replace('\r\n', '\n').replace('\r', '\n')
 
 
-def predicate_in_list(predicate:Callable[[X],bool],list:List[X]) -> bool:
-    return next((x for x in list if predicate(x)), None) is not None
+
+def near_locator_distance_workaround(relative_locator:RelativeBy,element:WebElement,distance:int=100000) -> None:
+    """`locate_with(locator).near(...)` should support specifying the search distance
+    but (as of Selenium 4.8.0) seems that it doesn't.
+    
+    This function acts like `.near` but adds the option of specifying the search distance.
+    `relative_locator` is the output of `locate_with`, `element` is the element near which to
+    locate, and `distance` is the search distance.
+
+    Default distance is set 100 000 px, to make the locator behave as if if there were no
+    search limit (unless you have a very very large screen).
+    """
+    relative_locator.filters.append({"kind": "near", "args": [element,distance]})

@@ -15,7 +15,7 @@ from selenium.webdriver.support.relative_locator import locate_with
 from selenium.webdriver import ActionChains
 from selenium.common.exceptions import StaleElementReferenceException
 
-from page_object.common.helper import click_away
+from page_object.common.helper import click_away, near_locator_distance_workaround
 from page_object.common.exception import InvalidStateError
 
 if TYPE_CHECKING:
@@ -76,9 +76,9 @@ def show_as_many_rows_per_table_page_as_possible(driver:WebDriver,table:WebEleme
     
     rows_per_page_dropdown_button.click()
 
-    rows_per_page_dropdown_largest_choice = driver.find_element(
-        locate_with(By.CSS_SELECTOR,'.v-list>div:last-child').near(rows_per_page_dropdown_button) #type: ignore
-    )
+    locator = locate_with(By.CSS_SELECTOR,'.v-list>div:last-child') #type: ignore
+    near_locator_distance_workaround(locator,rows_per_page_dropdown_button)
+    rows_per_page_dropdown_largest_choice = driver.find_element(locator) #type: ignore
 
     rows_per_page_dropdown_largest_choice.click()
 
