@@ -37,7 +37,7 @@ def click_away(driver:WebDriver) -> None:
     the element this method relies on does not exist. But there is no need to use that function
     there.
     """
-    driver.find_element(By.CSS_SELECTOR,'header .v-toolbar__title').click()
+    ActionChains(driver).click(driver.find_element(By.CSS_SELECTOR,'header .v-toolbar__title')).perform() # ActionsChains is used to disregard the additional checks the standard element.click() performs.
 
 def obstructed_click_workaround(driver:WebDriver, element:WebElement):
     """Sometimes in Fitcrack Webadmin, some elements cannot be clicked using the default
