@@ -114,6 +114,15 @@ def download_file_webadmin(driver:WebDriver, link:str, as_binary:bool=False) -> 
         return response.text.replace('\r\n', '\n').replace('\r', '\n')
 
 
+def predicate_in_list(predicate:Callable[[X],bool],list:List[X]) -> X:
+    """Returns the first instance in an iterable that satisfies the predicate.
+    ValueError is raised if no element is found.
+    """
+    try:
+        return next((x for x in list if predicate(x)))
+    except StopIteration:
+        raise ValueError('No element that matches predicate found.')
+    
 
 def near_locator_distance_workaround(relative_locator:RelativeBy,element:WebElement,distance:int=100000) -> None:
     """`locate_with(locator).near(...)` should support specifying the search distance
