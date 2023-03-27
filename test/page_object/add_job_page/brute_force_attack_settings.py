@@ -19,6 +19,7 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from page_object.common.page_object import PageObject
 from page_object.table.charset_selection import CharsetSelection
 from page_object.table.markov_file_selection import MarkovFileSelection
+from page_object.table.mask_file_selection_row import MaskFileSelection
 from page_object.table.table_manipulation import build_table_row_objects_from_table, activate_elements_from_table_by_list_lookup, show_as_many_rows_per_table_page_as_possible
 from page_object.common.helper import obstructed_click_workaround, clear_workaround, click_away
 from page_object.common.exception import InvalidStateError
@@ -98,8 +99,20 @@ class BruteForceAttackSettings(PageObject):
             locate_with(By.TAG_NAME,'input').to_left_of({By.XPATH:'//label[text()="3D Markov"]'})  # type: ignore
         )
 
+    @property
+    def __load_mask_button(self) -> WebElement:
+        return self.driver.find_element(By.XPATH,'//span[text()[contains(.,"Load masks")]]')
+
+    @property
+    def __mask_dialog_table(self) -> WebElement:
+        return self.driver.find_element(By.CSS_SELECTOR,'.v-dialog--active table')
+
+    @property
+    def __mask_dialog_load_button(self) -> WebElement:
+        return self.driver.find_element(By.CSS_SELECTOR,'.v-dialog--active button.primary')
+
     def get_available_charsets(self) -> List[CharsetSelection]:
-        """Returns a list of CharserSelection page objects representing the custom charsets
+        """Returns a list of CharsetSelection page objects representing the custom charsets
         that can be chosen.
         """
         click_away(self.driver)
@@ -113,6 +126,23 @@ class BruteForceAttackSettings(PageObject):
         click_away(self.driver)
         show_as_many_rows_per_table_page_as_possible(self.driver,self.__markov_selection_table)
         return build_table_row_objects_from_table(self.driver,self.__markov_selection_table,MarkovFileSelection)
+
+    def get_available_mask_files(self) -> List[str]:
+        """Returns the names (strings) of all mask files that can be loaded."""
+        self.__load_mask_button.click()
+        show_as_many_rows_per_table_page_as_possible(self.driver,self.__mask_dialog_table)
+        mask_files = build_table_row_objects_from_table(self.driver,self.__mask_dialog_table,MaskFileSelection)
+        mask_names = [mask_file.name for mask_file in mask_files]
+        click_away(self.driver)
+        return mask_names
+
+    def load_mask_file(self,mask_file_name:str) -> None:
+        """Loads the mask file with the given name."""
+        self.__load_mask_button.click()
+        show_as_many_rows_per_table_page_as_possible(self.driver,self.__mask_dialog_table)
+        mask_files = build_table_row_objects_from_table(self.driver,self.__mask_dialog_table,MaskFileSelection)
+        activate_elements_from_table_by_list_lookup(mask_files,lambda x: x.name,[mask_file_name])
+        self.__mask_dialog_load_button.click()
 
     def select_charsets(self,wanted_charsets:List[str]) -> None:
         """Given a list of charset names (as they appear in the name column), selects the charsets
