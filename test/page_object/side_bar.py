@@ -11,6 +11,7 @@ from page_object.add_job_page.add_job_page import AddJobPage
 from page_object.library.dictionary import DictionaryManagement
 from page_object.library.rules import RuleFileManagement
 from page_object.library.charset import CharsetManagement
+from page_object.library.mask import MaskManagement
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement
@@ -50,6 +51,10 @@ class SideBar(PageObject):
     def __charset_library_button(self) -> WebElement:
         return self.driver.find_element(By.CSS_SELECTOR,'a[href="/charsets"]')
 
+    @property
+    def __mask_library_button(self) -> WebElement:
+        return self.driver.find_element(By.CSS_SELECTOR,'a[href="/masks"]')
+
     def goto_add_job(self) -> AddJobPage:
         """Opens the page Add Job page and returns an AddJobPage object.
         Previously generated objects by the `goto_XYZ` methods cease to be useable.
@@ -77,8 +82,19 @@ class SideBar(PageObject):
         return RuleFileManagement(self.driver)
 
     def goto_charset_library(self) -> CharsetManagement:
+        """Opens the Charsets page in the Library tab
+        and returns a CharsetManagement object.
+        Previously generated objects by the `goto_XYZ` methods cease to be useable.
+        """
         self.__library_button.click()
         self.__charset_library_button.click()
         return CharsetManagement(self.driver)
     
-
+    def goto_mask_library(self) -> MaskManagement:
+        """Opens the Masks page in the Library tab
+        and returns a MaskFileManagement object.
+        Previously generated objects by the `goto_XYZ` methods cease to be useable.
+        """
+        self.__library_button.click()
+        self.__mask_library_button.click()
+        return MaskManagement(self.driver)
