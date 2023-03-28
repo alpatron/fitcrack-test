@@ -6,7 +6,7 @@ https://docs.pytest.org/en/6.2.x/fixture.html#conftest-py-sharing-fixtures-acros
 https://docs.pytest.org/en/6.2.x/writing_plugins.html#conftest-py-plugins
 """
 from __future__ import annotations
-from typing import NamedTuple, Tuple, TYPE_CHECKING
+from typing import NamedTuple, Tuple, Iterator, TYPE_CHECKING
 from datetime import datetime
 import shutil
 
@@ -143,7 +143,7 @@ def add_job_page(side_bar:SideBar) -> AddJobPage:
 
 
 @pytest.fixture
-def test_file_path(request:_pytest.fixtures.FixtureRequest):
+def test_file_path(request:_pytest.fixtures.FixtureRequest) -> Iterator[Path]:
     """Fixture for working with test files in tests.
     This fixture MUST be used with indirect parametrisation.
     The parameter given MUST be of `pathlib.Path` type (or equivalent).
@@ -161,6 +161,20 @@ def test_file_path(request:_pytest.fixtures.FixtureRequest):
     test_file_path.unlink()
 
 @pytest.fixture
-def test_file_text_content(test_file_path):
-    with open(test_file_path,'r') as file:
+def test_file_text_content(test_file_path) -> str:
+    """Fixture that returns the text content of the test file supplied by the `test_file_path`
+    fixture. Must be used with the `test_file_path` fixture.
+
+    The test file is opened using `encoding='ascii', errors='surrogateescape'` to support
+    arbitrarily encoded files.
+    """
+    with open(test_file_path,'r', encoding='ascii', errors='surrogateescape') as file:
+        return file.read()
+    
+@pytest.fixture
+def test_file_binary_content(test_file_path) -> bytes:
+    """Fixture that returns the binary content of the test file supplied by the `test_file_path`
+    fixture. Must be used with the `test_file_path` fixture.
+    """
+    with open(test_file_path,'rb') as file:
         return file.read()
