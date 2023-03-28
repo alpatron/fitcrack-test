@@ -12,6 +12,7 @@ from page_object.library.dictionary import DictionaryManagement
 from page_object.library.rules import RuleFileManagement
 from page_object.library.charset import CharsetManagement
 from page_object.library.mask import MaskManagement
+from page_object.library.pcfg import PCFGManagement
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement
@@ -54,6 +55,10 @@ class SideBar(PageObject):
     @property
     def __mask_library_button(self) -> WebElement:
         return self.driver.find_element(By.CSS_SELECTOR,'a[href="/masks"]')
+
+    @property
+    def __pcfg_library_button(self) -> WebElement:
+        return self.driver.find_element(By.CSS_SELECTOR,'a[href="/pcfg"]')
 
     def goto_add_job(self) -> AddJobPage:
         """Opens the page Add Job page and returns an AddJobPage object.
@@ -98,3 +103,12 @@ class SideBar(PageObject):
         self.__library_button.click()
         self.__mask_library_button.click()
         return MaskManagement(self.driver)
+
+    def goto_pcfg_library(self) -> PCFGManagement:
+        """Opens the PCFG page in the Library tab
+        and returns a PCFGManagement object.
+        Previously generated objects by the `goto_XYZ` methods cease to be useable.
+        """
+        self.__library_button.click()
+        self.__pcfg_library_button.click()
+        return PCFGManagement(self.driver)
