@@ -13,6 +13,7 @@ from page_object.library.rules import RuleFileManagement
 from page_object.library.charset import CharsetManagement
 from page_object.library.mask import MaskManagement
 from page_object.library.pcfg import PCFGManagement
+from page_object.library.markov import MarkovFileManagement
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement
@@ -60,6 +61,10 @@ class SideBar(PageObject):
     def __pcfg_library_button(self) -> WebElement:
         return self.driver.find_element(By.CSS_SELECTOR,'a[href="/pcfg"]')
 
+    @property
+    def __markov_file_library_button(self) -> WebElement:
+        return self.driver.find_element(By.CSS_SELECTOR,'a[href="/markovChains"]')
+
     def goto_add_job(self) -> AddJobPage:
         """Opens the page Add Job page and returns an AddJobPage object.
         Previously generated objects by the `goto_XYZ` methods cease to be useable.
@@ -67,7 +72,7 @@ class SideBar(PageObject):
         self.__jobs_button.click()
         self.__add_job_button.click()
         return AddJobPage(self.driver)
-    
+
     def goto_dictionary_library(self) -> DictionaryManagement:
         """Opens the Dictionary page in the Library tab
         and returns a DictionaryManagement object.
@@ -76,7 +81,7 @@ class SideBar(PageObject):
         self.__library_button.click()
         self.__dictionary_library_button.click()
         return DictionaryManagement(self.driver)
-    
+
     def goto_rule_file_library(self) -> RuleFileManagement:
         """Opens the Rules page in the Library tab
         and returns a RuleFileManagement object.
@@ -94,7 +99,7 @@ class SideBar(PageObject):
         self.__library_button.click()
         self.__charset_library_button.click()
         return CharsetManagement(self.driver)
-    
+
     def goto_mask_library(self) -> MaskManagement:
         """Opens the Masks page in the Library tab
         and returns a MaskFileManagement object.
@@ -112,3 +117,12 @@ class SideBar(PageObject):
         self.__library_button.click()
         self.__pcfg_library_button.click()
         return PCFGManagement(self.driver)
+
+    def goto_markov_file_library(self) -> MarkovFileManagement:
+        """Opens the Markov Chains page in the Library tab
+        and returns a MarkovFileManagement object.
+        Previously generated objects by the `goto_XYZ` methods cease to be useable.
+        """
+        self.__library_button.click()
+        self.__markov_file_library_button.click()
+        return MarkovFileManagement(self.driver)

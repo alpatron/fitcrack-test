@@ -24,12 +24,12 @@ class GenericLibraryTableRow(PageComponentObject):
         return self._element.find_element(By.CSS_SELECTOR,'td:last-child>button')
     
     @property
-    def _name_link(self) -> WebElement:
+    def _name_element(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR,'td:first-child a')
 
     @property
     def name(self) -> str:
-        return self._name_link.text
+        return self._name_element.text
 
     def delete(self) -> None:
         self.__delete_button.click()
