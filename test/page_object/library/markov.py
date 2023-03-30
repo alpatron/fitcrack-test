@@ -19,7 +19,11 @@ if TYPE_CHECKING:
 
 class MarkovFileManagement(PageObject):
     def ensure_loaded(self):
-        WebDriverWait(self.driver,30,ignored_exceptions={InvalidStateError,NoSuchElementException}).until(lambda _: len(self.get_available_markov_files()) != 0)
+        WebDriverWait(self.driver,30,ignored_exceptions={InvalidStateError,NoSuchElementException}).until(
+            lambda driver: 
+            driver.find_element(By.XPATH,'//*[contains(@class, "v-card__title") and text()[contains(.,"Markov chains")]]')
+            and len(self.get_available_markov_files()) != 0
+        )
 
     @property
     def __markov_file_table(self) -> WebElement:

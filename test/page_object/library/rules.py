@@ -19,7 +19,11 @@ if TYPE_CHECKING:
 
 class RuleFileManagement(PageObject):
     def ensure_loaded(self):
-        WebDriverWait(self.driver,30,ignored_exceptions={InvalidStateError,NoSuchElementException,ElementClickInterceptedException}).until(lambda _: len(self.get_available_rule_files()) != 0)
+        WebDriverWait(self.driver,30,ignored_exceptions={InvalidStateError,NoSuchElementException,ElementClickInterceptedException}).until(
+            lambda driver: 
+                driver.find_element(By.XPATH,'//*[contains(@class, "v-card__title") and text()[contains(.,"Rules")]]')
+                and len(self.get_available_rule_files()) != 0
+        )
 
     @property
     def __rule_file_table(self) -> WebElement:

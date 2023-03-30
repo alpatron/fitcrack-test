@@ -18,7 +18,11 @@ if TYPE_CHECKING:
 
 class MaskManagement(PageObject):
     def ensure_loaded(self):
-        WebDriverWait(self.driver,30,ignored_exceptions={InvalidStateError,NoSuchElementException}).until(lambda _: len(self.get_available_mask_files()) != 0)
+        WebDriverWait(self.driver,30,ignored_exceptions={InvalidStateError,NoSuchElementException}).until(
+            lambda driver: 
+                driver.find_element(By.XPATH,'//*[contains(@class, "v-card__title") and text()[contains(.,"Mask sets")]]')
+                and len(self.get_available_mask_files()) != 0
+        )
 
     @property
     def __mask_file_table(self) -> WebElement:

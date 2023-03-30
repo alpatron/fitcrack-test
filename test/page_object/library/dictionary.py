@@ -20,7 +20,11 @@ if TYPE_CHECKING:
 
 class DictionaryManagement(PageObject):
     def ensure_loaded(self):
-        WebDriverWait(self.driver,30,ignored_exceptions={InvalidStateError,NoSuchElementException,ElementClickInterceptedException}).until(lambda _: len(self.get_available_dictionaries()) != 0)
+        WebDriverWait(self.driver,30,ignored_exceptions={InvalidStateError,NoSuchElementException,ElementClickInterceptedException}).until(
+            lambda driver:
+                driver.find_element(By.XPATH,'//*[contains(@class, "v-card__title") and text()[contains(.,"Dictionaries")]]')
+                and len(self.get_available_dictionaries()) != 0
+        )
 
     @property
     def __dictionary_table(self) -> WebElement:

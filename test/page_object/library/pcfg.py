@@ -19,7 +19,11 @@ if TYPE_CHECKING:
 
 class PCFGManagement(PageObject):
     def ensure_loaded(self):
-        WebDriverWait(self.driver,30,ignored_exceptions={InvalidStateError,NoSuchElementException}).until(lambda _: len(self.get_available_pcfgs()) != 0)
+        WebDriverWait(self.driver,30,ignored_exceptions={InvalidStateError,NoSuchElementException}).until(
+            lambda driver: 
+                driver.find_element(By.XPATH,'//*[contains(@class, "v-card__title") and text()[contains(.,"PCFGs")]]')
+                and len(self.get_available_pcfgs()) != 0
+        )
 
     @property
     def __pcfg_file_table(self) -> WebElement:
