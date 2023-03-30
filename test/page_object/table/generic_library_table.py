@@ -34,6 +34,8 @@ class GenericLibraryTableRow(PageComponentObject):
     def delete(self) -> None:
         self.__delete_button.click()
         ActionChains(self.driver).send_keys(Keys.ENTER).perform()
+        self.get_snackbar_notification(raise_exception_on_error=True)
+        self._wait_until_snackbar_notification_disappears()
 
     @overload
     def download(self,as_binary:bool=False) -> str: ...
