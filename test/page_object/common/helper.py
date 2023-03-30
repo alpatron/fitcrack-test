@@ -33,11 +33,18 @@ def click_away(driver:WebDriver) -> None:
     may appear (for example when using the mask editor). You can use this method to
     implement a click away in such cases.
 
-    This method should work in almost all cases. One exception is the login page, where
-    the element this method relies on does not exist. But there is no need to use that function
-    there.
+    This method should work in almost all cases. One exception is dialogs--
+    in dialogs, this function closes the dialog (it clicks away from the dialog).
+    The other exception is the login page, where the element this method relies on does not exist.
+    But there is no need to use that function there.
     """
     ActionChains(driver).click(driver.find_element(By.CSS_SELECTOR,'header .v-toolbar__title')).perform() # ActionsChains is used to disregard the additional checks the standard element.click() performs.
+
+def click_away_dialog(driver:WebDriver) -> None:
+    """Same as `click_away` but for use when in dialog windows.
+    (The normal click_away would close the dialog).
+    """
+    ActionChains(driver).click(driver.find_element(By.CSS_SELECTOR,'.v-dialog--active .v-card__title')).perform() # ActionsChains is used to disregard the additional checks the standard element.click() performs.
 
 def obstructed_click_workaround(driver:WebDriver, element:WebElement):
     """Sometimes in Fitcrack Webadmin, some elements cannot be clicked using the default

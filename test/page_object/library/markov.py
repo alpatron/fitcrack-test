@@ -8,8 +8,10 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import ActionChains
 
 from page_object.common.page_object import PageObject
+from page_object.common.helper import click_away, predicate_in_list
 from page_object.common.exception import InvalidStateError
 from page_object.table.markov_file_management_row import MarkovFileManagementRow
+from page_object.table.dictionary_selection import DictionarySelection
 from page_object.table.table_manipulation import load_table_elements
 
 if TYPE_CHECKING:
@@ -42,6 +44,14 @@ class MarkovFileManagement(PageObject):
         return self.driver.find_element(By.XPATH,'//div[text()[contains(.,"Make from dictionary")]]')
 
     @property
+    def __upload_dialog_from_dictionary_table(self) -> WebElement:
+        return self.driver.find_element(By.CSS_SELECTOR,'.v-dialog--active table')
+
+    @property
+    def __upload_dialog_from_dictionary_submit_button(self) -> WebElement:
+        return self.driver.find_element(By.XPATH,'//span[text()[contains(.,"Make from dictionary")]]')
+
+    @property
     def __upload_dialog_file_input(self) -> WebElement:
         label = self.driver.find_element(By.XPATH,'//label[text()="Select files"]')
         input_id = label.get_attribute('for')
@@ -64,4 +74,24 @@ class MarkovFileManagement(PageObject):
         self.__upload_dialog_upload_button.click()
         self.get_snackbar_notification(raise_exception_on_error=True)
         self._wait_until_snackbar_notification_disappears()
+
+
+    def get_available_dictionaries(self) -> List[str]:
+        self.__add_new_button.click()
+        self.__upload_dialog_from_dictionary_mode_selector.click()
+        dictionaries = load_table_elements(self.driver,self.__upload_dialog_from_dictionary_table,DictionarySelection,in_dialog=True)
+        dictionary_names = [x.name for x in dictionaries]
+        click_away(self.driver)
+        return dictionary_names
     
+    def make_markov_file_from_dictionary(self,dictionary_name:str):
+        self.__add_new_button.click()
+        ActionChains(self.driver).pause(4).perform() #Wait for animation to finish
+        self.__upload_dialog_from_dictionary_mode_selector.click()
+        dictionaries = load_table_elements(self.driver,self.__upload_dialog_from_dictionary_table,DictionarySelection,in_dialog=True)
+        wanted_dictionary = predicate_in_list(lambda x: x.name == dictionary_name,dictionaries)
+        wanted_dictionary.enabled = True
+        self.__upload_dialog_from_dictionary_submit_button.click()
+        self._wait_until_dialog_closes(300)
+        self.get_snackbar_notification(raise_exception_on_error=True)
+        self._wait_until_snackbar_notification_disappears()

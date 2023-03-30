@@ -15,7 +15,7 @@ from selenium.webdriver.support.relative_locator import locate_with
 from selenium.webdriver import ActionChains
 from selenium.common.exceptions import StaleElementReferenceException
 
-from page_object.common.helper import click_away, near_locator_distance_workaround
+from page_object.common.helper import click_away, click_away_dialog, near_locator_distance_workaround
 from page_object.common.exception import InvalidStateError
 
 if TYPE_CHECKING:
@@ -83,7 +83,7 @@ def show_as_many_rows_per_table_page_as_possible(driver:WebDriver,table:WebEleme
     rows_per_page_dropdown_largest_choice.click()
 
 
-def load_table_elements(driver:WebDriver,table:WebElement,constructor:Type[T_PageComponentObject]) -> List[T_PageComponentObject]:
+def load_table_elements(driver:WebDriver,table:WebElement,constructor:Type[T_PageComponentObject],in_dialog:bool=False) -> List[T_PageComponentObject]:
     """Works like `build_table_row_objects_from_table`, but provides more checks:
     
     Ensures that the table shows as many rows as possible by using the "rows per page" selection.
@@ -102,8 +102,14 @@ def load_table_elements(driver:WebDriver,table:WebElement,constructor:Type[T_Pag
     function is running, WebDriver emits a StaleElementException as the
     previously existing <tr> elements cease to exist). If it fails even after ten tries,
     raises an InvalidStateError.
+
+    Set `in_dialog` to True if you use this function for tables in dialog boxes.
     """
-    click_away(driver) #Any previous call to show_as_many_rows_per_table_page_as_possible may have left an open selection box; we need to close it.
+    #Any previous call to show_as_many_rows_per_table_page_as_possible may have left an open selection box; we need to close it.
+    if in_dialog:
+        click_away_dialog(driver)
+    else:
+        click_away(driver)
     show_as_many_rows_per_table_page_as_possible(driver,table)
     for _ in range(10):
         try:

@@ -50,8 +50,15 @@ class PageObject:
     def _snackbar_notification_text(self) -> WebElement:
         return self.driver.find_element(By.CSS_SELECTOR,'.errorSnackbar .v-alert__content')
     
+    @property
+    def _dialog_window(self) -> WebElement:
+        return self.driver.find_element(By.CSS_SELECTOR,'.v-dialog--active')
+
     def _wait_until_snackbar_notification_disappears(self) -> None:
         WebDriverWait(self.driver,10).until(invisibility_of_element(self._snackbar_notification_text))
+
+    def _wait_until_dialog_closes(self,timeout:float=10) -> None:
+        WebDriverWait(self.driver,timeout).until(invisibility_of_element(self._dialog_window))
 
     def get_snackbar_notification(self,raise_exception_on_error:bool=False) -> WebadminSnackbarNotification:
         WebDriverWait(self.driver,10).until(visibility_of(self._snackbar_notification_text))
