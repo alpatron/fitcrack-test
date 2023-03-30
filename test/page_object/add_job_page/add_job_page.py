@@ -28,7 +28,7 @@ class AddJobPage(PageObject):
 
     def ensure_loaded(self):
         """Waits until the job-name field appears."""
-        WebDriverWait(self.driver,30,ignored_exceptions={JavascriptException, NoSuchElementException}).until(lambda _: self.__name_field)
+        WebDriverWait(self.driver,30,ignored_exceptions={JavascriptException, NoSuchElementException}).until(lambda _: self.__name_field and self.__attack_settings_button)
 
     @property
     def __name_field(self) -> WebElement:
