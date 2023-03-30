@@ -29,7 +29,7 @@ class PCFGAttackSettings(PageObject):
         for vuejs to settle and finish all animations and DOM manipulation.
         """
         try:
-            WebDriverWait(self.driver,30).until(lambda _: len(self.get_available_pcfg_grammars()) != 0 and len(self.get_available_rule_files()) != 0)
+            WebDriverWait(self.driver,30).until(lambda _: len(self.get_available_pcfgs()) != 0 and len(self.get_available_rule_files()) != 0)
             ActionChains(self.driver).pause(5).perform()
         except TimeoutException:
             pass
@@ -52,7 +52,7 @@ class PCFGAttackSettings(PageObject):
             locate_with(By.TAG_NAME,'input').below({By.XPATH:'//span[text()[contains(.,"Edit keyspace limit")]]'})  # type: ignore
         )
 
-    def get_available_pcfg_grammars(self) -> List[PCFGGrammarSelection]:
+    def get_available_pcfgs(self) -> List[PCFGGrammarSelection]:
         """Returns a list of PCFGGrammarSelection objects representing the grammar files
         that can be selected for the PCFG attack.
         """
@@ -64,7 +64,7 @@ class PCFGAttackSettings(PageObject):
         """Given the name of a PCFG-grammar file, selects this file to be used.
         Raises exception on failure.
         """
-        activate_elements_from_table_by_list_lookup(self.get_available_pcfg_grammars(),lambda x: x.name,[grammar])
+        activate_elements_from_table_by_list_lookup(self.get_available_pcfgs(),lambda x: x.name,[grammar])
 
     def get_available_rule_files(self) -> List[RuleFileSelection]:
         """Returns a list of RuleFileSelection objects representing the rule files
