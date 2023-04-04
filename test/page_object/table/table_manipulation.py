@@ -62,11 +62,17 @@ def activate_elements_from_table_by_list_lookup(table_rows:List[T_GenericTableSe
 
     Raises InvalidStateError if not all requested table rows could be activated.
     """
-    found_wanted_rows = list(filter(lambda x: lookup_value_getter(x) in lookup_values, table_rows))
-    if len(found_wanted_rows) != len(lookup_values): #TODO: Possibly there could be also duplicate names; do we want to check for those?
-        raise InvalidStateError('Some requested rows do not exist in the table.\n')
-    for row in found_wanted_rows:
-        row.enabled = True
+    found_elements = 0
+    for row in table_rows:
+        if lookup_value_getter(row) in lookup_values:
+            row.enabled = True
+            found_elements += 1
+        else:
+            row.enabled = False
+    if found_elements != len(lookup_values):
+        raise InvalidStateError(
+            f'Asked to activate {len(lookup_values)} elements, but only {found_elements} were found'
+        )
 
 
 def show_as_many_rows_per_table_page_as_possible(driver:WebDriver,table:WebElement) -> None:
@@ -83,7 +89,7 @@ def show_as_many_rows_per_table_page_as_possible(driver:WebDriver,table:WebEleme
     rows_per_page_dropdown_largest_choice.click()
 
 
-def load_table_elements(driver:WebDriver,table:WebElement,constructor:Type[T_PageComponentObject],in_dialog:bool=False) -> List[T_PageComponentObject]:
+def load_table_elements(driver:WebDriver,table:WebElement,constructor:Type[T_PageComponentObject],no_element_text:str='No data available',no_ensure_most:bool=False,in_dialog:bool=False) -> List[T_PageComponentObject]:
     """Works like `build_table_row_objects_from_table`, but provides more checks:
     
     Ensures that the table shows as many rows as possible by using the "rows per page" selection.
@@ -103,6 +109,12 @@ def load_table_elements(driver:WebDriver,table:WebElement,constructor:Type[T_Pag
     previously existing <tr> elements cease to exist). If it fails even after ten tries,
     raises an InvalidStateError.
 
+    Set `no_element_text` to the text that is shown when no elements are present.
+    By default this is set to "No data available", as this is most common in Webadmin.
+    
+    Set `no_ensure_most` to True to suppress making sure the largest number of elements are shown
+    (e.g. when the table doesn't have an option for changing the number of elements shown).
+    
     Set `in_dialog` to True if you use this function for tables in dialog boxes.
     """
     #Any previous call to show_as_many_rows_per_table_page_as_possible may have left an open selection box; we need to close it.
@@ -110,12 +122,13 @@ def load_table_elements(driver:WebDriver,table:WebElement,constructor:Type[T_Pag
         click_away_dialog(driver)
     else:
         click_away(driver)
-    show_as_many_rows_per_table_page_as_possible(driver,table)
+    if not no_ensure_most:
+        show_as_many_rows_per_table_page_as_possible(driver,table)
     for _ in range(10):
         try:
             td_elements_in_table = table.find_elements(By.TAG_NAME,'td')
             if len(td_elements_in_table) == 1:
-                if td_elements_in_table[0].text == 'No data available':
+                if td_elements_in_table[0].text == no_element_text:
                     return []
                 if td_elements_in_table[0].text == 'Loading items...':
                     raise InvalidStateError('Table elements have not loaded yet.')

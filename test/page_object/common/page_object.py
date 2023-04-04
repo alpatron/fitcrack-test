@@ -4,6 +4,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, TypeVar
 
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.expected_conditions import invisibility_of_element, visibility_of
 from selenium.webdriver.common.by import By
 
@@ -55,10 +56,16 @@ class PageObject:
         return self.driver.find_element(By.CSS_SELECTOR,'.v-dialog--active')
 
     def _wait_until_snackbar_notification_disappears(self) -> None:
-        WebDriverWait(self.driver,10).until(invisibility_of_element(self._snackbar_notification_text))
+        try:
+            WebDriverWait(self.driver,10).until(invisibility_of_element(self._snackbar_notification_text))
+        except NoSuchElementException:
+            pass
 
     def _wait_until_dialog_closes(self,timeout:float=10) -> None:
-        WebDriverWait(self.driver,timeout).until(invisibility_of_element(self._dialog_window))
+        try:
+            WebDriverWait(self.driver,timeout).until(invisibility_of_element(self._dialog_window))
+        except NoSuchElementException:
+            pass
 
     def get_snackbar_notification(self,raise_exception_on_error:bool=False) -> WebadminSnackbarNotification:
         WebDriverWait(self.driver,10).until(visibility_of(self._snackbar_notification_text))
