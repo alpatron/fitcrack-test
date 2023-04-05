@@ -73,6 +73,8 @@ class AddJobPage(PageObject):
         so a JobDetailPage object is reutned. The current JobCreationObject ceases to be useable.
         """
         self.__create_button.click()
+        self.get_snackbar_notification(raise_exception_on_error=True)
+        self._wait_until_snackbar_notification_disappears()
         return JobDetailPage(self.driver)
 
     def open_input_settings(self) -> InputSettings:
