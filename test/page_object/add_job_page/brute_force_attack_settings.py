@@ -65,15 +65,11 @@ class BruteForceAttackSettings(PageObject):
 
     @property
     def __charset_selection_table(self) -> WebElement:
-        return self.driver.find_element(
-            locate_with(By.TAG_NAME,'table').below({By.XPATH:'//span[text()[contains(.,"Select charsets (max. 4)")]]'})  # type: ignore
-        )
+        return self.driver.find_element(By.XPATH,'//span[text()[contains(.,"Select charsets (max. 4)")]]/ancestor::div[contains(@class, "col")][1]//table')
 
     @property
     def __markov_selection_table(self) -> WebElement:
-        return self.driver.find_element(
-            locate_with(By.TAG_NAME,'table').below({By.XPATH:'//span[text()[contains(.,"Markov file")]]'})  # type: ignore
-        )
+        return self.driver.find_element(By.XPATH,'//span[text()[contains(.,"Markov file")]]/ancestor::div[contains(@class, "col")][1]//table')
 
     @property
     def __markov_threshold_input(self) -> WebElement:
