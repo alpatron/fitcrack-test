@@ -114,7 +114,8 @@ def download_file_webadmin(driver:WebDriver, link:str, as_binary:bool=False) -> 
     Selenium does not support file downloads, so we need to do downloads ourselves.
     """
     jwt = driver.execute_script('return localStorage.getItem("jwt");')
-    response = requests.get(link,headers={'Authorization': f'Bearer {jwt}'})
+    cookies = {x['name']:x['value'] for x in driver.get_cookies()}
+    response = requests.get(link,cookies=cookies,headers={'Authorization': f'Bearer {jwt}'})
     if as_binary:
         return response.content
     else:
