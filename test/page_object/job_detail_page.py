@@ -37,9 +37,7 @@ class JobDetailPage(PageObject):
 
     @property
     def __hash_table(self) -> WebElement:
-        return self.driver.find_element(
-            locate_with(By.TAG_NAME,'table').below({By.XPATH:'//span[text()="Hashes"]'})   # type: ignore
-        )
+        return self.driver.find_element(By.XPATH,'//span[text()[contains(.,"Hashes")]]/ancestor::div[contains(@class, "col")][1]//table')   
 
     @property
     def __job_state_text(self) -> WebElement:
