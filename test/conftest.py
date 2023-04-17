@@ -81,6 +81,21 @@ def pytest_report_header(config:_pytest.config.Config, startdir):
         f'fitcrack password: {credentials.password}'
     ]
 
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    """THIS FUNCTION IS TAKEN VERBATIM FROM THE OFFICIAL PYTEST DOCUMENTATION AT:
+    <https://docs.pytest.org/en/6.2.x/example/simple.html#making-test-result-information-available-in-fixtures>
+
+    This code is responsible for allowing to see the test results in fixtures.
+    """
+    # execute all other hooks to obtain the report object
+    outcome = yield
+    rep = outcome.get_result()
+
+    # set a report attribute for each phase of a call, which can
+    # be "setup", "call", "teardown"
+
+    setattr(item, "rep_" + rep.when, rep)
 
 @pytest.fixture(scope='session',autouse=True)
 def require_base_url(base_url) -> None:
