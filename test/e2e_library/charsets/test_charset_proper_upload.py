@@ -45,4 +45,5 @@ class TestCharsetProperUpload:
     def test_delete(self,test_file_path:Path,charset_management:CharsetManagement):
         uploaded_charset = charset_management.get_charset_with_name(test_file_path.stem)
         uploaded_charset.delete()
-        assert not predicate_in_list(lambda x: x.name == test_file_path.stem, charset_management.get_available_charset_files())
+        with pytest.raises(ValueError):
+            predicate_in_list(lambda x: x.name == test_file_path.stem, charset_management.get_available_charset_files())

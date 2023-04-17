@@ -114,8 +114,8 @@ testdata = [
         hashes=[
             ('b26940e5e462f4d4767933d02e870b00b884d0c5', 'HEX<bbc8cdcf>'),
         ],
-        masks=['?u?u?u?u?u?u'],
-        custom_charsets=['cz_ISO-8859-2.hcchr'],
+        masks=['?1?1?1?1'],
+        custom_charsets=['cz_ISO-8859-2'],
         markov_file=None,
         markov_mode=MarkovMode.MARKOV_DISABLED,
         markov_threshold=None
