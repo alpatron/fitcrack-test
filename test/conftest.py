@@ -25,6 +25,7 @@ if TYPE_CHECKING:
     from page_object.dashboard import Dashboard
     from page_object.side_bar import SideBar
     from page_object.add_job_page.add_job_page import AddJobPage
+    from page_object.add_job_page.input_settings import InputSettings
 
 
 class Credentials(NamedTuple):
@@ -155,6 +156,12 @@ def add_job_page(side_bar:SideBar) -> AddJobPage:
     """Fixture that returns an AddJobPage object."""
     add_job_page = side_bar.goto_add_job()
     return add_job_page
+
+
+@pytest.fixture
+def input_settings(add_job_page:AddJobPage) -> InputSettings:
+    """Fixture that returns an InputSettings object (input settings on the Add Job page)."""
+    return add_job_page.open_input_settings()
 
 
 @pytest.fixture

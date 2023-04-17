@@ -11,6 +11,8 @@ from datetime import datetime
 import pytest
 from selenium.webdriver.support.wait import WebDriverWait
 
+from page_object.common.helper import TERMINATING_JOB_STATES
+
 if TYPE_CHECKING:
     import _pytest.fixtures
     from selenium.webdriver.remote.webdriver import WebDriver
