@@ -15,7 +15,7 @@ from selenium.webdriver.support.relative_locator import locate_with
 from selenium.webdriver import ActionChains
 from selenium.common.exceptions import StaleElementReferenceException
 
-from page_object.common.helper import click_away, click_away_dialog, near_locator_distance_workaround
+from page_object.common.helper import click_away, click_away_dialog, near_locator_distance_workaround, scroll_into_view_workaround
 from page_object.common.exception import InvalidStateError
 
 if TYPE_CHECKING:
@@ -80,12 +80,16 @@ def show_as_many_rows_per_table_page_as_possible(driver:WebDriver,table:WebEleme
         locate_with(By.CLASS_NAME,'v-select__slot').below(table) #type: ignore
     )
     
+    #Sometimes the dropdown button is obstructed by the navbar,
+    #so we scroll the top of the table into view.
+    scroll_into_view_workaround(table)
     rows_per_page_dropdown_button.click()
 
     locator = locate_with(By.CSS_SELECTOR,'.v-list>div:last-child') #type: ignore
     near_locator_distance_workaround(locator,rows_per_page_dropdown_button)
     rows_per_page_dropdown_largest_choice = driver.find_element(locator) #type: ignore
 
+    ActionChains(driver).pause(2).perform() # Wait for animation to end
     rows_per_page_dropdown_largest_choice.click()
 
 

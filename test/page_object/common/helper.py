@@ -60,10 +60,7 @@ def obstructed_click_workaround(driver:WebDriver, element:WebElement):
     just the obstruction; i.e. including the things like visibility and whether an input element
     is enabled.
     """
-    _ = element.screenshot_as_base64
-    #Workaround because the current version of Selenium has broken scroll support in the
-    #Actions API in Firefox; the screenshot_as_base64 call forces a scroll using some old
-    #and reliable way.
+    scroll_into_view_workaround(element)
     ActionChains(driver).click(element).perform()
 
 
@@ -98,6 +95,16 @@ def clear_workaround(element:WebElement) -> None:
     #Selenium should offer a convenience method for chording, but the Python version does
     #not provide this. So we need to do this like so.
     element.send_keys(Keys.BACKSPACE)
+
+
+def scroll_into_view_workaround(element:WebElement) -> None:
+    """Scrolls an element into view and actually works.
+    This workaround is neccessary because the current version of Selenium has broken scroll
+    support in the Actions API in Firefox; the screenshot_as_base64 call forces a scroll using
+    some old and reliable way.
+    """
+    _ = element.screenshot_as_base64
+    
 
 @overload
 def download_file_webadmin(driver:WebDriver, link:str, as_binary:bool=False) -> str: ...
