@@ -126,6 +126,7 @@ class BruteForceAttackSettings(PageObject):
     def get_available_mask_files(self) -> List[str]:
         """Returns the names (strings) of all mask files that can be loaded."""
         self.__load_mask_button.click()
+        ActionChains(self.driver).pause(4).perform() # Wait for animation to finish
         show_as_many_rows_per_table_page_as_possible(self.driver,self.__mask_dialog_table)
         mask_files = build_table_row_objects_from_table(self.driver,self.__mask_dialog_table,MaskFileSelection)
         mask_names = [mask_file.name for mask_file in mask_files]
@@ -135,6 +136,7 @@ class BruteForceAttackSettings(PageObject):
     def load_mask_file(self,mask_file_name:str) -> None:
         """Loads the mask file with the given name."""
         self.__load_mask_button.click()
+        ActionChains(self.driver).pause(4).perform() # Wait for animation to finish
         show_as_many_rows_per_table_page_as_possible(self.driver,self.__mask_dialog_table)
         mask_files = build_table_row_objects_from_table(self.driver,self.__mask_dialog_table,MaskFileSelection)
         activate_elements_from_table_by_list_lookup(mask_files,lambda x: x.name,[mask_file_name])
