@@ -9,13 +9,9 @@ from typing import TYPE_CHECKING, List
 from datetime import datetime
 
 import pytest
-from selenium.webdriver.support.wait import WebDriverWait
-
-from page_object.common.helper import TERMINATING_JOB_STATES
 
 if TYPE_CHECKING:
     import _pytest.fixtures
-    from selenium.webdriver.remote.webdriver import WebDriver
     from page_object.add_job_page.add_job_page import AddJobPage
     
 
@@ -35,7 +31,7 @@ class GenericE2ECrackingTestInput:
 
 
 @pytest.fixture
-def e2e_cracking_test(selenium:WebDriver,add_job_page:AddJobPage,testdata:GenericE2ECrackingTestInput,request:_pytest.fixtures.FixtureRequest):
+def e2e_cracking_test(add_job_page:AddJobPage,testdata:GenericE2ECrackingTestInput,request:_pytest.fixtures.FixtureRequest):
     """Fixture for end-to-end cracking tests.
     
     Before the test, it inputs hashes (using the manual mode) and selects the hash type.
@@ -64,6 +60,6 @@ def e2e_cracking_test(selenium:WebDriver,add_job_page:AddJobPage,testdata:Generi
         job_detail_page = add_job_page.create_job()
         assert job_detail_page.get_job_state() == 'Ready'
         job_detail_page.start_job()
-        WebDriverWait(selenium,testdata.wait_time).until(lambda _: job_detail_page.get_job_state() in TERMINATING_JOB_STATES)
+        job_detail_page.wait_until_job_finished(testdata.wait_time)
         worked_on_hashes = job_detail_page.get_hashes()
         assert set(worked_on_hashes) == set(testdata.hashes)

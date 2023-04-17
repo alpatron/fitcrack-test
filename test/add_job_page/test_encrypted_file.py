@@ -5,12 +5,8 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
-from selenium.webdriver.support.wait import WebDriverWait
-
-from page_object.common.helper import TERMINATING_JOB_STATES
 
 if TYPE_CHECKING:
-    from selenium.webdriver.remote.webdriver import WebDriver
     from page_object.add_job_page.input_settings import InputSettings
     from page_object.add_job_page.add_job_page import AddJobPage
 
@@ -37,7 +33,7 @@ class TestEncryptedFile:
         hash_type = input_settings.get_selected_hash_type()
         assert hash_type == test_data.expected_hash_type
 
-    def test_extracted_hash_should_get_cracked(self,selenium:WebDriver,add_job_page:AddJobPage,input_settings:InputSettings, test_data:EncryptedFileTestInput):
+    def test_extracted_hash_should_get_cracked(self,add_job_page:AddJobPage,input_settings:InputSettings, test_data:EncryptedFileTestInput):
         input_settings.extract_hash_from_file(test_data.filepath)
         attack_settings = add_job_page.open_attack_settings()
         brute_force_settings = attack_settings.choose_brute_force_mode()
@@ -45,6 +41,6 @@ class TestEncryptedFile:
 
         job_detail_page = add_job_page.create_job()
         job_detail_page.start_job()
-        WebDriverWait(selenium,600).until(lambda _: job_detail_page.get_job_state() in TERMINATING_JOB_STATES)
+        job_detail_page.wait_until_job_finished(600)
 
         assert job_detail_page.get_hashes()[0][1] == 'password'

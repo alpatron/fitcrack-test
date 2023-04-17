@@ -104,6 +104,13 @@ class JobDetailPage(PageObject):
     def get_active_hosts(self) -> List[ActiveHostEntry]:
         return load_table_elements(self.driver,self.__active_hosts_table,ActiveHostEntry,no_element_text='None assigned',no_ensure_most=True)
 
+    def check_if_job_finished(self) -> bool:
+        return self.get_job_state() in ['Finished','Exhausted']
+    
+    def wait_until_job_finished(self,timeout:float) -> None:
+        WebDriverWait(self.driver,timeout).until(lambda _: self.check_if_job_finished())
+
+
 class ActiveHostEntry(PageComponentObject):
     @property
     def __name_field(self) -> WebElement:
