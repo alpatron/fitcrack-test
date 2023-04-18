@@ -56,7 +56,7 @@ def e2e_cracking_test(add_job_page:AddJobPage,testdata:GenericE2ECrackingTestInp
     #We want to run asserts only if the the test code does not raise an exception
     #The _rep attributes do not exist by default; see /test/conftest.py::pytest_runtest_makereport
     #to understand how these are made available.
-    if request.node.rep_setup.passed and request.node.rep_call.passed:
+    if request.node.rep_setup.passed and request.node.rep_call.passed: # type: ignore
         job_detail_page = add_job_page.create_job()
         assert job_detail_page.get_job_state() == 'Ready'
         job_detail_page.start_job()

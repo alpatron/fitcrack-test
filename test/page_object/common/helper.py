@@ -28,8 +28,6 @@ if TYPE_CHECKING:
     X = TypeVar('X')
 
 
-TERMINATING_JOB_STATES = ['Finished','Exhausted']
-
 def click_away(driver:WebDriver) -> None:
     """Sometimes when testing, one needs to "click away" from, say, an input field to return
     to a neutral application state. For example, when typing into an input field, a pop-up
