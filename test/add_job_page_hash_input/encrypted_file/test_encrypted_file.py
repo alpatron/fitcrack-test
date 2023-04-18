@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
 
 if TYPE_CHECKING:
+    import _pytest.fixtures
+
     from page_object.add_job_page.input_settings import InputSettings
     from page_object.add_job_page.add_job_page import AddJobPage
 
@@ -33,7 +36,9 @@ class TestEncryptedFile:
         hash_type = input_settings.get_selected_hash_type()
         assert hash_type == test_data.expected_hash_type
 
-    def test_extracted_hash_should_get_cracked(self,add_job_page:AddJobPage,input_settings:InputSettings, test_data:EncryptedFileTestInput):
+    def test_extracted_hash_should_get_cracked(self,add_job_page:AddJobPage,input_settings:InputSettings, test_data:EncryptedFileTestInput,request:_pytest.fixtures.FixtureRequest):
+        add_job_page.set_job_name(f'Job created by an automatic Fitcrack test -- {request.node.name} -- {datetime.utcnow().isoformat()}')
+
         input_settings.extract_hash_from_file(test_data.filepath)
         attack_settings = add_job_page.open_attack_settings()
         brute_force_settings = attack_settings.choose_brute_force_mode()
