@@ -103,7 +103,11 @@ def scroll_into_view_workaround(element:WebElement) -> None:
     This workaround is neccessary because the current version of Selenium has broken scroll
     support in the Actions API in Firefox; the screenshot_as_base64 call forces a scroll using
     some old and reliable way.
+
+    Apparently it is not so reliable, as sometimes the first scroll does not work.
+    Selenium should really fix this, so that we do not need to this silly thing.
     """
+    _ = element.screenshot_as_base64
     _ = element.screenshot_as_base64
     
 
