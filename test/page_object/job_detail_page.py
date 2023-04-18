@@ -1,5 +1,9 @@
-"""Page object representing details page of a job.
-Exports single class--the aforementioned page object.
+"""Page objects representing details page of a job.
+
+Exports three classes:
+JobDetailPage -- a page object modeling the details page
+ActiveHostEntry -- a page-component object representing a row in the active-hosts table
+WorkunitEntry -- a page-component object representing a row in the workunits table
 """
 
 from __future__ import annotations
@@ -13,6 +17,7 @@ from selenium.webdriver import ActionChains
 
 from page_object.common.page_object import PageObject, PageComponentObject
 from page_object.common.helper import click_away
+from page_object.common.exception import InvalidStateError
 from page_object.table.host_selection import HostSelection
 from page_object.table.table_manipulation import build_table_row_objects_from_table, activate_elements_from_table_by_list_lookup, load_table_elements
 
@@ -60,6 +65,10 @@ class JobDetailPage(PageObject):
         return self.driver.find_element(
             locate_with(By.TAG_NAME,'table').above(self.__assign_hosts_button) #type: ignore
         ) 
+
+    @property
+    def __workunit_table(self) -> WebElement:
+        return self.driver.find_element(By.XPATH,'//b[text()[contains(.,"Workunits")]]/ancestor::div[contains(@class, "wu-container")][1]//table')   
 
     def get_hashes(self) -> List[tuple[str,str]]:
         """Return a list of tuples, where the first element is an input hash of the cracking job
@@ -110,6 +119,9 @@ class JobDetailPage(PageObject):
     def wait_until_job_finished(self,timeout:float) -> None:
         WebDriverWait(self.driver,timeout).until(lambda _: self.check_if_job_finished())
 
+    def get_workunits(self) -> List[WorkunitEntry]:
+        return load_table_elements(self.driver,self.__workunit_table,WorkunitEntry)
+
 
 class ActiveHostEntry(PageComponentObject):
     @property
@@ -144,3 +156,98 @@ class ActiveHostEntry(PageComponentObject):
             return 'online'
         except NoSuchElementException:
             return self.__online_field.text
+
+
+class WorkunitEntry(PageComponentObject):
+    @property
+    def __host_field(self) -> WebElement:
+        return self._element.find_element(By.CSS_SELECTOR, 'td:nth-child(1) a span')
+    
+    @property
+    def __progress_field(self) -> WebElement:
+        return self._element.find_element(By.CSS_SELECTOR, 'td:nth-child(2) div span')
+    
+    @property
+    def __speed_field(self) -> WebElement:
+        return self._element.find_element(By.CSS_SELECTOR, 'td:nth-child(3) span')
+    
+    @property
+    def __cracking_time_field(self) -> WebElement:
+        return self._element.find_element(By.CSS_SELECTOR, 'td:nth-child(4)')
+    
+    @property
+    def __generated_time_field(self) -> WebElement:
+        return self._element.find_element(By.CSS_SELECTOR, 'td:nth-child(5)')
+    
+    @property
+    def __start_index_field(self) -> WebElement:
+        return self._element.find_element(By.CSS_SELECTOR, 'td:nth-child(6)')
+    
+    @property
+    def __keyspace_field(self) -> WebElement:
+        return self._element.find_element(By.CSS_SELECTOR, 'td:nth-child(7)')
+    
+    @property
+    def __retry_field(self) -> WebElement:
+        return self._element.find_element(By.CSS_SELECTOR, 'td:nth-child(8) span span')
+    
+    @property
+    def __finished_field(self) -> WebElement:
+        return self._element.find_element(By.CSS_SELECTOR, 'td:nth-child(9) span span')
+    
+    @property
+    def host(self) -> str:
+        """The name of the host this workunit is assigned to."""
+        return self.__host_field.text
+    
+    @property
+    def progress(self) -> int:
+        """The progress of workunit in percent."""
+        return int(self.__progress_field.text[0:-2])
+    
+    @property
+    def speed(self) -> str:
+        """The cracking speed of the workunit, as shown in Webadmin."""
+        return self.__speed_field.text
+    
+    @property
+    def cracking_time(self) -> str:
+        """The cracking time spent on this workunit, as shown in Webadmin."""
+        return self.__cracking_time_field.text
+    
+    @property
+    def generated_time(self) -> str:
+        """The time and date on which this workunit was generated, as shown in Webadmin."""
+        return self.__generated_time_field.text
+    
+    @property
+    def start_index(self) -> int:
+        """The start index of this workunit."""
+        return int(self.__start_index_field.text)
+    
+    @property
+    def keyspace(self) -> int:
+        """The keyspace processed by this workunit."""
+        return int(self.__keyspace_field.text.replace(',',''))
+    
+    @property
+    def retried(self) -> bool:
+        """Whether this workunit encountered a failure and is being retried."""
+        match self.__retry_field.text:
+            case 'No':
+                return False
+            case 'Yes':
+                return True
+            case _:
+                raise InvalidStateError('Could not determine the truthiness value. Field is neither "Yes" nor "No".')
+
+    @property
+    def finished(self) -> bool:
+        """Whether this workunit is finished and its results have been sent back."""
+        match self.__finished_field.text:
+            case 'No':
+                return False
+            case 'Yes':
+                return True
+            case _:
+                raise InvalidStateError('Could not determine the truthiness value. Field is neither "Yes" nor "No".')
