@@ -43,9 +43,11 @@ def test_selecting_zero_hosts_appears(job_detail_page:JobDetailPage):
 
 
 def test_selecting_all_hosts_appears(job_detail_page:JobDetailPage):
-    job_detail_page.select_hosts_for_job(job_detail_page.get_available_hosts())
+    available_hosts = job_detail_page.get_available_hosts()
+    
+    job_detail_page.select_hosts_for_job(available_hosts)
 
-    assert [ host.name for host in job_detail_page.get_active_hosts() ] == job_detail_page.get_available_hosts()
+    assert { host.name for host in job_detail_page.get_active_hosts() } == set(available_hosts)
 
 
 @pytest.mark.parametrize('desired_host_number',HOST_NUMBERS)
@@ -69,4 +71,4 @@ def test_progress_will_only_show_selected_host(job_detail_page:JobDetailPage,des
     job_detail_page.wait_until_job_finished(600)
 
     for workunit in job_detail_page.get_workunits():
-        assert workunit.host == desired_host
+        assert workunit.host == desired_host.rsplit(' (',1)[0]
