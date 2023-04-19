@@ -27,7 +27,7 @@ class GenericE2ECrackingTestInput:
     hash_type:str
     hashes:List[tuple[str,str]]
     _: KW_ONLY
-    wait_time:float = 3600
+    wait_time:float = 600
 
 
 @pytest.fixture

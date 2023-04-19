@@ -41,7 +41,8 @@ testdata = [
         ],
         grammar='john',
         rule_files=[],
-        keyspace_limit=None
+        keyspace_limit=None,
+        wait_time=3600
     ),
     PCFGTestInput(
         hash_type='sha1',
@@ -80,6 +81,7 @@ testdata = [
         ],
         grammar='john',
         rule_files=['toggles1.rule'],
-        keyspace_limit=None
+        keyspace_limit=None,
+        wait_time=3600
     ),
 ]
