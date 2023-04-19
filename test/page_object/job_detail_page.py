@@ -138,9 +138,13 @@ class ActiveHostEntry(PageComponentObject):
     
     @property
     def name(self) -> str:
-        """The file name of the host."""
+        """The name of the host."""
         return self.__name_field.text
 
+    @property
+    def host_id(self) -> int:
+        """The internal host ID used by Fitcrack Webadmin."""
+        return int(self.__name_field.get_attribute('href').split('/')[-1])
     @property
     def ip_address(self) -> str:
         """The IP address of the host."""
@@ -200,6 +204,11 @@ class WorkunitEntry(PageComponentObject):
         """The name of the host this workunit is assigned to."""
         return self.__host_field.text
     
+    @property
+    def host_id(self) -> int:
+        """The internal host ID used by Fitcrack Webadmin."""
+        return int(self.__host_field.get_attribute('href').split('/')[-1])
+
     @property
     def progress(self) -> int:
         """The progress of workunit in percent."""
