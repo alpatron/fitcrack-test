@@ -45,8 +45,6 @@ def e2e_cracking_test(add_job_page:AddJobPage,testdata:GenericE2ECrackingTestInp
     This fixture requires the test function to use a "testdata" fixture that provides a
     GenericE2ECrackingTestInput or derived object (see concrete test implementations for example.)
     """
-    add_job_page.set_job_name(f'Job created by an automatic Fitcrack test -- {request.node.name} -- {datetime.utcnow().isoformat()}')
-    
     input_settings = add_job_page.open_input_settings()
     input_settings.select_hash_type_exactly(testdata.hash_type)
     input_settings.input_hashes_manually([x[0] for x in testdata.hashes])

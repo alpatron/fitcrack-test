@@ -36,9 +36,7 @@ class TestEncryptedFile:
         hash_type = input_settings.get_selected_hash_type()
         assert hash_type == test_data.expected_hash_type
 
-    def test_extracted_hash_should_get_cracked(self,add_job_page:AddJobPage,input_settings:InputSettings, test_data:EncryptedFileTestInput,request:_pytest.fixtures.FixtureRequest):
-        add_job_page.set_job_name(f'Job created by an automatic Fitcrack test -- {request.node.name} -- {datetime.utcnow().isoformat()}')
-
+    def test_extracted_hash_should_get_cracked(self,add_job_page:AddJobPage,input_settings:InputSettings, test_data:EncryptedFileTestInput):
         input_settings.extract_hash_from_file(test_data.filepath)
         attack_settings = add_job_page.open_attack_settings()
         brute_force_settings = attack_settings.choose_brute_force_mode()

@@ -152,9 +152,12 @@ def dashboard(_start_logged_in:Tuple[SideBar,Dashboard]) -> Dashboard:
 
 
 @pytest.fixture
-def add_job_page(side_bar:SideBar) -> AddJobPage:
-    """Fixture that returns an AddJobPage object."""
+def add_job_page(side_bar:SideBar,request:_pytest.fixtures.FixtureRequest) -> AddJobPage:
+    """Fixture that returns an AddJobPage object.
+    The name of the test is automatically set to a string identifying the currently run test.
+    """
     add_job_page = side_bar.goto_add_job()
+    add_job_page.set_job_name(f'Job created by an automatic Fitcrack test -- {request.node.name} -- {datetime.utcnow().isoformat()}')
     return add_job_page
 
 
