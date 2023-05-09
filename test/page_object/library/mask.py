@@ -45,7 +45,7 @@ class MaskManagement(PageObject):
     def get_available_mask_files(self) -> List[MaskManagementRow]:
         return load_table_elements(self.driver,self.__mask_file_table,MaskManagementRow)
 
-    def upload_mask(self,filename:Union[str,Path]) -> None:
+    def upload_mask_file(self,filename:Union[str,Path]) -> None:
         self.__file_input.send_keys(str(filename))
         self.__upload_button.click()
         self.get_snackbar_notification(raise_exception_on_error=True)

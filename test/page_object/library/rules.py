@@ -59,18 +59,6 @@ class RuleFileManagement(PageObject):
 
         return build_table_row_objects_from_table(self.driver,self.__rule_file_table,RuleFileManagementRow)
 
-    def rule_file_with_name_exists(self,name:str):
-        for rule_file in self.get_available_rule_files():
-            if rule_file.name == name:
-                return True
-        return False
-    
-    def get_rule_file_with_name(self,name:str) -> RuleFileManagementRow:
-        for rule_file in self.get_available_rule_files():
-            if rule_file.name == name:
-                return rule_file
-        raise InvalidStateError(f'Rule file with name {name} could not be found.')
-
     def upload_rule_file(self,filename:Union[str,Path]) -> None:
         self.__file_input.send_keys(str(filename))
         self.__upload_button.click()

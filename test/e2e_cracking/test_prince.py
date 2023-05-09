@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 @dataclass(frozen=True)
 class PRINCETestInput(GenericE2ECrackingTestInput):
     dictionaries:List[str]
-    rule_files:List[str]
+    rule_file:Optional[str]
     min_password_len:int
     max_password_len:int
     min_element_count:int
@@ -33,7 +33,8 @@ def test_prince(e2e_cracking_test,selenium:WebDriver,add_job_page:AddJobPage,tes
     prince_settings = attackSettings.choose_prince_mode()
 
     prince_settings.select_dictionaries(testdata.dictionaries)
-    prince_settings.select_rule_files(testdata.rule_files)
+    if testdata.rule_file is not None:
+        prince_settings.select_rule_file(testdata.rule_file)
     prince_settings.set_minimal_password_length(testdata.min_password_len)
     prince_settings.set_maximal_password_length(testdata.max_password_len)
     prince_settings.set_minimal_number_of_elements_per_chain(testdata.min_element_count)

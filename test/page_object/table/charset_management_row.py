@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 from selenium.webdriver.common.by import By
 
-from page_object.table.generic_library_table import GenericLibraryTableRow
+from page_object.table.generic_library_table_row import GenericLibraryTableRow
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement

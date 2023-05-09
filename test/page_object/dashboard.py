@@ -18,3 +18,6 @@ class Dashboard(PageObject):
     @property
     def __welcome_text(self) -> WebElement:
         return self.driver.find_element(By.TAG_NAME,'h1')
+
+    def get_welcome_text(self) -> str:
+        return self.__welcome_text.text

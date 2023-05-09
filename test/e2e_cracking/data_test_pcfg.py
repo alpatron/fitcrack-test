@@ -14,7 +14,7 @@ testdata = [
             ('51abb9636078defbf888d8457a7c76f85c8f114c', '')
         ],
         grammar='facebook-pastebay',
-        rule_files=[],
+        rule_file=None,
         keyspace_limit=None
     ),
     PCFGTestInput(
@@ -27,7 +27,7 @@ testdata = [
             ('51abb9636078defbf888d8457a7c76f85c8f114c', '')
         ],
         grammar='twitter-banned',
-        rule_files=[],
+        rule_file=None,
         keyspace_limit=None
     ),
     PCFGTestInput(
@@ -40,7 +40,7 @@ testdata = [
             ('51abb9636078defbf888d8457a7c76f85c8f114c', '')
         ],
         grammar='john',
-        rule_files=[],
+        rule_file=None,
         keyspace_limit=None,
         wait_time=3600
     ),
@@ -54,7 +54,7 @@ testdata = [
             ('51abb9636078defbf888d8457a7c76f85c8f114c', '')
         ],
         grammar='facebook-pastebay',
-        rule_files=['best64.rule'],
+        rule_file='best64.rule',
         keyspace_limit=None
     ),
     PCFGTestInput(
@@ -67,7 +67,7 @@ testdata = [
             ('51abb9636078defbf888d8457a7c76f85c8f114c', '')
         ],
         grammar='twitter-banned',
-        rule_files=['leetspeak.rule'],
+        rule_file='leetspeak.rule',
         keyspace_limit=None
     ),
     PCFGTestInput(
@@ -80,7 +80,7 @@ testdata = [
             ('51abb9636078defbf888d8457a7c76f85c8f114c', '')
         ],
         grammar='john',
-        rule_files=['toggles1.rule'],
+        rule_file='toggles1.rule',
         keyspace_limit=None,
         wait_time=3600
     ),

@@ -34,7 +34,7 @@ class TestMaskProperUpload:
     @pytest.fixture(autouse=True)
     def mask_management(self, test_file_path:Path, side_bar:SideBar) -> MaskManagement:
         mask_management = side_bar.goto_mask_library()
-        mask_management.upload_mask(test_file_path)
+        mask_management.upload_mask_file(test_file_path)
         return mask_management
 
     def test_upload_did_not_fail(self):

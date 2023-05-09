@@ -15,7 +15,7 @@ testdata = [
             ('86c60296fa8751a5376d75f3a4fc7cef7d20e5b0', 'sunjohn')
         ],
         dictionaries=['honeynet.txt'],
-        rule_files=[],
+        rule_file=None,
         min_password_len=4,
         max_password_len=7,
         min_element_count=1,
@@ -32,7 +32,7 @@ testdata = [
             ('0832bccfc73b4d805820820933a3c92db4652a5a', 'Sunjohn')
         ],
         dictionaries=['honeynet.txt'],
-        rule_files=[],
+        rule_file=None,
         min_password_len=6,
         max_password_len=7,
         min_element_count=2,
@@ -51,7 +51,7 @@ testdata = [
             ('b8fa77a900fa9aa5341084f2f20cca35552d31a8', 'aBctest')
         ],
         dictionaries=['adobe100.txt'],
-        rule_files=['toggles1.rule'],
+        rule_file='toggles1.rule',
         min_password_len=4,
         max_password_len=7,
         min_element_count=1,

@@ -44,12 +44,6 @@ class CharsetManagement(PageObject):
     
     def get_available_charset_files(self) -> List[CharsetManagementRow]:
         return load_table_elements(self.driver,self.__charset_file_table,CharsetManagementRow)
-    
-    def get_charset_with_name(self,name:str) -> CharsetManagementRow:
-        for charset_file in self.get_available_charset_files():
-            if charset_file.name == name:
-                return charset_file
-        raise InvalidStateError(f'Charset file with name {name} could not be found.')
 
     def upload_charset(self,filename:Union[str,Path]) -> None:
         self.__file_input.send_keys(str(filename))

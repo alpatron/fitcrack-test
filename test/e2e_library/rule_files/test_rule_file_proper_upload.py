@@ -1,11 +1,10 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 from pathlib import Path
-from datetime import datetime
-import shutil
 
 import pytest
 
+from  page_object.common.helper import predicate_in_list
 
 if TYPE_CHECKING:
     from page_object.side_bar import SideBar
@@ -28,10 +27,10 @@ class TestRuleFileProperUpload:
         assert True
 
     def test_rule_appears_in_list(self,test_file_path:Path,rule_file_management:RuleFileManagement):
-        assert rule_file_management.rule_file_with_name_exists(test_file_path.name)
+        assert predicate_in_list(lambda x: x.name == test_file_path.name, rule_file_management.get_available_rule_files())
     
     def test_download_gives_same_file(self,test_file_path:Path,test_file_text_content:str,rule_file_management:RuleFileManagement):
-        uploaded_rule_file = rule_file_management.get_rule_file_with_name(test_file_path.name)
+        uploaded_rule_file = predicate_in_list(lambda x: x.name == test_file_path.name, rule_file_management.get_available_rule_files())
         downloaded_file = uploaded_rule_file.download()
 
         assert test_file_text_content == downloaded_file
@@ -43,6 +42,7 @@ class TestRuleFileProperUpload:
         assert dictionary_attack_settings.rule_file_with_name_exists(test_file_path.name)
 
     def test_delete(self,test_file_path:Path,rule_file_management:RuleFileManagement):
-        uploaded_rule_file = rule_file_management.get_rule_file_with_name(test_file_path.name)
+        uploaded_rule_file = predicate_in_list(lambda x: x.name == test_file_path.name, rule_file_management.get_available_rule_files())
         uploaded_rule_file.delete()
-        assert not rule_file_management.rule_file_with_name_exists(test_file_path.name)
+        with pytest.raises(ValueError):
+            predicate_in_list(lambda x: x.name == test_file_path.name, rule_file_management.get_available_rule_files())

@@ -4,6 +4,8 @@ from pathlib import Path
 
 import pytest
 
+from page_object.common.helper import predicate_in_list
+
 if TYPE_CHECKING:
     from page_object.side_bar import SideBar
     from page_object.library.dictionary import DictionaryManagement
@@ -29,10 +31,10 @@ class TestDictionarySortedUpload:
         assert True
 
     def test_dict_appears_in_list(self,test_file_path:Path,dictionary_management:DictionaryManagement):
-        assert dictionary_management.dictionary_with_name_exists(test_file_path.name)
+        assert predicate_in_list(lambda x: x.name == test_file_path.name, dictionary_management.get_available_dictionaries())
     
     def test_download_gives_sorted_file(self,test_file_path:Path,sorted_file_content:str,dictionary_management:DictionaryManagement):
-        uploaded_dictionary = dictionary_management.get_dictionary_with_name(test_file_path.name)
+        uploaded_dictionary = predicate_in_list(lambda x: x.name == test_file_path.name, dictionary_management.get_available_dictionaries())
         downloaded_file = uploaded_dictionary.download()
 
         assert sorted_file_content == downloaded_file
@@ -41,9 +43,10 @@ class TestDictionarySortedUpload:
         add_job_page = side_bar.goto_add_job()
         attack_settings = add_job_page.open_attack_settings()
         dictionary_attack_settings = attack_settings.choose_dictionary_mode()
-        assert dictionary_attack_settings.dictionary_with_name_exists(test_file_path.name)
+        assert predicate_in_list(lambda x: x.name == test_file_path.name, dictionary_attack_settings.get_available_dictionaries())
 
     def test_delete(self,test_file_path:Path,dictionary_management:DictionaryManagement):
-        uploaded_dictionary = dictionary_management.get_dictionary_with_name(test_file_path.name)
+        uploaded_dictionary = predicate_in_list(lambda x: x.name == test_file_path.name, dictionary_management.get_available_dictionaries())
         uploaded_dictionary.delete()
-        assert not dictionary_management.dictionary_with_name_exists(test_file_path.name)
+        with pytest.raises(ValueError):
+            predicate_in_list(lambda x: x.name == test_file_path.name, dictionary_management.get_available_dictionaries())

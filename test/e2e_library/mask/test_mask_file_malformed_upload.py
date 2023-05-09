@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 def test_file_with_bad_extension_should_be_rejected(test_file_path:Path,side_bar:SideBar):
     mask_management = side_bar.goto_mask_library()
     with pytest.raises(WebadminError, match=r"This file extension is not allowed."):
-        mask_management.upload_mask(test_file_path)
+        mask_management.upload_mask_file(test_file_path)
 
 @pytest.mark.parametrize('test_file_path',
     [
@@ -23,4 +23,4 @@ def test_file_with_bad_extension_should_be_rejected(test_file_path:Path,side_bar
 def test_file_with_invalid_masks_should_be_rejected(test_file_path:Path,side_bar:SideBar):
     mask_management = side_bar.goto_mask_library()
     with pytest.raises(WebadminError, match=r'Wrong mask'):
-        mask_management.upload_mask(test_file_path)
+        mask_management.upload_mask_file(test_file_path)

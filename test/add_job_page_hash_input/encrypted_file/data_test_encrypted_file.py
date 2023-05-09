@@ -8,7 +8,7 @@ from .test_encrypted_file import EncryptedFileTestInput
 TEST_DATA = [
     pytest.param(EncryptedFileTestInput(
         filepath=Path('./test/add_job_page_hash_input/encrypted_file/fc_auto_test_encrypted_file_rar4_encrypted_header.rar').absolute(),
-        expected_hash='$RAR3$*0*1baaa857e88ceb60*71a3824ad520bce18d280f721c66425c',
+        expected_hash='$RAR3$*0*7dd082d3c337f5d1*b80cfdf793c9042d8bb40cf5b478379a',
         expected_hash_type='RAR3-hp'
     ), id='rar4_encrypted_header'),
     pytest.param(EncryptedFileTestInput(

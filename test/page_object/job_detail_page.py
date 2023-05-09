@@ -114,7 +114,7 @@ class JobDetailPage(PageObject):
         return load_table_elements(self.driver,self.__active_hosts_table,ActiveHostEntry,no_element_text='None assigned',no_ensure_most=True)
 
     def check_if_job_finished(self) -> bool:
-        return self.get_job_state() in ['Finished','Exhausted']
+        return self.get_job_state() in ['Finished','Exhausted','Timeout']
     
     def wait_until_job_finished(self,timeout:float) -> None:
         WebDriverWait(self.driver,timeout).until(lambda _: self.check_if_job_finished())
@@ -145,6 +145,7 @@ class ActiveHostEntry(PageComponentObject):
     def host_id(self) -> int:
         """The internal host ID used by Fitcrack Webadmin."""
         return int(self.__name_field.get_attribute('href').split('/')[-1])
+    
     @property
     def ip_address(self) -> str:
         """The IP address of the host."""

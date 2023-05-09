@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 @dataclass(frozen=True)
 class PCFGTestInput(GenericE2ECrackingTestInput):
     grammar:str
-    rule_files:List[str]
+    rule_file:Optional[str]
     keyspace_limit:Optional[int]
 
 from .data_test_pcfg import testdata
@@ -25,6 +25,7 @@ def test_pcfg(e2e_cracking_test,selenium:WebDriver,add_job_page:AddJobPage,testd
     pcfg_settings = attack_settings.choose_pcfg_mode()
 
     pcfg_settings.select_pcfg_grammar(testdata.grammar)
-    pcfg_settings.select_rule_files(testdata.rule_files)
+    if testdata.rule_file is not None:
+        pcfg_settings.select_rule_file(testdata.rule_file)
     if testdata.keyspace_limit is not None:
         pcfg_settings.set_keyspace_limit(testdata.keyspace_limit)

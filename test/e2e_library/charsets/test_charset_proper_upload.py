@@ -31,7 +31,7 @@ class TestCharsetProperUpload:
         assert predicate_in_list(lambda x: x.name == test_file_path.stem, charset_management.get_available_charset_files())
     
     def test_download_gives_same_file(self,test_file_path:Path,test_file_text_content:str,charset_management:CharsetManagement):
-        uploaded_charset = charset_management.get_charset_with_name(test_file_path.stem)
+        uploaded_charset = predicate_in_list(lambda x: x.name == test_file_path.stem, charset_management.get_available_charset_files())
         downloaded_file = uploaded_charset.download()
 
         assert test_file_text_content == downloaded_file
@@ -43,7 +43,7 @@ class TestCharsetProperUpload:
         assert predicate_in_list(lambda x: x.name == test_file_path.stem, brute_force_attack_settings.get_available_charsets())
 
     def test_delete(self,test_file_path:Path,charset_management:CharsetManagement):
-        uploaded_charset = charset_management.get_charset_with_name(test_file_path.stem)
+        uploaded_charset = predicate_in_list(lambda x: x.name == test_file_path.stem, charset_management.get_available_charset_files())
         uploaded_charset.delete()
         with pytest.raises(ValueError):
             predicate_in_list(lambda x: x.name == test_file_path.stem, charset_management.get_available_charset_files())

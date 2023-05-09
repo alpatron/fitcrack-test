@@ -74,12 +74,12 @@ class PCFGAttackSettings(PageObject):
         show_as_many_rows_per_table_page_as_possible(self.driver,self.__rulefile_selection_table)
         return build_table_row_objects_from_table(self.driver,self.__rulefile_selection_table,RuleFileSelection)
 
-    def select_rule_files(self,rulefiles:List[str]) -> None:
+    def select_rule_file(self,rulefile:str) -> None:
         """Given a list of rule-file names (as they appear in the name column),
         selects the rule files with those names to be used in the PCFG attack.
         Raises exception on failure.
         """
-        activate_elements_from_table_by_list_lookup(self.get_available_rule_files(),lambda x: x.name,rulefiles)
+        activate_elements_from_table_by_list_lookup(self.get_available_rule_files(),lambda x: x.name,[rulefile])
 
     def set_keyspace_limit(self,keyspace_limit:int) -> None:
         """Sets the keyspace limit. Takes an int."""

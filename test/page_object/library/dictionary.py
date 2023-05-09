@@ -78,17 +78,6 @@ class DictionaryManagement(PageObject):
 
         return build_table_row_objects_from_table(self.driver,self.__dictionary_table,DictionaryManagementRow)
 
-    def dictionary_with_name_exists(self,name:str):
-        for dictionary in self.get_available_dictionaries():
-            if dictionary.name == name:
-                return True
-        return False
-    def get_dictionary_with_name(self,name:str) -> DictionaryManagementRow:
-        for dictionary in self.get_available_dictionaries():
-            if dictionary.name == name:
-                return dictionary
-        raise InvalidStateError(f'Dictionary with name {name} could not be found.')
-
     def upload_dictionary(self,filename:Union[str,Path],sort_on_upload=False,hex_dictionary=False) -> None:
         if sort_on_upload != get_checkbox_state(self.__sort_on_upload_checkbox):
             obstructed_click_workaround(self.driver,self.__sort_on_upload_checkbox)
