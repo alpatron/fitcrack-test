@@ -19,8 +19,7 @@ HOST_NUMBERS = [
 def job_detail_page(add_job_page:AddJobPage) -> JobDetailPage:
     input_settings = add_job_page.open_input_settings()
 
-    input_settings.select_hash_type_exactly('sha1')
-    input_settings.input_hashes_manually(['c0b51c46e4dcde6189e48ec9695fe55efc0ea703'])
+    input_settings.goto_attach_new_hash_list().input_hashes_manually(['c0b51c46e4dcde6189e48ec9695fe55efc0ea703'],'sha1')
     
     attack_settings = add_job_page.open_attack_settings()
     

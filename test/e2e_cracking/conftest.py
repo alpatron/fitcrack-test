@@ -45,8 +45,8 @@ def e2e_cracking_test(add_job_page:AddJobPage,testdata:GenericE2ECrackingTestInp
     GenericE2ECrackingTestInput or derived object (see concrete test implementations for example.)
     """
     input_settings = add_job_page.open_input_settings()
-    input_settings.select_hash_type_exactly(testdata.hash_type)
-    input_settings.input_hashes_manually([x[0] for x in testdata.hashes])
+    add_new_hash_list = input_settings.goto_attach_new_hash_list()
+    add_new_hash_list.input_hashes_manually([x[0] for x in testdata.hashes],testdata.hash_type)
     
     yield
     
