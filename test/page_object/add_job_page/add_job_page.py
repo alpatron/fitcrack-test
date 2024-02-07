@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.common.exceptions import JavascriptException, NoSuchElementException
+from selenium.common.exceptions import JavascriptException, NoSuchElementException, StaleElementReferenceException
 from selenium.webdriver.support.relative_locator import locate_with
 
 from page_object.common.page_object import PageObject
@@ -28,7 +28,7 @@ class AddJobPage(PageObject):
 
     def ensure_loaded(self):
         """Waits until the job-name field appears."""
-        WebDriverWait(self.driver,30,ignored_exceptions={JavascriptException, NoSuchElementException}).until(lambda _: self.__name_field and self.__attack_settings_button)
+        WebDriverWait(self.driver,30,ignored_exceptions={JavascriptException, NoSuchElementException,StaleElementReferenceException}).until(lambda _: self.__name_field and self.__attack_settings_button)
 
     @property
     def __name_field(self) -> WebElement:
@@ -55,7 +55,7 @@ class AddJobPage(PageObject):
     @property
     def __create_button(self) -> WebElement:
         return self.driver.find_element(
-            locate_with(By.TAG_NAME,'button').near({By.XPATH:'//span[text()[contains(.,"Create")]]'})   # type: ignore
+            locate_with(By.TAG_NAME,'button').to_right_of({By.XPATH:'//span[text()[contains(.,"Manage Template")]]'})   # type: ignore
         )
 
     def set_job_name(self,name:str) -> None:
