@@ -28,7 +28,7 @@ class HybridTestInput(GenericE2ECrackingTestInput):
 from .data_test_hybrid import testdata
 
 @pytest.mark.parametrize("testdata", testdata)
-def test_hybrid(e2e_cracking_test,selenium:WebDriver,add_job_page:AddJobPage,testdata:HybridTestInput):    
+def test_hybrid(e2e_cracking_test,selenium:WebDriver,add_job_page:AddJobPage,testdata:HybridTestInput):
     attack_settings = add_job_page.open_attack_settings()
     match testdata.mode:
         case HybridMode.DICT_FIRST:

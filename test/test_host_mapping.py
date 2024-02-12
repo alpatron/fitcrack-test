@@ -1,11 +1,9 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING
 
 import pytest
-from selenium.webdriver.support.wait import WebDriverWait
 
 if TYPE_CHECKING:
-    from selenium.webdriver.remote.webdriver import WebDriver
     from page_object.add_job_page.add_job_page import AddJobPage
     from page_object.job_detail_page import JobDetailPage
 
@@ -20,9 +18,9 @@ def job_detail_page(add_job_page:AddJobPage) -> JobDetailPage:
     input_settings = add_job_page.open_input_settings()
 
     input_settings.goto_attach_new_hash_list().input_hashes_manually(['c0b51c46e4dcde6189e48ec9695fe55efc0ea703'],'sha1')
-    
+
     attack_settings = add_job_page.open_attack_settings()
-    
+
     dictionary_settings = attack_settings.choose_dictionary_mode()
 
     dictionary_settings.select_dictionaries(['darkweb2017-top1000.txt'])
@@ -43,7 +41,7 @@ def test_selecting_zero_hosts_appears(job_detail_page:JobDetailPage):
 
 def test_selecting_all_hosts_appears(job_detail_page:JobDetailPage):
     available_hosts = job_detail_page.get_available_hosts()
-    
+
     job_detail_page.select_hosts_for_job(available_hosts)
 
     assert { host.name for host in job_detail_page.get_active_hosts() } == set(available_hosts)

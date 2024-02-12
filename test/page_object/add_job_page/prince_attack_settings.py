@@ -168,7 +168,7 @@ class PRINCEAttackSettings(PageObject):
         return get_checkbox_state(self.__case_permutation_checkbox)
 
     def set_case_permutation_mode(self,new_state:bool) -> None:
-        """Sets whether to use case permuation when generating passwords."""
+        """Sets whether to use case permutation when generating passwords."""
         if new_state == self.get_case_permutation_state():
             return
         obstructed_click_workaround(self.driver,self.__case_permutation_checkbox)

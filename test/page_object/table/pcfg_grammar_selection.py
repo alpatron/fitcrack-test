@@ -28,7 +28,6 @@ class PCFGGrammarSelection(GenericEnableableTableRow):
     def __added_date_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR,'td:nth-child(4)')
 
-    #TODO: Dunno if I want to use properties for this nonsense.
     @property
     def name(self) -> str:
         """The file name of the PCFG-grammar file."""

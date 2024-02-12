@@ -33,11 +33,11 @@ class HostSelection(GenericEnableableTableRow):
     @property
     def __processor_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR,'td:nth-child(5)')
-    
+
     @property
     def __active_jobs_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR,'td:nth-child(6)')
-    
+
     @property
     def __online_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR,'td:nth-child(7)')
@@ -51,22 +51,22 @@ class HostSelection(GenericEnableableTableRow):
     def ip_address(self) -> str:
         """The IP address of the host."""
         return self.__ip_address_field.text
-    
+
     @property
     def operating_system(self) -> str:
         """The operating system of the host."""
         return self.__os_field.text
-    
+
     @property
     def processor(self) -> str:
         """The processor of the host."""
         return self.__processor_field.text
-    
+
     @property
     def active_jobs(self) -> int:
-        """The number of active jobs asigned to the host."""
+        """The number of active jobs assigned to the host."""
         return int(self.__active_jobs_field.text)
-    
+
     @property
     def online_status(self) -> str:
         """The online-status of the host. Is "online" if the host is online;

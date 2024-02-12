@@ -1,7 +1,8 @@
 """Test data for test_encrypted_file.py"""
 from __future__ import annotations
-import pytest
 from pathlib import Path
+import pytest
+
 
 from .test_encrypted_file import EncryptedFileTestInput
 

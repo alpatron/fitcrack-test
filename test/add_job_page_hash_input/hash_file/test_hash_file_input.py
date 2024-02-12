@@ -15,18 +15,18 @@ HASH_TEST_FILES = [
 ]
 
 def test_add_from_file_works(add_job_page:AddJobPage):
-    expected_hashes = HASH_TEST_FILES[0].read_text().splitlines() 
-    
+    expected_hashes = HASH_TEST_FILES[0].read_text(encoding='ascii').splitlines()
+
     input_settings = add_job_page.open_input_settings()
     input_settings.append_hashes_from_hash_file(HASH_TEST_FILES[0])
-    
+
     assert input_settings.get_input_hashes() == expected_hashes
 
 def test_add_from_file_works_two_appends(add_job_page:AddJobPage):
-    expected_hashes = HASH_TEST_FILES[0].read_text().splitlines() + HASH_TEST_FILES[1].read_text().splitlines()
+    expected_hashes = HASH_TEST_FILES[0].read_text(encoding='ascii').splitlines() + HASH_TEST_FILES[1].read_text(encoding='ascii').splitlines()
 
     input_settings = add_job_page.open_input_settings()
     input_settings.append_hashes_from_hash_file(HASH_TEST_FILES[0])
     input_settings.append_hashes_from_hash_file(HASH_TEST_FILES[1])
-    
+
     assert input_settings.get_input_hashes() == expected_hashes

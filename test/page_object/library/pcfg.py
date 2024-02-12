@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 class PCFGManagement(PageObject):
     def ensure_loaded(self):
         WebDriverWait(self.driver,30,ignored_exceptions={InvalidStateError,NoSuchElementException}).until(
-            lambda driver: 
+            lambda driver:
                 driver.find_element(By.XPATH,'//*[contains(@class, "v-card__title") and text()[contains(.,"PCFGs")]]')
                 and len(self.get_available_pcfgs()) != 0
         )
@@ -30,15 +30,15 @@ class PCFGManagement(PageObject):
     @property
     def __pcfg_file_table(self) -> WebElement:
         return self.driver.find_element(By.TAG_NAME,'table')
-    
+
     @property
     def __add_new_button(self) -> WebElement:
         return self.driver.find_element(By.XPATH,'//span[text()[contains(.,"Add new")]]')
-    
+
     @property
     def __upload_dialog_upload_file_mode_selector(self) -> WebElement:
         return self.driver.find_element(By.XPATH,'//div[text()[contains(.,"Upload file")]]')
-    
+
     @property
     def __upload_dialog_from_dictionary_mode_selector(self) -> WebElement:
         return self.driver.find_element(By.XPATH,'//div[text()[contains(.,"Make from dictionary")]]')
@@ -56,7 +56,7 @@ class PCFGManagement(PageObject):
         label = self.driver.find_element(By.XPATH,'//label[text()="Select files"]')
         input_id = label.get_attribute('for')
         return self.driver.find_element(By.ID,input_id)
-    
+
     @property
     def __upload_dialog_upload_button(self) -> WebElement:
         return self.driver.find_element(
@@ -74,7 +74,7 @@ class PCFGManagement(PageObject):
         self.__upload_dialog_upload_button.click()
         self.get_snackbar_notification(raise_exception_on_error=True)
         self._wait_until_snackbar_notification_disappears()
-    
+
     def get_available_dictionaries(self) -> List[str]:
         self.__add_new_button.click()
         self.__upload_dialog_from_dictionary_mode_selector.click()
@@ -82,7 +82,7 @@ class PCFGManagement(PageObject):
         dictionary_names = [x.name for x in dictionaries]
         click_away(self.driver)
         return dictionary_names
-    
+
     def make_pcfg_from_dictionary(self,dictionary_name:str):
         self.__add_new_button.click()
         ActionChains(self.driver).pause(4).perform() #Wait for animation to finish
@@ -94,4 +94,3 @@ class PCFGManagement(PageObject):
         self._wait_until_dialog_closes(300)
         self.get_snackbar_notification(raise_exception_on_error=True)
         self._wait_until_snackbar_notification_disappears()
-    

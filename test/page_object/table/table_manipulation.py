@@ -79,7 +79,7 @@ def show_as_many_rows_per_table_page_as_possible(driver:WebDriver,table:WebEleme
     rows_per_page_dropdown_button = driver.find_element(
         locate_with(By.CLASS_NAME,'v-select__slot').below(table) #type: ignore
     )
-    
+
     #Sometimes the dropdown button is obstructed by the navbar,
     #so we scroll the top of the table into view.
     scroll_into_view_workaround(table)

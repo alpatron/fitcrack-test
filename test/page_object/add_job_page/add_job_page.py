@@ -74,7 +74,7 @@ class AddJobPage(PageObject):
     def create_job(self) -> JobDetailPage:
         """Creates the job that is currently being set up.
         Upon creation, the page that shows the details of the created job is shown,
-        so a JobDetailPage object is reutned. The current JobCreationObject ceases to be useable.
+        so a JobDetailPage object is returned. The current JobCreationObject ceases to be useable.
         """
         self.__create_button.click()
         self.get_snackbar_notification(raise_exception_on_error=True)

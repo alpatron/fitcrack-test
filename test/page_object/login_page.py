@@ -8,7 +8,6 @@ from typing import TYPE_CHECKING
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import JavascriptException, NoSuchElementException
-from selenium.webdriver.support.relative_locator import locate_with
 
 from page_object.common.page_object import PageObject
 from page_object.dashboard import Dashboard
@@ -55,6 +54,6 @@ class LoginPage(PageObject):
         self.__username_field.send_keys(username)
         clear_workaround(self.__password_field)
         self.__password_field.send_keys(password)
-        
+
         self.__submit_button.click()
         return SideBar(self.driver), Dashboard(self.driver)

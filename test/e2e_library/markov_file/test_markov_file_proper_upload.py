@@ -27,13 +27,13 @@ class TestMarkovFileProperUpload:
 
     def test_appears_in_list(self,test_file_path:Path,markov_file_management:MarkovFileManagement):
         assert predicate_in_list(lambda x: x.name == test_file_path.name, markov_file_management.get_available_markov_files())
-    
+
     def test_download_gives_same_file(self,test_file_path:Path,test_file_binary_content:bytes,markov_file_management:MarkovFileManagement):
         uploaded_markov_file = predicate_in_list(lambda x: x.name == test_file_path.name, markov_file_management.get_available_markov_files())
         downloaded_file = uploaded_markov_file.download(as_binary=True)
 
         assert test_file_binary_content == downloaded_file
-    
+
     def test_appears_in_attack_settings(self,test_file_path:Path,side_bar:SideBar):
         add_job_page = side_bar.goto_add_job()
         attack_settings = add_job_page.open_attack_settings()

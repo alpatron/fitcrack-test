@@ -41,7 +41,7 @@ class GenericEnableableTableRow(PageComponentObject):
         the regular ones, so a different kind of selection check needs to be used.
         
         Raises an InvalidStateError if the enabled state cannot be determined."""
-        
+
         checkbox_classes = self.__selection_checkbox.get_attribute('class')
         if 'mdi-checkbox-blank-outline' in checkbox_classes and not 'mdi-checkbox-marked' in checkbox_classes: # type: ignore
             return False

@@ -109,7 +109,7 @@ def scroll_into_view_workaround(element:WebElement) -> None:
     """
     _ = element.screenshot_as_base64
     _ = element.screenshot_as_base64
-    
+
 
 @overload
 def download_file_webadmin(driver:WebDriver, link:str, as_binary:bool=False) -> str: ...
@@ -127,7 +127,7 @@ def download_file_webadmin(driver:WebDriver, link:str, as_binary:bool=False) -> 
     """
     jwt = driver.execute_script('return localStorage.getItem("jwt");')
     cookies = {x['name']:x['value'] for x in driver.get_cookies()}
-    response = requests.get(link,cookies=cookies,headers={'Authorization': f'Bearer {jwt}'})
+    response = requests.get(link,cookies=cookies,headers={'Authorization': f'Bearer {jwt}'},timeout=120)
     if as_binary:
         return response.content
     else:
@@ -142,7 +142,7 @@ def predicate_in_list(predicate:Callable[[X],bool],list:List[X]) -> X:
         return next((x for x in list if predicate(x)))
     except StopIteration:
         raise ValueError('No element that matches predicate found.')
-    
+
 
 def near_locator_distance_workaround(relative_locator:RelativeBy,element:WebElement,distance:int=100000) -> None:
     """`locate_with(locator).near(...)` should support specifying the search distance

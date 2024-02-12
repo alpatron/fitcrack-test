@@ -15,7 +15,7 @@ class CrackedHashTableRow(PageComponentObject):
     @property
     def __hash(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR,'td:nth-child(1)')
-    
+
     @property
     def __password(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR,'td:nth-child(2) span')

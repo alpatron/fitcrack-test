@@ -21,7 +21,7 @@ class RuleFileManagementRow(GenericLibraryTableRow):
     @property
     def count(self) -> str:
         return self.__count_field.text
-    
+
     @property
     def time(self) -> str:
         return self.__time_field.text

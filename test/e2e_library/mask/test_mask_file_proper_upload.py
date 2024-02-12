@@ -42,13 +42,13 @@ class TestMaskProperUpload:
 
     def test_appears_in_list(self,test_file_path:Path,mask_management:MaskManagement):
         assert predicate_in_list(lambda x: x.name == test_file_path.name, mask_management.get_available_mask_files())
-    
+
     def test_download_gives_same_file(self,test_file_path:Path,test_file_text_content:str,mask_management:MaskManagement):
         uploaded_mask_file = predicate_in_list(lambda x: x.name == test_file_path.name, mask_management.get_available_mask_files())
         downloaded_file = uploaded_mask_file.download()
 
         assert test_file_text_content == downloaded_file
-    
+
     def test_appears_in_attack_settings(self,test_file_path:Path,side_bar:SideBar):
         add_job_page = side_bar.goto_add_job()
         attack_settings = add_job_page.open_attack_settings()

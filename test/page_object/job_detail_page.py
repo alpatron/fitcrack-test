@@ -43,7 +43,7 @@ class JobDetailPage(PageObject):
 
     @property
     def __hash_table(self) -> WebElement:
-        return self.driver.find_element(By.XPATH,'//div[text()[contains(.,"Hashes")]]/ancestor::div[contains(@class, "col")][1]//table')   
+        return self.driver.find_element(By.XPATH,'//div[text()[contains(.,"Hashes")]]/ancestor::div[contains(@class, "col")][1]//table')
 
     @property
     def __job_state_text(self) -> WebElement:
@@ -65,11 +65,11 @@ class JobDetailPage(PageObject):
     def __active_hosts_table(self) -> WebElement:
         return self.driver.find_element(
             locate_with(By.TAG_NAME,'table').above(self.__assign_hosts_button) #type: ignore
-        ) 
+        )
 
     @property
     def __workunit_table(self) -> WebElement:
-        return self.driver.find_element(By.XPATH,'//b[text()[contains(.,"Workunits")]]/ancestor::div[contains(@class, "wu-container")][1]//table')   
+        return self.driver.find_element(By.XPATH,'//b[text()[contains(.,"Workunits")]]/ancestor::div[contains(@class, "wu-container")][1]//table')
 
     def get_hashes(self) -> List[tuple[str,Optional[str]]]:
         """Return a list of tuples, where the first element is an input hash of the cracking job
@@ -115,7 +115,7 @@ class JobDetailPage(PageObject):
 
     def check_if_job_finished(self) -> bool:
         return self.get_job_state() in ['Finished','Exhausted','Timeout']
-    
+
     def wait_until_job_finished(self,timeout:float) -> None:
         WebDriverWait(self.driver,timeout).until(lambda _: self.check_if_job_finished())
 
@@ -135,7 +135,7 @@ class ActiveHostEntry(PageComponentObject):
     @property
     def __online_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR,'td:nth-child(3)')
-    
+
     @property
     def name(self) -> str:
         """The name of the host."""
@@ -145,12 +145,12 @@ class ActiveHostEntry(PageComponentObject):
     def host_id(self) -> int:
         """The internal host ID used by Fitcrack Webadmin."""
         return int(self.__name_field.get_attribute('href').split('/')[-1]) #type: ignore
-    
+
     @property
     def ip_address(self) -> str:
         """The IP address of the host."""
         return self.__ip_address_field.text
-    
+
     @property
     def online_status(self) -> str:
         """The online-status of the host. Is "online" if the host is online;
@@ -167,44 +167,44 @@ class WorkunitEntry(PageComponentObject):
     @property
     def __host_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR, 'td:nth-child(1) a span')
-    
+
     @property
     def __progress_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR, 'td:nth-child(2) div span')
-    
+
     @property
     def __speed_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR, 'td:nth-child(3) span')
-    
+
     @property
     def __cracking_time_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR, 'td:nth-child(4)')
-    
+
     @property
     def __generated_time_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR, 'td:nth-child(5)')
-    
+
     @property
     def __start_index_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR, 'td:nth-child(6)')
-    
+
     @property
     def __keyspace_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR, 'td:nth-child(7)')
-    
+
     @property
     def __retry_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR, 'td:nth-child(8) span span')
-    
+
     @property
     def __finished_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR, 'td:nth-child(9) span span')
-    
+
     @property
     def host(self) -> str:
         """The name of the host this workunit is assigned to."""
         return self.__host_field.text
-    
+
     @property
     def host_id(self) -> int:
         """The internal host ID used by Fitcrack Webadmin."""
@@ -214,32 +214,32 @@ class WorkunitEntry(PageComponentObject):
     def progress(self) -> int:
         """The progress of workunit in percent."""
         return int(self.__progress_field.text[0:-2])
-    
+
     @property
     def speed(self) -> str:
         """The cracking speed of the workunit, as shown in Webadmin."""
         return self.__speed_field.text
-    
+
     @property
     def cracking_time(self) -> str:
         """The cracking time spent on this workunit, as shown in Webadmin."""
         return self.__cracking_time_field.text
-    
+
     @property
     def generated_time(self) -> str:
         """The time and date on which this workunit was generated, as shown in Webadmin."""
         return self.__generated_time_field.text
-    
+
     @property
     def start_index(self) -> int:
         """The start index of this workunit."""
         return int(self.__start_index_field.text)
-    
+
     @property
     def keyspace(self) -> int:
         """The keyspace processed by this workunit."""
         return int(self.__keyspace_field.text.replace(',',''))
-    
+
     @property
     def retried(self) -> bool:
         """Whether this workunit encountered a failure and is being retried."""

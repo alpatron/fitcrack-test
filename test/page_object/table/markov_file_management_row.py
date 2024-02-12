@@ -14,11 +14,11 @@ class MarkovFileManagementRow(GenericLibraryTableRow):
     def _name_element(self) -> WebElement:
         """Overrides method in parent class."""
         return self._element.find_element(By.CSS_SELECTOR,'td:first-child')
-    
+
     @property
     def __time_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR,'td:nth-child(2)')
-    
+
     @property
     def time(self) -> str:
         return self.__time_field.text

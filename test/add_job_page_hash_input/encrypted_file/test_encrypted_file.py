@@ -1,15 +1,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
 
 if TYPE_CHECKING:
-    import _pytest.fixtures
-
     from page_object.add_job_page.input_settings import InputSettings
     from page_object.add_job_page.add_job_page import AddJobPage
 

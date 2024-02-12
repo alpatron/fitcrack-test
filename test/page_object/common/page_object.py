@@ -8,7 +8,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.expected_conditions import invisibility_of_element, visibility_of
 from selenium.webdriver.common.by import By
 
-from page_object.common.webadmin_snackbar_notifcation import WebadminSnackbarNotification, WebadminSnackbarNotificationType
+from page_object.common.webadmin_snackbar_notification import WebadminSnackbarNotification, WebadminSnackbarNotificationType
 from page_object.common.exception import InvalidStateError, WebadminError
 
 if TYPE_CHECKING:
@@ -50,7 +50,7 @@ class PageObject:
     @property
     def _snackbar_notification_text(self) -> WebElement:
         return self.driver.find_element(By.CSS_SELECTOR,'.errorSnackbar .v-alert__content')
-    
+
     @property
     def _dialog_window(self) -> WebElement:
         return self.driver.find_element(By.CSS_SELECTOR,'.v-dialog--active')

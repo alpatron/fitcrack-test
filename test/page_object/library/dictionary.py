@@ -29,11 +29,11 @@ class DictionaryManagement(PageObject):
     @property
     def __dictionary_table(self) -> WebElement:
         return self.driver.find_element(By.TAG_NAME,'table')
-    
+
     @property
     def __add_from_server_button(self) -> WebElement:
         return self.driver.find_element(By.XPATH,'//span[text()[contains(.,"Add from server")]]')
-    
+
     @property
     def __upload_new_button(self) -> WebElement:
         return self.driver.find_element(By.XPATH,'//span[text()[contains(.,"Upload new")]]')
@@ -49,19 +49,19 @@ class DictionaryManagement(PageObject):
         label = self.driver.find_element(By.XPATH,'//label[text()="HEX dictionary"]')
         input_id = label.get_attribute('for')
         return self.driver.find_element(By.ID,input_id)
-    
+
     @property
     def __new_dictionary_file_input(self) -> WebElement:
         label = self.driver.find_element(By.XPATH,'//label[text()="Select files"]')
         input_id = label.get_attribute('for')
         return self.driver.find_element(By.ID,input_id)
-    
+
     @property
     def __new_dictionary_upload_button(self) -> WebElement:
         return self.driver.find_element(
             locate_with(By.TAG_NAME,'button').below(self.__new_dictionary_file_input) # type: ignore
         )
-    
+
     def get_available_dictionaries(self) -> List[DictionaryManagementRow]:
         click_away(self.driver)
         show_as_many_rows_per_table_page_as_possible(self.driver,self.__dictionary_table)
@@ -92,4 +92,3 @@ class DictionaryManagement(PageObject):
         self.get_snackbar_notification(raise_exception_on_error=True)
         WebDriverWait(self.driver,15).until(invisibility_of_element(element))
         self._wait_until_snackbar_notification_disappears()
-    

@@ -19,11 +19,11 @@ class GenericLibraryTableRow(PageComponentObject):
     @property
     def __download_button(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR,'td:last-child a')
-    
+
     @property
     def __delete_button(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR,'td:last-child>button')
-    
+
     @property
     def _name_element(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR,'td:first-child a')

@@ -21,7 +21,7 @@ class PCFGManagementRow(GenericLibraryTableRow):
     @property
     def keyspace(self) -> str:
         return self.__keyspace_field.text
-    
+
     @property
     def time(self) -> str:
         return self.__time_field.text

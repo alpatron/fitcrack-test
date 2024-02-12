@@ -12,7 +12,7 @@ import pytest
 if TYPE_CHECKING:
     import _pytest.fixtures
     from page_object.add_job_page.add_job_page import AddJobPage
-    
+
 
 
 @dataclass(frozen=True)
@@ -47,9 +47,9 @@ def e2e_cracking_test(add_job_page:AddJobPage,testdata:GenericE2ECrackingTestInp
     input_settings = add_job_page.open_input_settings()
     add_new_hash_list = input_settings.goto_attach_new_hash_list()
     add_new_hash_list.input_hashes_manually([x[0] for x in testdata.hashes],testdata.hash_type)
-    
+
     yield
-    
+
     #We want to run asserts only if the the test code does not raise an exception
     #The _rep attributes do not exist by default; see /test/conftest.py::pytest_runtest_makereport
     #to understand how these are made available.

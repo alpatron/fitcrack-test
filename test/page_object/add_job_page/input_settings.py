@@ -20,8 +20,8 @@ class InputSettings(PageObject):
     @property
     def __new_hash_list_button(self) -> WebElement:
         return self.driver.find_element(By.XPATH,'//span[text()[contains(.," Create new input hashlist ")]]')
-    
+
     def goto_attach_new_hash_list(self) -> AddHashList:
-        from page_object.add_job_page.add_job_page import AddJobPage
+        from page_object.add_job_page.add_job_page import AddJobPage # Deferred import because of circular import issues
         self.__new_hash_list_button.click()
         return AddHashList(self.driver,AddJobPage(self.driver,no_ensure_loaded=True))

@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 
 class RuleFileSelection(GenericEnableableTableRow):
-    """This class represents a row from the rulefile-selection tables on the Add Job page."""
+    """This class represents a row from the rule-file-selection tables on the Add Job page."""
 
     @property
     def __name_field(self) -> WebElement:
@@ -24,7 +24,6 @@ class RuleFileSelection(GenericEnableableTableRow):
     def __rule_count_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR,'td:nth-child(3)')
 
-    #TODO: Dunno if I want to use properties for this nonsense.
     @property
     def name(self) -> str:
         """The file name of the rule file."""

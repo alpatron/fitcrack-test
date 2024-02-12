@@ -28,9 +28,9 @@ from .data_test_prince import testdata
 
 @pytest.mark.parametrize('testdata', testdata)
 def test_prince(e2e_cracking_test,selenium:WebDriver,add_job_page:AddJobPage,testdata:PRINCETestInput):
-    attackSettings = add_job_page.open_attack_settings()
-    
-    prince_settings = attackSettings.choose_prince_mode()
+    attack_settings = add_job_page.open_attack_settings()
+
+    prince_settings = attack_settings.choose_prince_mode()
 
     prince_settings.select_dictionaries(testdata.dictionaries)
     if testdata.rule_file is not None:

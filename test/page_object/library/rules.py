@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 class RuleFileManagement(PageObject):
     def ensure_loaded(self):
         WebDriverWait(self.driver,30,ignored_exceptions={InvalidStateError,NoSuchElementException,ElementClickInterceptedException}).until(
-            lambda driver: 
+            lambda driver:
                 driver.find_element(By.XPATH,'//*[contains(@class, "v-card__title") and text()[contains(.,"Rules")]]')
                 and len(self.get_available_rule_files()) != 0
         )
@@ -28,21 +28,21 @@ class RuleFileManagement(PageObject):
     @property
     def __rule_file_table(self) -> WebElement:
         return self.driver.find_element(By.TAG_NAME,'table')
-    
+
     @property
     def __upload_form(self) -> WebElement:
         return self.driver.find_element(
             locate_with(By.TAG_NAME,'form').below(self.__rule_file_table) #type: ignore
         )
-    
+
     @property
     def __upload_button(self) -> WebElement:
         return self.__upload_form.find_element(By.CSS_SELECTOR,'button.primary--text')
-    
+
     @property
     def __file_input(self) -> WebElement:
         return self.__upload_form.find_element(By.TAG_NAME,'input')
-    
+
     def get_available_rule_files(self) -> List[RuleFileManagementRow]:
         click_away(self.driver)
         show_as_many_rows_per_table_page_as_possible(self.driver,self.__rule_file_table)

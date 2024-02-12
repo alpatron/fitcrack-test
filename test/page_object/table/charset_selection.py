@@ -25,7 +25,6 @@ class CharsetSelection(GenericEnableableTableRow):
     def __keyspace_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR,'td:nth-child(3)')
 
-    #TODO: Dunno if I want to use properties for this nonsense.
     @property
     def name(self) -> str:
         """The file name of the charset."""

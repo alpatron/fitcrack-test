@@ -1,4 +1,4 @@
-"""Page object representing brute-foce-attack settings in the Add Job page.
+"""Page object representing brute-force-attack settings in the Add Job page.
 Exports two classes:
 BruteForceAttackSettings -- the aforementioned page object
 MarkovMode --

@@ -55,11 +55,11 @@ class AddHashList(PageObject):
     @property
     def __validation_mode_strict_button(self) -> WebElement:
         return self.driver.find_element(By.CSS_SELECTOR,'button[value="fail_invalid"]')
-    
+
     @property
     def __validation_mode_skipping_button(self) -> WebElement:
         return self.driver.find_element(By.CSS_SELECTOR,'button[value="skip_invalid"]')
-    
+
     @property
     def __validation_mode_none_button(self) -> WebElement:
         return self.driver.find_element(By.CSS_SELECTOR,'button[value="no_validate"]')
@@ -91,17 +91,17 @@ class AddHashList(PageObject):
         label = self.driver.find_element(By.XPATH,'//label[text()="Select protected file to extract"]')
         input_id = label.get_attribute('for')
         return self.driver.find_element(By.ID,input_id)
-    
+
     @property
     def __cancel_button(self) -> WebElement:
         return self.driver.find_element(By.XPATH,'//span[text()[contains(.,"Cancel")]]')
-    
+
     @property
     def __confirm_button(self) -> WebElement:
         return self.driver.find_element(
             locate_with(By.TAG_NAME,'span').to_right_of(self.__cancel_button) # type: ignore
         )
-    
+
     @property
     def __binary_hash_file_checkbox(self) -> WebElement:
         label = self.driver.find_element(By.XPATH,'//label[text()="Treat as a binary hashlist file"]')
@@ -155,7 +155,7 @@ class AddHashList(PageObject):
         self.__workaround_hash_input_send_keys(hashes)
         self.__confirm_button.click()
         self.home_page_object.ensure_loaded()
-        
+
     def input_hashes_from_hash_file(self,filename:Union[str,Path],hashtype:str,binary_hash_file=False,validation_mode=ValidationMode.STRICT,hash_list_name:Optional[str]=None) -> None:
         """Given a path to a hash file, sets it as the attack input."""
         self.__hash_file_entry_button.click()
@@ -169,7 +169,7 @@ class AddHashList(PageObject):
         self.__hash_file_input.send_keys(str(filename))
         self.__confirm_button.click()
         self.home_page_object.ensure_loaded()
-        
+
     def extract_hash_from_file(self,filename:Union[str,Path],hash_list_name:Optional[str]=None) -> None:
         """Given a path to an encrypted file, extracts the hash from it and sets it as the input."""
         self.__file_extract_entry_button.click()

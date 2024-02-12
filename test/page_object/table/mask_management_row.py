@@ -13,7 +13,7 @@ class MaskManagementRow(GenericLibraryTableRow):
     @property
     def __time_field(self) -> WebElement:
         return self._element.find_element(By.CSS_SELECTOR,'td:nth-child(2)')
-    
+
     @property
     def time(self) -> str:
         return self.__time_field.text

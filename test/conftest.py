@@ -16,7 +16,7 @@ from page_object.login_page import LoginPage
 
 if TYPE_CHECKING:
     from pathlib import Path
-    
+
     import _pytest.config.argparsing
     import _pytest.config
     import _pytest.fixtures
@@ -44,7 +44,7 @@ def pytest_addoption(parser:_pytest.config.argparsing.Parser):
     """
 
     HELP = 'Fitcrack username and password to be used by tests'
-    
+
     parser.addini('credentials', type='args' ,help=HELP)
 
     group = parser.getgroup("fitcrack", "fitcrack")
@@ -75,7 +75,7 @@ def pytest_report_header(config:_pytest.config.Config, startdir):
     This is a special function used by pytest.
     Relevant pytest documentation: https://docs.pytest.org/en/6.2.x/reference.html#pytest.hookspec.pytest_report_header
     """
-    
+
     credentials:Credentials = config.getoption('credentials') #type: ignore
     return [
         f'fitcrack username: {credentials.user_name}',
@@ -181,7 +181,7 @@ def test_file_path(request:_pytest.fixtures.FixtureRequest) -> Iterator[Path]:
     appending the timestamp ensures that the filenames are unique for each test.
     """
     test_file_path:Path = request.param.with_stem(f'{request.param.stem}-{datetime.utcnow():%Y%m%d%H%M%S}') # type: ignore
-    shutil.copyfile(request.param,test_file_path) # type: ignore 
+    shutil.copyfile(request.param,test_file_path) # type: ignore
     yield test_file_path.absolute()
     test_file_path.unlink()
 
@@ -195,7 +195,7 @@ def test_file_text_content(test_file_path) -> str:
     """
     with open(test_file_path,'r', encoding='ascii', errors='surrogateescape') as file:
         return file.read()
-    
+
 @pytest.fixture
 def test_file_binary_content(test_file_path) -> bytes:
     """Fixture that returns the binary content of the test file supplied by the `test_file_path`

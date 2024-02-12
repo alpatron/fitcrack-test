@@ -29,7 +29,7 @@ class TestMarkovFromDictionary:
 
     def test_appears_in_list(self,test_file_path:Path,markov_file_management:MarkovFileManagement):
         assert predicate_in_list(lambda x: x.name == test_file_path.with_suffix('.hcstat2').name, markov_file_management.get_available_markov_files())
-    
+
     def test_appears_in_attack_settings(self,test_file_path:Path,side_bar:SideBar):
         add_job_page = side_bar.goto_add_job()
         attack_settings = add_job_page.open_attack_settings()
