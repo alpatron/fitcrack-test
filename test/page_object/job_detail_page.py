@@ -7,7 +7,7 @@ WorkunitEntry -- a page-component object representing a row in the workunits tab
 """
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, List, Optional
 
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
@@ -19,6 +19,7 @@ from page_object.common.page_object import PageObject, PageComponentObject
 from page_object.common.helper import click_away
 from page_object.common.exception import InvalidStateError
 from page_object.table.host_selection import HostSelection
+from page_object.table.cracked_hash_row import CrackedHashTableRow
 from page_object.table.table_manipulation import build_table_row_objects_from_table, activate_elements_from_table_by_list_lookup, load_table_elements
 
 if TYPE_CHECKING:
@@ -42,7 +43,7 @@ class JobDetailPage(PageObject):
 
     @property
     def __hash_table(self) -> WebElement:
-        return self.driver.find_element(By.XPATH,'//span[text()[contains(.,"Hashes")]]/ancestor::div[contains(@class, "col")][1]//table')   
+        return self.driver.find_element(By.XPATH,'//div[text()[contains(.,"Hashes")]]/ancestor::div[contains(@class, "col")][1]//table')   
 
     @property
     def __job_state_text(self) -> WebElement:
@@ -70,15 +71,14 @@ class JobDetailPage(PageObject):
     def __workunit_table(self) -> WebElement:
         return self.driver.find_element(By.XPATH,'//b[text()[contains(.,"Workunits")]]/ancestor::div[contains(@class, "wu-container")][1]//table')   
 
-    def get_hashes(self) -> List[tuple[str,str]]:
+    def get_hashes(self) -> List[tuple[str,Optional[str]]]:
         """Return a list of tuples, where the first element is an input hash of the cracking job
         and the second element is the recovered password. If the password is not cracked, then
         the second element is an empty string."""
         return [
             (
-                tableRow.find_element(By.CSS_SELECTOR,'td:nth-child(1)').text,
-                tableRow.find_element(By.CSS_SELECTOR,'td:nth-child(2)').text
-            ) for tableRow in self.__hash_table.find_elements(By.CSS_SELECTOR,'tbody tr')
+                tableRow.password_hash,tableRow.password
+            ) for tableRow in load_table_elements(self.driver,self.__hash_table,CrackedHashTableRow)
         ]
 
     def start_job(self) -> None:
