@@ -15,6 +15,7 @@ from page_object.add_job_page.input_settings import InputSettings
 from page_object.add_job_page.attack_settings import AttackSettings
 from page_object.job_detail_page import JobDetailPage
 from page_object.common.helper import clear_workaround
+from page_object.common.exception import InvalidStateError
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement
@@ -65,7 +66,10 @@ class AddJobPage(PageObject):
 
     def get_job_name(self) -> str:
         """Returns the input name of the job that is being created."""
-        return self.__name_field.get_attribute('value')
+        value = self.__name_field.get_attribute('value')
+        if value is None:
+            raise InvalidStateError('Cannot determine job name because "value" attribute does not exist')
+        return value
 
     def create_job(self) -> JobDetailPage:
         """Creates the job that is currently being set up.

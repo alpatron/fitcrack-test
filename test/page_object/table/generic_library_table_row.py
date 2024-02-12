@@ -9,6 +9,7 @@ from selenium.webdriver.common.keys import Keys
 
 from page_object.common.page_object import PageComponentObject
 from page_object.common.helper import download_file_webadmin
+from page_object.common.exception import InvalidStateError
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webelement import WebElement
@@ -42,4 +43,7 @@ class GenericLibraryTableRow(PageComponentObject):
     @overload
     def download(self,as_binary:bool=True) -> bytes: ...
     def download(self,as_binary:bool=False) -> Union[bytes,str]:
-        return download_file_webadmin(self.driver,self.__download_button.get_attribute('href'),as_binary=as_binary)
+        link = self.__download_button.get_attribute('href')
+        if link is None:
+            raise InvalidStateError('Cannot determine download link because "href" attribute does not exist')
+        return download_file_webadmin(self.driver,link,as_binary=as_binary)

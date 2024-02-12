@@ -144,7 +144,7 @@ class ActiveHostEntry(PageComponentObject):
     @property
     def host_id(self) -> int:
         """The internal host ID used by Fitcrack Webadmin."""
-        return int(self.__name_field.get_attribute('href').split('/')[-1])
+        return int(self.__name_field.get_attribute('href').split('/')[-1]) #type: ignore
     
     @property
     def ip_address(self) -> str:
@@ -208,7 +208,7 @@ class WorkunitEntry(PageComponentObject):
     @property
     def host_id(self) -> int:
         """The internal host ID used by Fitcrack Webadmin."""
-        return int(self.__host_field.get_attribute('href').split('/')[-1])
+        return int(self.__host_field.get_attribute('href').split('/')[-1]) #type: ignore
 
     @property
     def progress(self) -> int:

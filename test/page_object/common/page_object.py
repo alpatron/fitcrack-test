@@ -71,8 +71,8 @@ class PageObject:
         WebDriverWait(self.driver,10).until(visibility_of(self._snackbar_notification_text))
         helper_element = self.driver.find_element(By.CSS_SELECTOR, '.errorSnackbar .v-alert')
         element_classes = helper_element.get_attribute('class')
-        error = 'error' in element_classes
-        success = 'success' in element_classes
+        error = 'error' in element_classes # type: ignore
+        success = 'success' in element_classes # type: ignore
         match (success, error):
             case (True, False):
                 snackbar_notification_type = WebadminSnackbarNotificationType.SUCCESS
