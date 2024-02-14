@@ -21,7 +21,7 @@ class GenericE2ECrackingTestInput:
     Contains hash type and a list of hashes and their expected cracked output since
     all end-to-end cracking tests input hashes at the start and check results at the end.
     And contains the maximum time the test should wait for the cracking result after starting
-    the job (in seconds); the default wait time is one hour.
+    the job (in seconds); the default wait time is ten minutes.
     """
     hash_type:str
     hashes:List[tuple[str,str]]
