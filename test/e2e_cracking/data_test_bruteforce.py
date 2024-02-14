@@ -38,11 +38,11 @@ testdata = [
     BruteForceTestInput(
         hash_type='sha1',
         hashes=[
-            ('9282dbcb46212929fcc2bdfcc4836ea694465dc7', ''),
-            ('26b0da18d000abc9f5804395cb5bcfe22f253151', ''),
+            ('9282dbcb46212929fcc2bdfcc4836ea694465dc7', None),
+            ('26b0da18d000abc9f5804395cb5bcfe22f253151', None),
             ('9b241b7f3c3764b9dee00e7a07da6cad48d891c9', 'ANANAN'),
-            ('2176ec59dfe01e1e3251efbd0b23aa52f4ea33b0', ''),
-            ('413725d25c4f7f624ef10fabebbe97dd5800de96', '')
+            ('2176ec59dfe01e1e3251efbd0b23aa52f4ea33b0', None),
+            ('413725d25c4f7f624ef10fabebbe97dd5800de96', None)
         ],
         masks=['?u?u?u?u?u?u'],
         custom_charsets=[],
@@ -53,11 +53,11 @@ testdata = [
     BruteForceTestInput(
         hash_type='sha1',
         hashes=[
-            ('9282dbcb46212929fcc2bdfcc4836ea694465dc7', ''),
+            ('9282dbcb46212929fcc2bdfcc4836ea694465dc7', None),
             ('26b0da18d000abc9f5804395cb5bcfe22f253151', 'AAABBB'),
-            ('9b241b7f3c3764b9dee00e7a07da6cad48d891c9', ''),
-            ('2176ec59dfe01e1e3251efbd0b23aa52f4ea33b0', ''),
-            ('413725d25c4f7f624ef10fabebbe97dd5800de96', '')
+            ('9b241b7f3c3764b9dee00e7a07da6cad48d891c9', None),
+            ('2176ec59dfe01e1e3251efbd0b23aa52f4ea33b0', None),
+            ('413725d25c4f7f624ef10fabebbe97dd5800de96', None)
         ],
         masks=['?u?u?u?u?u?u'],
         custom_charsets=[],
@@ -83,10 +83,10 @@ testdata = [
     BruteForceTestInput(
         hash_type='sha1',
         hashes=[
-            ('9282dbcb46212929fcc2bdfcc4836ea694465dc7', ''),
-            ('26b0da18d000abc9f5804395cb5bcfe22f253151', ''),
+            ('9282dbcb46212929fcc2bdfcc4836ea694465dc7', None),
+            ('26b0da18d000abc9f5804395cb5bcfe22f253151', None),
             ('9b241b7f3c3764b9dee00e7a07da6cad48d891c9', 'ANANAN'),
-            ('2176ec59dfe01e1e3251efbd0b23aa52f4ea33b0', ''),
+            ('2176ec59dfe01e1e3251efbd0b23aa52f4ea33b0', None),
             ('413725d25c4f7f624ef10fabebbe97dd5800de96', 'MANIER')
         ],
         masks=['?u?u?u?u?u?u'],
@@ -98,11 +98,11 @@ testdata = [
     BruteForceTestInput(
         hash_type='sha1',
         hashes=[
-            ('9282dbcb46212929fcc2bdfcc4836ea694465dc7', ''),
+            ('9282dbcb46212929fcc2bdfcc4836ea694465dc7', None),
             ('26b0da18d000abc9f5804395cb5bcfe22f253151', 'AAABBB'),
-            ('9b241b7f3c3764b9dee00e7a07da6cad48d891c9', ''),
+            ('9b241b7f3c3764b9dee00e7a07da6cad48d891c9', None),
             ('2176ec59dfe01e1e3251efbd0b23aa52f4ea33b0', 'BAAAAA'),
-            ('413725d25c4f7f624ef10fabebbe97dd5800de96', '')
+            ('413725d25c4f7f624ef10fabebbe97dd5800de96', None)
         ],
         masks=['?u?u?u?u?u?u'],
         custom_charsets=[],

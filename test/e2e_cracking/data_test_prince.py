@@ -6,12 +6,12 @@ testdata = [
     PRINCETestInput(
         hash_type='sha1',
         hashes=[
-            ('22fa6121da96f43a106e413e65d4f9089c53824c', ''),
+            ('22fa6121da96f43a106e413e65d4f9089c53824c', None),
             ('a51dda7c7ff50b61eaea0444371f4a6a9301e501', 'john'),
             ('6e017b5464f820a6c1bb5e9f6d711a667a80d8ea', 'heslo'),
-            ('ee51e142b0a4fb057d9bb1b8098b6c767c951992', ''),
+            ('ee51e142b0a4fb057d9bb1b8098b6c767c951992', None),
             ('431364b6450fc47ccdbf6a2205dfdb1baeb79412', 'oracle'),
-            ('5855e3590ac1021bf3a894a851c6cc3f52bc2e5d', ''),
+            ('5855e3590ac1021bf3a894a851c6cc3f52bc2e5d', None),
             ('86c60296fa8751a5376d75f3a4fc7cef7d20e5b0', 'sunjohn')
         ],
         dictionaries=['honeynet.txt'],
@@ -46,8 +46,8 @@ testdata = [
         hash_type='sha1',
         hashes=[
             ('a6aea12209b10b7a778aa6f04147f95381777f76', 'testAbc'),
-            ('99efaa0e32d2ce548b466cfe9ae3d0b46c7e5262', ''),
-            ('0af1b052580d6fae10f6cc1ca598c9e11ca2e155', ''),
+            ('99efaa0e32d2ce548b466cfe9ae3d0b46c7e5262', None),
+            ('0af1b052580d6fae10f6cc1ca598c9e11ca2e155', None),
             ('b8fa77a900fa9aa5341084f2f20cca35552d31a8', 'aBctest')
         ],
         dictionaries=['adobe100.txt'],
